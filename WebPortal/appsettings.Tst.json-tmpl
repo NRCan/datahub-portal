@@ -2,8 +2,8 @@
   "AzureAd": {
     "Instance": "https://login.microsoftonline.com/",
     "Domain": "041gc.onmicrosoft.com",
-    "TenantId": "###DH_TENANT_ID###",
-    "ClientId": "###DH_CLIENT_ID###",
+    "TenantId": "###DH_TENANT_ID_TST###",
+    "ClientId": "###DH_CLIENT_ID_TST###",
     "CallbackPath": "/signin-oidc",
     "SignedOutCallbackPath ": "/signout-callback-oidc",
     "AppIDURL": "https://dh-portal-app-tst.azurewebsites.net/"
@@ -15,11 +15,11 @@
     "KeyVaultName": "datahub-key-tst",
     "FileSystemName": "datahub",
     "FileIndexName": "filemetadata-index",
-    "FileIndexerName": "datahub-file-indexer",    
+    "FileIndexerName": "datahub-file-indexer",
     "LogoutURL": "https://datahub-tst.nrcan-rncan.gc.ca"
- },
+  },
   "ApplicationInsights": {
-    "InstrumentationKey": "###DH_INSTRU_KEY###"
+    "InstrumentationKey": "###DH_INSTRU_KEY_TST###"
   },
   "Logging": {
     "LogLevel": {
@@ -29,11 +29,18 @@
     },
     "ApplicationInsights": {
       "LogLevel": {
-          "Default": "Information",
-          "Microsoft": "Warning",
-          "Microsoft.Hosting.Lifetime": "Information"
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information"
       }
     }
   },
+  "Azure:SignalR:StickyServerMode": "Required",
   "AllowedHosts": "*"
 }
+
+
+
+
+
+
