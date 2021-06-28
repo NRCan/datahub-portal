@@ -1,6 +1,6 @@
 using System;
 
-namespace WebPortal.Data.FGP
+namespace NRCan.Datahub.Shared.Data.FGP
 {
     public class GeoCoreItem
     {

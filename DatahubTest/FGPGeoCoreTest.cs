@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 using Newtonsoft.Json;
-using WebPortal.Data.FGP;
+using NRCan.Datahub.Shared.Data.FGP;
 using Xunit;
 
 namespace DatahubTest
