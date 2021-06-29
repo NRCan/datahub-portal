@@ -1,4 +1,6 @@
 ﻿@using NRCan.Datahub.Shared.Data
+@using NRCan.Datahub.Shared.Data.FGP
+@using Newtonsoft.Json
 @inject IApiService ApiService
 @inject NavigationManager NavigationManager
 @inject IMSGraphService MSGraphService
@@ -42,6 +44,24 @@
                         </div>
                     </div>
                 }
+                if (geoCoreResult != null && geoCoreResult.Count > 0) 
+                {
+                    <hr />
+                    <h4>FGP Results</h4>
+                    <div class="search-grid-row">
+                        <div class="grid-item"><h5>Topic / Category</h5></div>
+                        <div class="grid-item"><h5>Title</h5></div>
+                        <div class="grid-item"><h5>Created</h5></div>
+                    </div>
+                    @foreach (var gcItem in geoCoreResult.Items)
+                    {
+                        <div class="search-grid-row">
+                            <div class="grid-item">@gcItem.TopicCategory</div>
+                            <div class="grid-item">@gcItem.Title</div>
+                            <div class="grid-item">@gcItem.Created</div>
+                        </div>
+                    }
+                }
             }
             else
             {
@@ -57,6 +77,7 @@
    
 @code
 {
+    private static readonly string FGP_SEARCH_API_URL = "https://hqdatl0f6d.execute-api.ca-central-1.amazonaws.com/dev/geo";
 
     // Have we searched already since init control.
     // If so any change to search text will cause a search to occur
@@ -67,6 +88,8 @@
 
     public bool isSearching { get; set; }
     public string isDownloadingFileId { get; set; }
+
+    public GeoCoreSearchResult geoCoreResult { get; set; }
 
     private Microsoft.Graph.User _currentUser;
 
@@ -125,6 +148,23 @@
         NavigationManager.NavigateTo($"/search/{searchText}");
     }
 
+    //TODO move this method to a service class
+    private async Task<GeoCoreSearchResult> SearchFGPByKeyword(string keyword) 
+    {
+        using (var request = new HttpRequestMessage())
+        {
+            request.Method = HttpMethod.Get;
+            request.RequestUri = new Uri($"{FGP_SEARCH_API_URL}?keyword_only=true&lang=en&keyword={keyword}");
+            var httpClient = new HttpClient();
+            using (var response = await httpClient.SendAsync(request))
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<GeoCoreSearchResult>(content);
+                return result;
+            }
+        }
+    }
+
     private async Task HandleSearch(string newValue, KeyboardEventArgs ev)
     {
         searchText = newValue;
@@ -134,10 +174,12 @@
             ApiService.SearchDataFolder.Clear();
             isSearching = true;
             hasResults = false;
+            geoCoreResult = null;
             StateHasChanged();
 
             string filter = $"search.ismatch('{newValue}*', 'filename', 'full', 'any') and ownedby eq '{_currentUser.Id}'";
             await ApiService.SearchIndex(ApiService.SearchDataFolder, filter, _currentUser);
+            geoCoreResult = await SearchFGPByKeyword(searchText);
             isSearching = false;
             hasResults = true;
             searchedAlready = true;
