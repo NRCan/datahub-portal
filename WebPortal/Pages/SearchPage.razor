@@ -1,15 +1,56 @@
 ﻿@inject IApiService ApiService
 @inject NavigationManager NavigationManager
+@inject IFGPSearchService FgpSearchService
 
 @page "/search/"
 @page "/search/{searchtext}"
+@using NRCan.Datahub.Shared.Data.FGP
 
 <FileGrid SearchText=@searchtext CurrentFolder="ApiService.SearchDataFolder" CanAddData="false"/>
+
+<hr/>
+<div class="header-wrapper">
+    <h3 class="nrcan-typography h3">FGP Results</h3>
+</div>
+@if (SearchingFGP)
+{
+    <Spinner />
+}
+else if (FgpResult.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>@Localizer["Topic / Category"]</th>
+                <th>@Localizer["Title"]</th>
+                <th>@Localizer["Created"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in FgpResult.Items)
+            {
+                <tr>
+                    <td>@item.TopicCategory</td>
+                    <td>@item.Title</td>
+                    <td>@item.Created</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>@Localizer["No results found"]</h4>
+}
 
 @code
 {
     [Parameter]
     public string searchtext { get; set; }
+
+    private GeoCoreSearchResult FgpResult { get; set; }
+
+    private bool SearchingFGP { get; set; } = false;
   
     protected override async Task OnInitializedAsync()
     {
@@ -18,6 +59,12 @@
         if (string.IsNullOrWhiteSpace(searchtext))
         {
             NavigationManager.NavigateTo("data");
+        }
+        else
+        {
+            SearchingFGP = true;
+            FgpResult = await FgpSearchService.SearchFGPByKeyword(searchtext);
+            SearchingFGP = false;
         }
     }
 }
