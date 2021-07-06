@@ -5,6 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject IMSGraphService MSGraphService
 @inject IUserInformationService UserInformationService
+@inject IFGPSearchService FgpSearchService
 
 <AeSearchInput id="topSearch" Placeholder="@Localizer.GetString("Search...")" OnInputChangeWithLastKey="(v, e) => HandleSearch(v, e)" ClearIconFAClass="null"/>
 
@@ -77,8 +78,6 @@
    
 @code
 {
-    private static readonly string FGP_SEARCH_API_URL = "https://hqdatl0f6d.execute-api.ca-central-1.amazonaws.com/dev/geo";
-
     // Have we searched already since init control.
     // If so any change to search text will cause a search to occur
     public bool searchedAlready { get; set; }
@@ -148,23 +147,6 @@
         NavigationManager.NavigateTo($"/search/{searchText}");
     }
 
-    //TODO move this method to a service class
-    private async Task<GeoCoreSearchResult> SearchFGPByKeyword(string keyword) 
-    {
-        using (var request = new HttpRequestMessage())
-        {
-            request.Method = HttpMethod.Get;
-            request.RequestUri = new Uri($"{FGP_SEARCH_API_URL}?keyword_only=true&lang=en&keyword={keyword}");
-            var httpClient = new HttpClient();
-            using (var response = await httpClient.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<GeoCoreSearchResult>(content);
-                return result;
-            }
-        }
-    }
-
     private async Task HandleSearch(string newValue, KeyboardEventArgs ev)
     {
         searchText = newValue;
@@ -178,8 +160,9 @@
             StateHasChanged();
 
             string filter = $"search.ismatch('{newValue}*', 'filename', 'full', 'any') and ownedby eq '{_currentUser.Id}'";
+            var geoCoreTask = FgpSearchService.SearchFGPByKeyword(searchText);
             await ApiService.SearchIndex(ApiService.SearchDataFolder, filter, _currentUser);
-            geoCoreResult = await SearchFGPByKeyword(searchText);
+            geoCoreResult = await geoCoreTask;
             isSearching = false;
             hasResults = true;
             searchedAlready = true;
