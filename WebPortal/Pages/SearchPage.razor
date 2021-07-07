@@ -6,11 +6,15 @@
 @page "/search/{searchtext}"
 @using NRCan.Datahub.Shared.Data.FGP
 
+<div class="header-wrapper">
+    <h2 class="nrcan-typography h2">@Localizer["File Results"]</h2>
+</div>
+
 <FileGrid SearchText=@searchtext CurrentFolder="ApiService.SearchDataFolder" CanAddData="false"/>
 
 <hr/>
 <div class="header-wrapper">
-    <h3 class="nrcan-typography h3">FGP Results</h3>
+    <h2 class="nrcan-typography h2">@Localizer["FGP Results"]</h2>
 </div>
 @if (SearchingFGP)
 {
@@ -18,20 +22,22 @@
 }
 else if (FgpResult.Count > 0)
 {
-    <table>
+    <table class="search-list-container full-width-search-list">
         <thead>
             <tr>
-                <th>@Localizer["Topic / Category"]</th>
-                <th>@Localizer["Title"]</th>
-                <th>@Localizer["Created"]</th>
+                <th class="search-table-header">@Localizer["Title"]</th>
+                <th class="search-table-header">@Localizer["Organization"]</th>
+                <th class="search-table-header">@Localizer["Created"]</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in FgpResult.Items)
             {
-                <tr>
-                    <td>@item.TopicCategory</td>
-                    <td>@item.Title</td>
+                <tr class="search-table-row">
+                    <td>
+                        <a href=@(item.GetGeoCaUrl())>@item.Title</a>
+                    </td>
+                    <td>@item.Organisation</td>
                     <td>@item.Created</td>
                 </tr>
             }

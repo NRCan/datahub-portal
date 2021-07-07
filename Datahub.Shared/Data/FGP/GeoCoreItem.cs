@@ -23,6 +23,11 @@ namespace NRCan.Datahub.Shared.Data.FGP
         public string Contact { get; set; } // TODO lots of processing (same)
 
 
+        public string GetGeoCaUrl(string lang="en")
+        {
+            return $"https://app.geo.ca/result?id={Id}&lang={lang}";
+        }
+        
 
         /*
     "id": "000183ed-8864-42f0-ae43-c4313a860720",
