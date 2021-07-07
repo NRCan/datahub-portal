@@ -255,6 +255,7 @@ namespace NRCan.Datahub.Portal
                 services.AddScoped<IApiCallService, ApiCallService>();
 
                 services.AddSingleton<IFGPSearchService, FGPSearchService>();
+                services.AddHttpClient<IFGPSearchService, FGPSearchService>();
 
                 services.AddScoped<IDataUpdatingService, DataUpdatingService>();
                 services.AddScoped<IDataSharingService, DataSharingService>();

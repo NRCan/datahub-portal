@@ -1,14 +1,57 @@
 using System;
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NRCan.Datahub.Shared.Data.FGP;
+using NRCan.Datahub.Shared.Services;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DatahubTest
 {
-    public class FGPGeoCoreTest
+    public class FGPGeoCoreFixture: IDisposable
+    {
+        public IFGPSearchService FGPSearchService { get; private set; }
+        public ILogger Logger { get; private set; }
+        
+        private ITestOutputHelper _output = null;
+        private readonly HttpClient _httpClient;
+
+        public FGPGeoCoreFixture()
+        {
+            _httpClient = new HttpClient();
+        }
+
+        // ITestOutputHelper can only be injected in a unit test class, not in a fixture
+        // so this method is a hack to get around that
+        // otherwise this initialization would be done in the constructor
+        public void InitOutput(ITestOutputHelper output) 
+        {
+            if (_output == null) 
+            {
+                _output = output;
+                Logger = _output.BuildLoggerFor<FGPGeoCoreTest>();
+                FGPSearchService = new FGPSearchService(_output.BuildLoggerFor<FGPSearchService>(), _httpClient);
+            }
+        }
+
+        public void Dispose()
+        {
+            _httpClient.Dispose();
+        }
+    }
+
+    public class FGPGeoCoreTest: IClassFixture<FGPGeoCoreFixture>
     {
         private static readonly string SEARCH_API_URL = "https://hqdatl0f6d.execute-api.ca-central-1.amazonaws.com/dev/geo";
+
+        private FGPGeoCoreFixture _fixture;
+
+        public FGPGeoCoreTest(FGPGeoCoreFixture fixture, ITestOutputHelper output)
+        {
+            fixture.InitOutput(output);
+            _fixture = fixture;
+        }
 
         [Fact]
         public async void TestKeywordQuery() 
@@ -61,5 +104,52 @@ namespace DatahubTest
                 }
             }
         }
+
+        [Fact]
+        public async void TestSingleResultFromService()
+        {
+            var keyword = "ferroalloy";
+            _fixture.Logger.LogInformation($"Testing keyword '{keyword}' - should be a single result");
+
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword);
+            Assert.Equal(1, result.Count);
+            var item = result.Items[0];
+            Assert.Equal("Principal Mineral Areas, Producing Mines, and Oil and Gas Fields (900A)", item.Title);
+        }
+
+        [Fact]
+        public async void TestSingleResultFrench()
+        {
+            var keyword = "Pompage turbinage";
+            _fixture.Logger.LogInformation($"Testing keyword '{keyword}' in French - should be a single result");
+
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword, lang: "fr");
+            Assert.Equal(1, result.Count);
+            var item = result.Items[0];
+            Assert.Equal("Coopération nord-américaine en matière d’information sur l’énergie, données cartographiques", item.Title);
+
+        }
+
+        [Fact]
+        public async void TestZeroResultsFromService()
+        {
+            var keyword = "somethingthatdoesntexist";
+            _fixture.Logger.LogInformation($"Testing keyword '{keyword}' - should get no results");
+
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword);
+            Assert.Equal(0, result.Count);
+        }
+
+        [Fact]
+        public async void TestResultOutOfRange()
+        {
+            var keyword = "ferroalloy";
+            _fixture.Logger.LogInformation($"Testing out of range search result with keyword '{keyword}' - should have one result, but querying with min > 1 returns none.");
+
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword, min: 2);
+            Assert.Equal(0, result.Count);
+        }
+
+        
     }
 }
