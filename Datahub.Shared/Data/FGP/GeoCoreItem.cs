@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace NRCan.Datahub.Shared.Data.FGP
 {
@@ -21,6 +22,58 @@ namespace NRCan.Datahub.Shared.Data.FGP
         public string Options { get; set; } // TODO lots of processing (JSON w/ multiple escape, multiple quotes)
         public string GraphicOverview { get; set; } // TODO lots of processing (same)
         public string Contact { get; set; } // TODO lots of processing (same)
+
+
+        private GeoCoreOptionsList _optionsList = null;
+        private GeoCoreContactList _contactList = null;
+        private GeoCoreGraphicOverviewList _graphicsList = null;
+
+        public GeoCoreOptionsList OptionsList
+        {
+            get
+            {
+                if (_optionsList == null)
+                {
+                    _optionsList = DecodeEscapedJson<GeoCoreOptionsList>(Options);
+                }
+                return _optionsList;
+            }
+        }
+
+        public GeoCoreContactList ContactList
+        {
+            get
+            {
+                if (_contactList == null)
+                {
+                    _contactList = DecodeEscapedJson<GeoCoreContactList>(Contact);
+                }
+                return _contactList;
+            }
+        }
+
+        public GeoCoreContact FirstContact => ContactList.Count > 0? ContactList[0]: null;
+
+        public GeoCoreGraphicOverviewList GraphicOverviewList
+        {
+            get
+            {
+                if (_graphicsList == null)
+                {
+                    _graphicsList = DecodeEscapedJson<GeoCoreGraphicOverviewList>(GraphicOverview);
+                }
+                return _graphicsList;
+            }
+        }
+
+        public GeoCoreGraphicOverview FirstGraphicOverview => GraphicOverviewList.Count > 0? GraphicOverviewList[0]: null;
+
+        private T DecodeEscapedJson<T> (string content)
+        {
+            var decoded = content.Replace("\\\"\"", "\"").Replace("\"\"","");
+            var result = JsonConvert.DeserializeObject<T>(decoded);
+            return result;
+        }
 
 
         public string GetGeoCaUrl(string lang="en")

@@ -118,6 +118,15 @@ namespace DatahubTest
         }
 
         [Fact]
+        public async void TestMultiResultsFromService() {
+            var keyword = "mining";
+            _fixture.Logger.LogInformation($"Testing keyword '{keyword}' - should have multiple results, limited to 10 in query");
+            
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword, min: 1, max: 10);
+            Assert.Equal(10, result.Count);
+        }
+
+        [Fact]
         public async void TestSingleResultFrench()
         {
             var keyword = "Pompage turbinage";
@@ -150,6 +159,40 @@ namespace DatahubTest
             Assert.Equal(0, result.Count);
         }
 
-        
+        [Fact]
+        public async void TestEmbeddedObjects()
+        {
+            var keyword = "ferroalloy";
+            _fixture.Logger.LogInformation($"Testing keyword '{keyword}' embedded objects - contact, options and graphicOverview should match expected");
+
+            var result = await _fixture.FGPSearchService.SearchFGPByKeyword(keyword);
+            Assert.Equal(1, result.Count);
+
+            var item = result.Items[0];
+            var contactList = item.ContactList;
+            var optionsList = item.OptionsList;
+            var graphicsList = item.GraphicOverviewList;
+
+            Assert.Equal(1, contactList.Count);
+            var contact = item.FirstContact;
+            Assert.Equal("580 Booth Street", contact.Address.En);
+            _fixture.Logger.LogInformation("Contact address matches");
+
+            Assert.Equal(10, optionsList.Count);
+            // options are populated in the same order each time, thankfully
+            // first two have a "null" string in all the fields
+            // the third one has something
+            // if ever we update the class to ignore/remove the null ones, we may need to update this
+            var option = optionsList[2]; 
+            Assert.Equal("Vector dataset of the 900A map", option.Name.En);
+            _fixture.Logger.LogInformation("Expected option matches");
+
+            Assert.Equal(1, graphicsList.Count);
+            var graphicOverview = item.FirstGraphicOverview;
+            Assert.Equal(
+                "http://ftp.maps.canada.ca/pub/nrcan_rncan/Mining-industry_Industrie-miniere/900A_and_top_100/Thumbnail/900A.png", 
+                graphicOverview.OverviewFilename);
+            _fixture.Logger.LogInformation("GraphicOverview filename matches");
+        }
     }
 }
