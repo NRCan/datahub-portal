@@ -6,7 +6,7 @@ namespace NRCan.Datahub.Shared.Data.FGP
     public class GeoCoreItem
     {
         public Guid Id { get; set; }
-        public DateTime Published { get; set; }
+        public string Published { get; set; } // TODO potentially incomplete dates (yyyy-mm or yyyy)
         public string Organisation { get; set; }
         public string Type { get; set; }
         public string TopicCategory { get; set; }
