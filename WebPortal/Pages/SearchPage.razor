@@ -16,11 +16,9 @@
 <div class="header-wrapper">
     <h2 class="nrcan-typography h2">@Localizer["FGP Results"]</h2>
 </div>
-@if (SearchingFGP)
-{
-    <Spinner />
-}
-else if (FgpResult.Count > 0)
+
+
+@if (FgpItems.Count > 0)
 {
     <table class="search-list-container full-width-search-list">
         <thead>
@@ -31,7 +29,7 @@ else if (FgpResult.Count > 0)
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in FgpResult.Items)
+            @foreach (var item in FgpItems)
             {
                 <tr class="search-table-row">
                     <td>
@@ -42,7 +40,29 @@ else if (FgpResult.Count > 0)
                 </tr>
             }
         </tbody>
+        @if (MoreResultsAvailable)
+        {
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        @if(SearchingFGP)
+                        {
+                            <Spinner />
+                        }
+                        else 
+                        {
+                            <AeButton OnClickEvent="@LoadMoreResults" class="blue">@Localizer["More Results ..."]</AeButton>
+                        }
+                    </td>
+                </tr>
+            </tfoot>
+        }
     </table>
+
+}
+else if (SearchingFGP)
+{
+    <Spinner />
 }
 else
 {
@@ -51,12 +71,16 @@ else
 
 @code
 {
+    private const int RESULTS_PER_PAGE = 25;
+    
     [Parameter]
     public string searchtext { get; set; }
 
-    private GeoCoreSearchResult FgpResult { get; set; }
+    private List<GeoCoreItem> FgpItems { get; set; } = new List<GeoCoreItem>();
 
     private bool SearchingFGP { get; set; } = false;
+    private bool MoreResultsAvailable { get; set; } = true;
+    private int MinResult { get; set; } = 1;
   
     protected override async Task OnInitializedAsync()
     {
@@ -68,9 +92,26 @@ else
         }
         else
         {
-            SearchingFGP = true;
-            FgpResult = await FgpSearchService.SearchFGPByKeyword(searchtext);
-            SearchingFGP = false;
+            var searchResults = await LoadResults();
+            FgpItems = new List<GeoCoreItem>(searchResults.Items);
         }
+    }
+
+    private async Task<GeoCoreSearchResult> LoadResults()
+    {
+        SearchingFGP = true;
+        var maxResult = MinResult + RESULTS_PER_PAGE - 1;
+        var loadTask = FgpSearchService.SearchFGPByKeyword(searchtext, min: MinResult, max: maxResult);
+        MinResult = maxResult + 1;
+        var result = await loadTask;
+        MoreResultsAvailable = result.Count >= RESULTS_PER_PAGE;
+        SearchingFGP = false;
+        return result;
+    }
+
+    protected async Task LoadMoreResults()
+    {
+        var moreResults = await LoadResults();
+        FgpItems.AddRange(moreResults.Items);
     }
 }
