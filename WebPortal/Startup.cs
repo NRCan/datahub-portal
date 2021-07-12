@@ -254,6 +254,8 @@ namespace NRCan.Datahub.Portal
                 services.AddScoped<IApiService, ApiService>();
                 services.AddScoped<IApiCallService, ApiCallService>();
 
+                services.AddScoped<IEmailNotificationService, EmailNotificationService>();
+
                 services.AddScoped<IDataUpdatingService, DataUpdatingService>();
                 services.AddScoped<IDataSharingService, DataSharingService>();
                 services.AddScoped<IDataCreatorService, DataCreatorService>();

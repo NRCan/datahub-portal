@@ -5,6 +5,7 @@
 @inject IJSRuntime JsInterop
 @inject DatahubProjectDBContext projectContext
 @inject IDbContextFactory<DatahubProjectDBContext> dbFactory
+@inject IEmailNotificationService EmailService
 @page "/admin"
 
 
@@ -24,10 +25,17 @@
             <div>Loading data...</div>
         }
 
-
+        @* TODO: delete this *@
+        <div>
+            <AeButton @onclick="async () => await SendTestEmail()">Send test email</AeButton>
+        </div>
     </Authorized>
     <NotAuthorized>
         <h1>This page is limited for datahub administrators</h1>
+        @* TODO: delete this *@
+        @* <div>
+            <AeButton @onclick="async () => await SendTestEmail()">Send test email</AeButton>
+        </div> *@
     </NotAuthorized>
 </AuthorizeView>
 
@@ -41,6 +49,15 @@
 {
         "Project", "User", "Service", "Date","Actions"
     };
+
+    private async Task SendTestEmail()
+    {
+        var user = (await authenticationStateTask).User;
+        var email = user.Identity.Name;
+        var name = user.Claims.Where(c => c.Type == "name").FirstOrDefault()?.Value;
+
+        await EmailService.SendEmailMessage("Test", "If you can read this, it works", name, email, isHtml: false);
+    }
 
     // Accessor functions to retrieve cell value
     private List<Func<Datahub_Project_Access_Request, string>> accessorFunctions = new List<Func<Datahub_Project_Access_Request, string>>
