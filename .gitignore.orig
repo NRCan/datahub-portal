@@ -1,0 +1,33 @@
+!.vscode/settings.json
+#!.vscode/tasks.json
+#!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local History for Visual Studio Code
+.history/
+.vs/
+bin/
+obj/
+*.user
+artifacts/
+.vscode/launch.json
+.dotnet/
+*.binlog
+.DS_Store
+dh-code.bat
+Datahub.Shared/node_modules
+DatahubIntakeForms/appsettings.Development.json
+DatahubIntakeForms/appsettings.json
+DatahubIntakeForms/appsettings.Tst.json
+DatahubIntakeForms/Properties/launchSettings.json
+WebPortal/appsettings.Development.json
+WebPortal/appsettings.json
+WebPortal/appsettings.prd.json
+WebPortal/appsettings.Tst.json
+WebPortal/Properties/launchSettings.json
+<<<<<<< HEAD
+WebPortal/appsettings.Offline.json
+=======
+/Datahub.Metadata/Python/.connectionstring
+/Datahub.Metadata/Python/__pycache__
+>>>>>>> develop

@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace NRCan.Datahub.Shared.Services
 {
-    public class UserLocationManagerService
+    public class UserLocationManagerService : IUserLocationManagerService
     {
         private ILogger<UserLocationManagerService> _logger;
         private IUserInformationService _userInformationService;
         private IDbContextFactory<EFCoreDatahubContext> _contextFactory;
-        
 
-        public UserLocationManagerService(ILogger<UserLocationManagerService> logger, 
+
+        public UserLocationManagerService(ILogger<UserLocationManagerService> logger,
                                         IUserInformationService userInformationService,
                                         IDbContextFactory<EFCoreDatahubContext> contextFactory)
         {
@@ -32,13 +32,13 @@ namespace NRCan.Datahub.Shared.Services
             var userId = user.Id;
 
             var userRecentActions = new UserRecentActions() { url = eventArgs.Location, title = "my title", accessedTime = DateTimeOffset.Now, icon = "myicon" };
-            
+
             var recentNavigations = await ReadRecentNavigations(userId);
 
             if (recentNavigations == null)
             {
                 recentNavigations = new UserRecent() { UserId = userId };
-                recentNavigations.UserRecentActions.Add(userRecentActions);                
+                recentNavigations.UserRecentActions.Add(userRecentActions);
                 await RegisterNavigation(recentNavigations);
             }
             else
@@ -53,7 +53,7 @@ namespace NRCan.Datahub.Shared.Services
                     _efCoreDatahubContext.UserRecent.Update(recentNavigations);
                     await _efCoreDatahubContext.SaveChangesAsync();
                 }
-            }            
+            }
         }
 
         private async Task RemoveOldestNavigation(UserRecent recentNavigations)
@@ -75,7 +75,7 @@ namespace NRCan.Datahub.Shared.Services
                 }
             }
         }
-        
+
         public async Task<UserRecent> ReadRecentNavigations(string userId)
         {
             using (var _efCoreDatahubContext = _contextFactory.CreateDbContext())
