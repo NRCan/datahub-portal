@@ -53,7 +53,11 @@ namespace NRCan.Datahub.Portal.Services.Offline
 
         public Dictionary<string, FileMetaData> UploadedFiles { get; set; } = new Dictionary<string, FileMetaData>();
         public IBrowserFile browserFile { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string ProjectUploadCode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string ProjectUploadCode 
+        { 
+            get => string.Empty;
+            set { } 
+        }
 
         public OfflineApiService(IUserInformationService userInformationService, ILogger<OfflineApiService> logger)
         {
