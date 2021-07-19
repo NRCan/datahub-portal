@@ -37,7 +37,7 @@
                         <span>@BoundValue</span>
                     }
                     {
-                        <span>@ChoiceDisplay</span>                
+                        <span>@ChoiceDisplay</span>
                     }
                 }
                 else
@@ -52,17 +52,24 @@
                     }
                     else
                     {
-                        <select style="@FieldStyle"
-                                @bind="BoundValue"
-                                @ref="FieldValueInput">
+                        if (!FieldDefinition.MultiSelect)
+                        {
+                            <select style="@FieldStyle"
+                                    @bind="BoundValue"
+                                    @ref="FieldValueInput">
 
-                            <option value=""></option>
+                                <option value=""></option>
 
-                            @foreach (var choice in FieldDefinition.Choices)
-                            {
-                                <option value="@choice.Value">@choice.Label</option>
-                            }
-                        </select>
+                                @foreach (var choice in FieldDefinition.Choices)
+                                {
+                                    <option value="@choice.Value">@choice.Label</option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <MultiSelectList FieldDefinition="FieldDefinition" FieldValue="FieldValue" OnFieldChanged="OnFieldChanged" />
+                        }
                     }
                 }
             </div>
@@ -122,7 +129,7 @@
         }
     }
 
-    private string ChoiceDisplay => FieldDefinition.Choices.FirstOrDefault(c => c.Value == FieldValue.Value)?.Label;
+    private string ChoiceDisplay => !FieldDefinition.MultiSelect ? GetChoiceLabel(FieldValue.Value) : GetMultiChoiceLabels(FieldValue.Value);
 
     const string MandatoryField = "border: 0; width: 100%; background-color: rgb(255, 235, 230);";
     const string OptionalField = "border: 0; width: 100%;";
@@ -130,6 +137,17 @@
     private string FieldStyle => Mandatory && FieldValueEmpty ? MandatoryField : OptionalField;
 
     private bool FieldValueEmpty => string.IsNullOrEmpty(BoundValue);
+
+    private string GetChoiceLabel(string name)
+    {
+        return FieldDefinition.Choices.FirstOrDefault(c => c.Value == name)?.Label;
+    }
+
+    private string GetMultiChoiceLabels(string values)
+    {
+        var labels = (values ?? string.Empty).Split('|').Select(GetChoiceLabel);
+        return string.Join("|", labels);
+    }
 
     private void ClearField()
     {
@@ -139,7 +157,7 @@
 
     private async void SelectField()
     {
-        if (!Preview)
+        if (!Preview && !FieldDefinition.HasChoices)
             await FieldValueInput.FocusAsync();
     }
 }
