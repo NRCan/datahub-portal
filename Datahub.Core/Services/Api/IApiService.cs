@@ -28,10 +28,10 @@ namespace Datahub.Core.Services
         Task RestoreVersionOfBlob(string fileid, string versionId);
         Task<Folder> SearchIndex(dynamic folder, string filter, Microsoft.Graph.User user);
         Task<Uri> DownloadFile(FileMetaData file, string? projectUploadCode);
-        Task UploadGen2File(FileMetaData fileMetadata, string? projectUploadCode);
+        Task UploadToMyFiles(FileMetaData fileMetadata);
 
         Task<Uri> GetUserDelegationSasBlob(string fileName, string projectUploadCode, int daysValidity = 1);
         Task<Uri> GetDownloadAccessToSasBlob(string fileName, string projectUploadCode, int daysValidity = 1);
-        Task<Uri> GenerateSasToken(string projectUploadCode, int daysValidity);
+        Task<Uri> GenerateSasToken(Guid storage, int daysValidity);
     }    
 }

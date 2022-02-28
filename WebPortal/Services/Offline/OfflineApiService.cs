@@ -154,7 +154,7 @@ namespace Datahub.Portal.Services.Offline
             return Task.FromResult(0);
         }
 
-        public Task UploadGen2File(FileMetaData fileMetadata, string projectUploadCode)
+        public Task UploadToMyFiles(FileMetaData fileMetadata)
         {
             return Task.FromResult(0);
         }

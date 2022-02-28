@@ -274,7 +274,7 @@
                 {
                     try
                     {
-                        await ApiService.UploadGen2File(_fileMetadata, Project?.ToLower());
+                        await ApiService.UploadToMyFiles(_fileMetadata);
                         await NotifierService.Update("filegrid", true);
                         ResetControls();
                     } catch (Exception ex)

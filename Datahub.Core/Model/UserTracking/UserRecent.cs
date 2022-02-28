@@ -38,6 +38,8 @@ namespace Datahub.Core.UserTracking
 
         public string DataProject { get; set; }
 
+        public Guid? StorageGUID { get; set; }
+
         public string? PBIReportId { get; set; }
 
         public string? PBIWorkspaceId { get; set; }

@@ -1,9 +1,15 @@
-﻿@page "/project/{ProjectAcronym}/filelist"
+﻿@page "/project/storage/{StorageGUID}"
 @inject IStringLocalizer<FileList> Localizer
 @inject IDbContextFactory<DatahubProjectDBContext> DbFactoryProject
 @inject IApiService ApiService
 
-<DHPageTitle PageTitleKey=@(_project.ProjectName + " " + Localizer["Storage Explorer"])/>
+@if (_storage is null)
+{
+    <Spinner Small=@true />
+}
+else
+{
+<DHPageTitle PageTitleKey=@(_storage.Project.ProjectName + " " + Localizer["Storage Explorer"])/>
 
 <div style="padding-left: 2rem;padding-right: 2rem;padding-bottom: 2rem">
     <AeFlex Vertical>
@@ -11,10 +17,10 @@
     </AeFlex>
     <AeCard>
         <Header>
-            <AeTypography Variant="h3">@_project.ProjectName</AeTypography>
+            <AeTypography Variant="h3">@_storage.Project.ProjectName</AeTypography>
         </Header>
         <ChildContent>
-            <FileGrid CurrentFolder="null" CanAddData="true" Project="@ProjectAcronym" />
+            <FileGrid CurrentFolder="null" CanAddData="true" Storage="@_storage.Id" />
         </ChildContent>
     </AeCard>
 
@@ -49,27 +55,29 @@
 <div>
     <Resources PageName="Datahub-AzureStorage" />
 </div>
+}
 
 @code {
 
     [Parameter]
-    public string ProjectAcronym { get; set; }
+    public string StorageGUID { get; set; }
 
-    private Datahub_Project _project;
 
     private List<(string, string)> _substitutions;
 
     private string? _tempToken;
 
-    protected override void OnInitialized()
+    private Project_Storage _storage;
+
+    protected override async Task OnInitializedAsync()
     {
         using var projectContext = DbFactoryProject.CreateDbContext();
-        _project = projectContext.Projects.Single(p => p.Project_Acronym_CD == ProjectAcronym);        
+        _storage = await projectContext.Project_Storage.Include(s => s.Project).FirstOrDefaultAsync(s => s.Id == Guid.Parse(StorageGUID));  
     }
 
     private async Task GenerateSASToken(int days)
     {
-        var uri = await ApiService.GenerateSasToken(ProjectAcronym, 14);
+        var uri = await ApiService.GenerateSasToken(_storage.Id, 14);
         _tempToken = uri.ToString();
         _substitutions = new List<(string, string)>() { ("<sas_uri>",_tempToken) };
         StateHasChanged();

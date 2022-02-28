@@ -286,7 +286,7 @@
                 //need cancellation token for this.
                 InvokeAsync(async () =>
                 {
-                    await ApiService.UploadGen2File(_fileMetadata, Project?.ToLowerInvariant());
+                    await ApiService.UploadToMyFiles(_fileMetadata);
                 });
                 // Return to grid view
                 NavigationManager.NavigateTo("data");

@@ -17,5 +17,7 @@ namespace Datahub.Core.EFCore
         public string AccountName { get; set; }
 
         public Storage_Type Storage_Type { get; set; }
+
+        public Datahub_Project Project { get; set; }
     }
 }

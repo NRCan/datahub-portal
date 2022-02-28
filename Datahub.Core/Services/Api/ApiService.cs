@@ -21,7 +21,7 @@ using System.Diagnostics;
 
 namespace Datahub.Core.Services
 {
-    public class ApiService : IApiService
+    public class ApiService //: IApiService
     {
         private IOptions<APITarget> _targets;
         private DataLakeClientService _dataLakeClientService;
@@ -176,28 +176,28 @@ namespace Datahub.Core.Services
             }
         }
 
-        public async Task<Uri> GetUserDelegationSasBlob(string fileName, string projectUploadCode, int daysValidity = 1)
+        public async Task<Uri> GetUserDelegationSasBlob(Guid? storage, string? container, string fileName, int daysValidity = 1)
         {
-            return await GetDelegationSasBlobUri(fileName, projectUploadCode, daysValidity, BlobSasPermissions.Read | BlobSasPermissions.Write);
+            return await GetDelegationSasBlobUri(storage, container, fileName, daysValidity, BlobSasPermissions.Read | BlobSasPermissions.Write);
         }
 
-        public async Task<Uri> GetDownloadAccessToSasBlob(string fileName, string projectUploadCode, int daysValidity = 1)
+        public async Task<Uri> GetDownloadAccessToSasBlob(Guid? storage, string? container, string fileName, int daysValidity = 1)
         {
-            return await GetDelegationSasBlobUri(fileName, projectUploadCode, daysValidity, BlobSasPermissions.Read);
+            return await GetDelegationSasBlobUri(storage, container, fileName, daysValidity, BlobSasPermissions.Read);
         }
 
-        public async Task<Uri> GenerateSasToken(string projectUploadCode, int daysValidity)
+        public async Task<Uri> GenerateSasToken(Guid? storage, string? container, int daysValidity)
         {
-            return await GetDelegationSasBlobUri(null, projectUploadCode, daysValidity, BlobSasPermissions.All);
+            return await GetDelegationSasBlobUri(storage, container, null, daysValidity, BlobSasPermissions.All);
         }
 
-        public async Task<Uri> DownloadFile(FileMetaData file, string? projectUploadCode)
+        public async Task<Uri> DownloadFile(Guid? storage, string? container, FileMetaData file, string? projectUploadCode)
         {
             try
             {
                 if (!string.IsNullOrEmpty(projectUploadCode))
                 {
-                    return await GetUserDelegationSasBlob(file.filename, projectUploadCode);
+                    return await GetUserDelegationSasBlob(storage, container, file.filename, projectUploadCode);
                 }
 
                 var fileSystemClient = await _dataLakeClientService.GetDataLakeFileSystemClient();
@@ -242,7 +242,7 @@ namespace Datahub.Core.Services
             }
         }
 
-        public async Task UploadGen2File(FileMetaData fileMetadata, string? projectUploadCode)
+        public async Task UploadToMyStorage(FileMetaData fileMetadata)
         {
             //await _notifierService.Update($"{fileMetadata.folderpath}/{fileMetadata.filename}", true);
             try
@@ -283,7 +283,7 @@ namespace Datahub.Core.Services
 
         }
 
-        private async Task UploadToProject(FileMetaData fileMetadata, string projectUploadCode)
+        private async Task UploadToProject(Guid storage, string container, FileMetaData fileMetadata)
         {
             string cxnstring = await _apiCallService.GetProjectConnectionString(projectUploadCode);
             BlobServiceClient blobServiceClient = new BlobServiceClient(cxnstring);
@@ -311,7 +311,7 @@ namespace Datahub.Core.Services
 
         }
 
-        private async Task UploadFileToProject(FileMetaData fileMetadata, string projectUploadCode)
+        private async Task UploadFileToProject(Guid? storage, string? container, FileMetaData fileMetadata)
         {
             string cxnstring = await _apiCallService.GetProjectConnectionString(projectUploadCode);
             long maxFileSize = 1024000000000;
@@ -509,13 +509,12 @@ namespace Datahub.Core.Services
             return blobServiceClient.GetBlobContainerClient(defaultContainerName);
         }
 
-        private async Task<Uri> GetDelegationSasBlobUri(string fileName, string projectUploadCode, int days, BlobSasPermissions permissions)
-        {
-            var project = projectUploadCode.ToLowerInvariant();
-            var containerClient = await GetBlobContainerClient(project);
+        private async Task<Uri> GetDelegationSasBlobUri(string fileName, Guid storage, int days, BlobSasPermissions permissions)
+        {            
+            var containerClient = await GetBlobContainerClient(storage);
             var sasBuilder = GetBlobSasBuilder(fileName, days, permissions);
 
-            var sharedKeyCred = await _dataLakeClientService.GetSharedKeyCredential(project);
+            var sharedKeyCred = await _dataLakeClientService.GetSharedKeyCredential(storage);
 
             Uri uri;
             if (!string.IsNullOrEmpty(fileName))

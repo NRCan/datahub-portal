@@ -36,6 +36,9 @@
     public string Name { get; set; }
 
     [Parameter]
+    public Guid? Storage { get; set; }
+
+    [Parameter]
     public string? PBIReportId { get; set; } = null;
 
     [Parameter]
@@ -81,6 +84,7 @@
             link.DatabricksURL = DatabricksURL;
             link.WebFormsURL = WebFormsURL;
             link.DataProject = DataProject;
+            link.StorageGUID = Storage;
             link.Name = Name;
             await UserLocationManagerService.RegisterNavigation(link, true);
         }
@@ -105,7 +109,7 @@
                 NavigationManager.NavigateTo($"/project/{link.DataProject}/forms");
                 break;
             case DatahubLinkType.Storage:
-                NavigationManager.NavigateTo($"/project/{link.DataProject}/filelist");
+                NavigationManager.NavigateTo($"/project/storage/{link.StorageGUID.ToString()}");
                 break;
             case DatahubLinkType.DataSharingDashboard:
                 NavigationManager.NavigateTo($"/project/{link.DataProject}/datasharing");
