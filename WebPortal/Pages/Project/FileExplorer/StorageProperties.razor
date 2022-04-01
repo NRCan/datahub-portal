@@ -18,7 +18,7 @@ else
             <AeTypography Variant="h3" class="details-title-text">
                 @if (@DisplayName == _root)
                 {
-                    <span>@Localizer["root"]/</span>
+                    <span>@Container/</span>
                 }
                 else
                 {
@@ -61,6 +61,9 @@ else
 
     [Parameter]
     public string DisplayName { get; set; }
+
+    [Parameter]
+    public string Container { get; set; }
 
     private bool _loading = true;
     private string _root = "/";

@@ -2,12 +2,19 @@
 @inject IDataRemovalService _dataRemovalService
 @inject DataRetrievalService _dataRetrievalService
 @inject NavigationManager NavigationManager
+@inject IUserInformationService _userInformationService
 @inject IJSRuntime _jsRuntime
 
 <div class="heading">
     <AeTypography Variant="h1">@Localizer["Storage Explorer"]</AeTypography>
     <div class="breadcrumbs">
-        <AeButton class="light" @onclick="@(async () => await SetCurrentFolder.InvokeAsync("/"))">@Localizer["root"]</AeButton>
+        @if (_containers != null)
+        {
+        @foreach (var container in _containers)
+        {
+            <AeButton class="light" @onclick="@(() => SetContainer(container))">@container</AeButton>
+        }
+        }
         @foreach (var folder in CurrentFolder.Split("/").Where(s => !string.IsNullOrWhiteSpace(s)))
         {
             <i class="fas fa-chevron-right"></i>
@@ -66,7 +73,7 @@
     public Dictionary<string, List<FileMetaData>> VirtualDirectory { get; set; }
 
     [Parameter]
-    public EventCallback<string> SetCurrentFolder { get; set; }
+    public EventCallback<(string,string)> SetCurrentFolder { get; set; }
 
     [Parameter]
     public EventCallback<string> OnFileDelete { get; set; }
@@ -79,6 +86,16 @@
     private FileMetaData _selectedFile;
     private bool _ownsSelectedFile;
     private bool _isExistingFile;
+    private Microsoft.Graph.User _user;
+
+    private List<string> _containers;
+    private string _currentContainer;
+
+    private void SetContainer(string container)
+    {
+        SetCurrentFolder.InvokeAsync((container,"/"));
+        _currentContainer = container;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -88,17 +105,24 @@
             "./Pages/Project/FileExplorer/Heading.razor.js");
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         _isExistingFile = !VirtualDirectory.ContainsKey(SelectedItem);
         _selectedFile = VirtualDirectory[CurrentFolder]?.FirstOrDefault(f => f.name == SelectedItem);
-        _ownsSelectedFile = _selectedFile?.ownedby.Equals(GraphUser.Id, StringComparison.InvariantCulture) == true; 
+        _ownsSelectedFile = _selectedFile?.ownedby.Equals(GraphUser.Id, StringComparison.InvariantCulture) == true;
+        if (_containers == null)
+        {
+            _user = await _userInformationService.GetUserAsync();
+            _containers = await _dataRetrievalService.ListContainers(ProjectAcronym, _user);
+            _currentContainer = _containers.First();
+        }
+
     }
 
     private async Task BreadcrumbClicked(string breadcrumb)
     {
         var index = CurrentFolder.IndexOf(breadcrumb, StringComparison.OrdinalIgnoreCase);
-        await SetCurrentFolder.InvokeAsync(CurrentFolder[..(index + breadcrumb.Length)] + "/");
+        await SetCurrentFolder.InvokeAsync((_currentContainer,CurrentFolder[..(index + breadcrumb.Length)] + "/"));
     }
 
     private async Task HandleDownload()

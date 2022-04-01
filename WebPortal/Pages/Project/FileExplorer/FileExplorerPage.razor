@@ -8,6 +8,12 @@
 <DHPageTitle PageTitleKey="@_projectName"/>
 <DHPageAlert Title="How to use Project Storage" Key="@PageAlert.Storage" WikiLinkEN="Onboarding---Project-Storage" WikiLinkFR="Onboarding---Project-Storage"/>
 
+@if (_isLoading)
+{
+    <AeSpinner />
+}
+else
+{
 <CascadingValue Value="@ProjectAcronymParam" Name="ProjectAcronym">
     <CascadingValue Value="@HandleSasButtonClick">
         <div class="file-explorer-layout-wrapper">
@@ -41,7 +47,7 @@
         </div>
     </CascadingValue>
 </CascadingValue>
-
+}
 @code {
 
     [Parameter]
@@ -58,6 +64,9 @@
     private bool _showingCopiedForSasButton;
 
 
+    private bool _isLoading = true;
+
+
     protected override async Task OnInitializedAsync()
     {
         await using var projectContext = await _dbFactoryProject.CreateDbContextAsync();
@@ -66,6 +75,7 @@
             .Where(p => p.Project_Acronym_CD == ProjectAcronymParam)
             .Select(p => p.ProjectName)
             .FirstOrDefaultAsync();
+        _isLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -85,7 +95,8 @@
     {
         var result = new List<(string, RenderFragment)>
         {
-            (Localizer["Storage Explorer"], @<FileExplorer/>),
+            (Localizer["Storage Explorer"], 
+    @<FileExplorer/>),
             (Localizer["AzCopy"], @<Resources PageName="Use-AzCopy-to-Interact-with-Azure-Storage-Account" Substitutions="_substitutions"/>),
             (Localizer["Databricks Access"], @<Resources PageName="Access-your-storage-account-in-Databricks" Substitutions="_substitutions"/>),
         };

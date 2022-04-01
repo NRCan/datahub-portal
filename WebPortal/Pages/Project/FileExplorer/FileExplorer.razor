@@ -6,7 +6,12 @@
 @inject DataRetrievalService _dataRetrievalService
 @inject MyDataService _apiService
 
-
+@if (_initializing)
+{
+    <AeSpinner />
+}
+else
+{
 <div class="file-explorer-layout">
     <CascadingValue Value="_user" Name="GraphUser">
         <Heading
@@ -43,7 +48,7 @@
                             Highlighted="_selectedItem == folderName"
                             Folder
                             @onclick="() => _selectedItem = folderName"
-                            @ondblclick="() => SetCurrentFolder(folderName)">
+                            @ondblclick="async () => await SetCurrentFolder((_currentContainer,folderName))">
                             <Icon>
                                 <i class="fas fa-folder"></i>
                             </Icon>
@@ -72,7 +77,7 @@
             <div class="details-container">
                 @if (_loading || _virtualDirectory.ContainsKey(_selectedItem))
                 {
-                    <StorageProperties DisplayName="@GetFileName(_selectedItem)"/>
+                    <StorageProperties Container=@_currentContainer DisplayName="@GetFileName(_selectedItem)"/>
                 }
                 else
                 {
@@ -86,7 +91,7 @@
     </div>
 
 </div>
-
+}
 @code {
 
     [CascadingParameter(Name = "ProjectAcronym")]
@@ -97,11 +102,13 @@
 
 
     private bool _loading = true;
+    private bool _initializing = true;
     private List<FileMetaData> _uploadingFiles;
 
     private readonly string _root = "/";
     private string _currentFolder = "/";
     private string _selectedItem = "/";
+    private string _currentContainer;
 
     private Dictionary<string, List<FileMetaData>> _virtualDirectory = new()
     {
@@ -110,15 +117,24 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
+
 
         await using var projectContext = await _dbFactoryProject.CreateDbContextAsync();
-
         _userId = await _userInformationService.GetUserIdString();
         _user = await _userInformationService.GetUserAsync();
+        var containers = await _dataRetrievalService.ListContainers(ProjectAcronym, _user);
+        _currentContainer = containers.First();
+        _initializing = false;
+        await LoadContainer();
 
         _uploadingFiles = new List<FileMetaData>();
-        _virtualDirectory = (await _dataRetrievalService.GetStorageBlobFiles(ProjectAcronym, DataRetrievalService.DEFAULT_CONTAINER_NAME, _user))
+    }
+
+
+    private async Task LoadContainer()
+    {
+        _loading = true;
+        _virtualDirectory = (await _dataRetrievalService.GetStorageBlobFiles(ProjectAcronym, _currentContainer, _user))
             .GroupBy(f => $"/{GetDirectoryName(f.filename)}")
             .ToDictionary(g => g.Key,
                 g => g.ToList());
@@ -130,7 +146,7 @@
 
         SetupEmptyFolders();
 
-        _loading = false;
+        _loading = false;        
     }
 
     private void SetupEmptyFolders()
@@ -161,7 +177,7 @@
     {
         if(string.IsNullOrWhiteSpace(path) || !path.Contains("/"))
             return string.Empty;
-        
+
         var lastIndex = path.TrimEnd('/').LastIndexOf("/", StringComparison.Ordinal);
         return lastIndex == -1 ? "/" : path[..lastIndex] + "/";
     }
@@ -170,21 +186,26 @@
     {
         if (string.IsNullOrWhiteSpace(path))
             return string.Empty;
-        
+
         var lastIndex = path.TrimEnd('/').LastIndexOf("/", StringComparison.Ordinal);
         return lastIndex == -1 ? path : path[(lastIndex + 1)..];
     }
 
-    private void SetCurrentFolder(string folderName)
+    private async Task SetCurrentFolder((string container, string folderName) entry)
     {
-        _currentFolder = folderName;
-        _selectedItem = folderName;
+        _currentFolder = entry.folderName;
+        _selectedItem = entry.folderName;
+        if (entry.container != _currentContainer)
+        {
+            _currentContainer = entry.container;
+            await LoadContainer();
+        }
     }
 
     private void HandleFileDelete(string filename)
     {
         _virtualDirectory[_currentFolder].RemoveAll(f => f.name.Equals(filename, StringComparison.OrdinalIgnoreCase));
-        SetCurrentFolder(_currentFolder);
+        SetCurrentFolder((_currentContainer,_currentFolder));
     }
 
     private void HandleNewFolder(string newFolderName)
