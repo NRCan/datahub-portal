@@ -16,5 +16,8 @@ namespace Datahub.Core.Services
         Task<string> GetUserName(string userId, CancellationToken tkn = default);
         Task<string> GetUserEmail(string userId, CancellationToken tkn);
         Task<string> GetUserIdFromEmailAsync(string email, CancellationToken tkn);
+        Task<List<UserFile>> GetUserFilesAsync();
     }
+
+    public record UserFile(string Id, string Name);
 }

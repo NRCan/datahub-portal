@@ -115,5 +115,10 @@ namespace Datahub.Core.Services
         {
             return Task.FromResult(UsersDict);
         }
+
+        public Task<List<UserFile>> GetUserFilesAsync()
+        {
+            return Task.FromResult(new List<UserFile>());
+        }
     }
 }

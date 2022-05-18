@@ -85,7 +85,8 @@ namespace Datahub.Portal.Services
 
         public Task<ClientContext> GetClientContext(string siteUrl = null)
         {
-            return GetClientContextInternal(siteUrl);
+            //return GetClientContextInternal(siteUrl, new[] { "Files.ReadWrite" });
+            return GetClientContextInternal(siteUrl, new[] { "MyFiles.Read" });
         }        
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Graph.Auth;
 using Microsoft.Identity.Client;
 using Datahub.Core.Data;
 using System.Threading;
+using System.Linq;
 
 namespace Datahub.Core.Services
 {
@@ -61,6 +62,17 @@ namespace Datahub.Core.Services
         {
             var user = await GetUserFromEmailAsync(email, token);
             return user?.Id ?? string.Empty;
+        }
+
+
+        public async Task<List<UserFile>> GetUserFilesAsync()
+        {
+            await PrepareAuthenticatedClient();
+
+            var response = await _graphServiceClient.Me.Drive.Items.Request().GetAsync();
+            var items = response.Select(item => new UserFile(item.Id, item.Name)).ToList();
+            
+            return items;
         }
 
         public async Task<Dictionary<string, GraphUser>> GetUsersListAsync(string filterText, CancellationToken token)

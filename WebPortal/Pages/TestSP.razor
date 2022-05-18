@@ -1,5 +1,6 @@
 ﻿@page "/testsp"
 @inject ISharePointClientContextFactory spClientContextFactory
+@inject IMSGraphService MSGraphService
 
 <h3>TestSP</h3>
 
@@ -17,5 +18,7 @@
             await ctx.ExecuteQueryAsync();
             _siteName = ctx.Web.Title;
         }
+        //var userFiles = await MSGraphService.GetUserFilesAsync();
+        //_siteName = string.Join("\n", userFiles.Select(f => $"{f.Id}: {f.Name}"));
     }
 }
