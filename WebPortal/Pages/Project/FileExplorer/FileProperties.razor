@@ -52,6 +52,9 @@
     [CascadingParameter(Name = "ProjectAcronym")]
     public string ProjectAcronym { get; set; }
 
+    [CascadingParameter(Name = "GraphUser")]
+    public Microsoft.Graph.User GraphUser { get; set; }
+
     [Parameter]
     public FileMetaData File { get; set; }
 
@@ -85,6 +88,7 @@
                 ObjectId=@File.fileid 
                 DefaultMetadataId=@ProjectAcronym
                 Name=@File.filename
+                DefaultContact=@GraphUser.UserPrincipalName
                 Location=@ProjectAcronym
                 SecurityClass=@File.securityclass
                 SaveButtonLabel=@Localizer["OPENDATA-WIZARD.Save_button"] 

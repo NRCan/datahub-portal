@@ -74,6 +74,9 @@
     public string Name { get; set; }
 
     [Parameter]
+    public string DefaultContact { get; set; }
+
+    [Parameter]
     public string Location { get; set; }
 
     [Parameter]
@@ -169,6 +172,8 @@
 
         _definitions = _fieldValues.Definitions;
         _lastObjectId = ObjectId;
+
+        UpdateDefaultValues();
 
         await TriggerValuesChanged();
 
@@ -343,6 +348,22 @@
         if (OnValuesChanged.HasDelegate)
         {
             await OnValuesChanged.InvokeAsync();
+        }
+    }
+
+    private void UpdateDefaultValues()
+    {
+        if (_fieldValues.IsNew)
+        {
+            if (!string.IsNullOrEmpty(Name))
+            {
+                _fieldValues.SetValue("title_translated_en", Name); 
+                _fieldValues.SetValue("title_translated_fr", Name); 
+            }
+            if (!string.IsNullOrEmpty(DefaultContact))
+            {
+                _fieldValues.SetValue("contact_information", DefaultContact); 
+            }
         }
     }
 }
