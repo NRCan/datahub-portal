@@ -18,6 +18,9 @@ namespace Datahub.Core.EFCore
         {
         }
 
+        public DbSet<Datahub_Engagement> Engagements { get; set; }
+
+        public DbSet<Datahub_EngagementComment> EngagementComments { get; set; }
         public DbSet<Datahub_Project> Projects { get; set; }
         public DbSet<PBI_License_Request> PowerBI_License_Requests { get; set; }
         public DbSet<PBI_User_License_Request> PowerBI_License_User_Requests { get; set; }
@@ -98,7 +101,6 @@ namespace Datahub.Core.EFCore
                 var user = context.Project_Users.Add(new Datahub_Project_User() { User_ID = initialSetup.GetValue<string>("AdminGUID"), IsAdmin = true, ProjectUser_ID = 1, Project = p1 });
                 //var permissions = context.Project_Users_Requests.Add(new Datahub_)
             }
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

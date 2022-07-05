@@ -11,94 +11,6 @@ using System.Threading.Tasks;
 namespace Datahub.Core.EFCore
 {
 
-    public class Datahub_Project_Access_Request
-    {
-        [Key]
-        public int Request_ID { get; set; }
-
-        [Required]
-        [StringLength(200)]
-        public string User_Name { get; set; }
-
-        [StringLength(200)]
-        public string User_ID { get; set; }
-
-        public bool Databricks { get; set; }
-        public bool PowerBI { get; set; }
-        public bool WebForms { get; set; }
-
-        [NotMapped]
-        [AeFormIgnore]
-        public string RequestServiceType => (Databricks ? "Databricks" : (PowerBI ? "PowerBI" : "Web Forms"));
-
-        public DateTime Request_DT { get; set; }
-
-        public DateTime? Completion_DT { get; set; }
-
-        public Datahub_Project Project { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-    }
-
-    public class Datahub_Project_User {
-
-        [AeFormIgnore]
-        [Key]
-
-        public int ProjectUser_ID { get; set; }
-
-        [StringLength(200)]
-        public string User_ID { get; set; }
-        public DateTime? Approved_DT { get; set; }
-
-        public string ApprovedUser { get; set; }
-
-        public bool IsAdmin { get; set; }
-
-        public bool IsDataApprover { get; set; }
-        public Datahub_Project Project { get; set; }
-
-        [StringLength(200)]
-        public string User_Name {  get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
-    }
-
-    public class Datahub_Project_User_Request
-    {
-
-        [Key]
-        public int ProjectUserRequest_ID { get; set; }
-        
-        [StringLength(200)]
-        public string User_ID { get; set; }
-
-        public DateTime Requested_DT { get; set; }
-
-        public DateTime? Approved_DT { get; set;  }
-        
-        public string ApprovedUser { get; set; }
-        
-        public Datahub_Project Project { get; set; }
-
-        [Timestamp]
-        public byte[] Timestamp { get; set; }
-
-    }
-
-    public class Datahub_Project_Pipeline_Lnk
-    {
-        public int Project_ID { get; set; }
-
-        [ForeignKey("Project_ID")]
-        public Datahub_Project Project { get; set; }
-        public string Process_Nm { get; set; }
-
-    }
-
     public class Datahub_Project : IComparable<Datahub_Project>
     {
         public const string ONGOING = "Ongoing";
@@ -157,8 +69,6 @@ namespace Datahub.Core.EFCore
 
         public string Stage_Desc { get; set; }
 
-
-
         [Required]
         [AeLabel(validValues: new[] { ONGOING, CLOSED, ON_HOLD })]
         public string Project_Status_Desc { get; set; }
@@ -193,6 +103,17 @@ namespace Datahub.Core.EFCore
 
         public List<Datahub_ProjectServiceRequests> ServiceRequests { get; set; }
 
+        public List<Datahub_Engagement> Engagements { get; set; }
+
+        public List<Datahub_Project_Pipeline_Lnk> Pipelines { get; set; }
+
+        public List<Project_Storage> StorageAccounts { get; set; }
+
+        public IList<Project_Resources2> Resources { get; set; }
+
+        public IList<PowerBi_Workspace> PowerBi_Workspaces { get; set; }
+
+
         [StringLength(400)]
         public string Databricks_URL { get; set; }
 
@@ -221,14 +142,6 @@ namespace Datahub.Core.EFCore
         public bool IsDatabasePostgres => DB_Type == POSTGRES_DB_TYPE;
         public bool IsDatabaseSqlServer => DB_Type == SQL_SERVER_DB_TYPE;
         public bool HasAssociatedDatabase => IsDatabasePostgres || IsDatabaseSqlServer;
-
-        public List<Datahub_Project_Pipeline_Lnk> Pipelines { get; set; }
-
-        public List<Project_Storage> StorageAccounts { get; set; }
-
-        public IList<Project_Resources2> Resources { get; set; }
-
-        public IList<PowerBi_Workspace> PowerBi_Workspaces { get; set; }
 
         [AeFormIgnore]
         public int OnboardingApplicationId { get; set; }
@@ -294,56 +207,5 @@ namespace Datahub.Core.EFCore
         [Timestamp]
         public byte[] Timestamp { get; set; }
         public Datahub_Project Project { get; set; }
-    }
-
-    public class Datahub_Project_Sectors_And_Branches
-    {
-        [Key]
-        public int SectorAndBranchS_ID { get; set; }
-
-        public int Organization_ID { get; set; }
-
-        [StringLength(4000)]
-        public string Full_Acronym_E { get; set; }
-        [StringLength(4000)]
-        public string Full_Acronym_F { get; set; }
-        [StringLength(4000)]
-        public string Org_Acronym_E { get; set; }
-        [StringLength(4000)]
-        public string Org_Acronym_F { get; set; }
-        [StringLength(4000)]
-        public string Org_Name_E { get; set; }
-        [StringLength(4000)]
-        public string Org_Name_F { get; set; }
-        [StringLength(1)]
-        public string Org_Level { get; set; }
-        public int? Superior_OrgId { get; set; }
-    }
-
-    public class Datahub_ProjectApiUser
-    {
-        [AeFormIgnore]
-        [Key]
-        public Guid ProjectApiUser_ID { get; set; }
-
-        [Required]
-        [StringLength(32)]
-        [AeLabel("Name")]
-        public string Client_Name_TXT { get; set; }
-
-        [Required]
-        [StringLength(10)]
-        [AeLabel("Project")]
-        public string Project_Acronym_CD { get; set; }
-
-        [Required]
-        [StringLength(128)]
-        [AeLabel("Email")]
-        public string Email_Contact_TXT { get; set; }
-
-        [AeLabel("Expiration")]
-        public DateTime? Expiration_DT { get; set; }
-
-        public bool Enabled { get; set; }
     }
 }
