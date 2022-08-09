@@ -83,5 +83,6 @@ else
         };
 
         await _requestManagementService.RequestAccess(request);
+        _webFormsRequested = _project.Requests.Where(r => r.User_ID == UserId && r.Completion_DT == null).Any(r => r.WebForms);
     }
 }

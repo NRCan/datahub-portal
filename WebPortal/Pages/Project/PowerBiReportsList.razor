@@ -1,5 +1,6 @@
 ﻿@page "/powerbi/{projectAcronym}"
 @inject IPowerBiDataService PowerBiDataService
+@inject IEmailNotificationService EmailNotificationService
 
 <div style="padding-left: 2rem;padding-right: 2rem">
 
@@ -10,6 +11,9 @@
                 The names of the reports are set in Power BI and are displayed as is (without any translating). The table will show either French
                 or English reports, depending on which ones have been created. The 'External Access' column allows users to request the creation of
                 external reports that can be be shared with non-nrcan users. 
+            </AeTypography>
+            <AeTypography Variant="p">
+                Details about sharing/viewing Power BI reports externally can be found <a href="@_externalDocumentationUrl">here</a>
             </AeTypography>
             <AeTypography Variant="p">
                 The sandbox workspaces are hidden by default and can be toggled using the option at the bottom of the page
@@ -61,10 +65,13 @@
     [Parameter]
     public string projectAcronym { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
     private List<PowerBi_Report> _powerBiReports = new();
     private int _currentPage = 0;
     private IPageableComponent _reportTable;
-
+    private System.Security.Claims.ClaimsPrincipal _user;
 
     private bool IncludeSandbox { get; set; } = false;
 
@@ -76,27 +83,44 @@
     }
 
     private List<string> headers;
-
+    private string _externalDocumentationUrl;
 
     private List<string> LocalizeHeaders(List<string> input) => input.Select(s => Localizer[s].ToString()).ToList();
 
     protected override async Task OnInitializedAsync()
     {
+        _externalDocumentationUrl = EmailNotificationService.BuildAppLink("/resources/External-Powerbi");
+
+        accessors = new()
+        {
+            r => r.Workspace?.Workspace_Name ?? string.Empty,
+            r => r.Report_Name,
+            r => r.Report_Name
+        };
+
         renderers = new()
         {
             null,
             ReportLinkFragment,
-            ReportLinkFragment,
-            ExternalReport
+            ReportLinkFragment
         };
 
         headers = new()
             {
                 Localizer["Power BI Workspace"],
                 Localizer["English_Power_BI_Report"],
-                Localizer["French_Power_BI_Report"],
-                Localizer["External_Access"]
+                Localizer["French_Power_BI_Report"]
             };
+
+        _user = (await authenticationStateTask).User;
+        var isUserAdmin = _user.IsInRole($"{projectAcronym}-admin");
+
+        if (isUserAdmin)
+        {
+            renderers.Add(ExternalReport);
+            headers.Add(Localizer["External_Access"]);
+            accessors.Add(null);
+        }
 
         if (projectAcronym != null)
         {
@@ -136,13 +160,7 @@
         }
     }
 
-    private List<Func<PowerBi_Report, string>> accessors = new()
-        {
-            r => r.Workspace?.Workspace_Name ?? string.Empty,
-            r => r.Report_Name,
-            r => r.Report_Name,
-            null
-        };
+    private List<Func<PowerBi_Report, string>> accessors = new();
 
     private List<Func<PowerBi_Report, RenderFragment>> renderers = new();
 
