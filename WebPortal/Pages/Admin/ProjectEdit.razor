@@ -2,6 +2,7 @@
 @using Microsoft.EntityFrameworkCore;
 @using Datahub.Portal.Data
 @using Datahub.Core.Data
+@using MudBlazor.Forms
 
 @implements IDisposable
 
@@ -36,7 +37,7 @@
 
     <AeCard>
         <AeButton @onclick="SuggestTranslation">@DataLocalizer["Suggest French Translation"]</AeButton>
-        <AeModelForm Model="_project"
+        <MudModelForm Model="_project"
             T="Datahub_Project"
             OnValidSubmit="HandleValidSubmit"
             LabelForPropertyFunc="Localize"
@@ -128,7 +129,7 @@
         _project = projectContext.Projects.Include(p => p.Requests).Include(p => p.Pipelines).Single(p => p.Project_Acronym_CD == projectAcronym);        
     }
 
-    private void OnConfigure(IModelFormContext context)
+    private void OnConfigure(MudBlazor.Forms.IModelFormContext context)
     {
         context.RegisterOptionValueProperty<Datahub_Project>(s => s.Project_Category, () => new[] { "Guidance & Recommendations",
                                                                 "Presentations",

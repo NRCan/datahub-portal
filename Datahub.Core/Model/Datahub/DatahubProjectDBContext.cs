@@ -31,6 +31,7 @@ namespace Datahub.Core.EFCore
         public DbSet<Datahub_ProjectServiceRequests> Project_Requests { get; set; }
         public DbSet<Datahub_Project_Pipeline_Lnk> Project_Pipeline_Links { get; set; }
         public DbSet<Datahub_Project_Sectors_And_Branches> Organization_Levels { get; set; }
+        public DbSet<Datahub_Engagement> Engagements { get; set; }
         public DbSet<OnboardingApp> OnboardingApps {  get; set; }
         public DbSet<Project_Resources> Project_Resources { get; set; }
         public DbSet<Project_Resources2> Project_Resources2 { get; set; }
