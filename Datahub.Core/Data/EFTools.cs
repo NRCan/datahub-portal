@@ -43,7 +43,10 @@ namespace Datahub.Core.Data
                 {
 
                     if (migrate)
+                    {
                         context.Database.Migrate();
+                        //var migrations = context.Database.GetAppliedMigrations().ToList();
+                    }
                     else
                         CreateAndSeedDB(logger, context, configuration);
                 }
