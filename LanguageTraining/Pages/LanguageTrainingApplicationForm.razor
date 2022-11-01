@@ -28,14 +28,17 @@
         SetFormEditRecord="SetFormEdit" 
         HandleFilterChange="HandleFilterChange" />
 
-<AuthorizeView Roles="@($"{PROJECTACRONYM}-admin, {RoleConstants.DATAHUB_ROLE_ADMIN}")">
-    <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
-        <AeTypography Variant="h3">@DataLocalizer["Admin Actions"]</AeTypography>
-        <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
-            <FAButton @onclick=@OpenExcel Text=@DataLocalizer["Open Excel Report"] />
-        </div>
-    </AeCard>
-</AuthorizeView>
+@if (_languageTrainingApplication is null)
+{
+    <AuthorizeView Roles="@($"{PROJECTACRONYM}-admin, {RoleConstants.DATAHUB_ROLE_ADMIN}")">
+        <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
+            <AeTypography Variant="h3">@DataLocalizer["Admin Actions"]</AeTypography>
+            <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
+                <FAButton @onclick=@OpenExcel Text=@DataLocalizer["Open Excel Report"] />
+            </div>
+        </AeCard>
+    </AuthorizeView>
+}
 
 @code {
 

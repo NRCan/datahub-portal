@@ -373,11 +373,12 @@
     private void SetFormEdit(OnboardingApp application)
     {
         _onboardingApplication = application;
-
-        _sectorId = GetChoiceId(_sectors, _onboardingApplication.Client_Sector);
-        _branchId = GetChoiceId(_branches, _onboardingApplication.Client_Branch, _sectorId);
-        _divisionId = GetChoiceId(_divisions, _onboardingApplication.Client_Division, _branchId);
-        
+        if (application is not null)
+        {
+            _sectorId = GetChoiceId(_sectors, _onboardingApplication.Client_Sector);
+            _branchId = GetChoiceId(_branches, _onboardingApplication.Client_Branch, _sectorId);
+            _divisionId = GetChoiceId(_divisions, _onboardingApplication.Client_Division, _branchId);
+        }
         StateHasChanged();
     }
 
