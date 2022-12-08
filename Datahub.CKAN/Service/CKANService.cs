@@ -1,5 +1,6 @@
 ﻿using Datahub.CKAN.Package;
 using Datahub.Metadata.DTO;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,13 @@ namespace Datahub.CKAN.Service
 
         readonly HttpClient _httpClient;
         readonly CKANConfiguration _ckanConfiguration;
+        readonly ILogger _logger;
 
-        public CKANService(HttpClient httpClient, IOptions<CKANConfiguration> ckanConfiguration)
+        public CKANService(HttpClient httpClient, IOptions<CKANConfiguration> ckanConfiguration, ILogger logger)
         {
             _httpClient = httpClient;
             _ckanConfiguration = ckanConfiguration.Value;
+            _logger = logger;
         }
 
         public async Task<CKANApiResult> CreatePackage(FieldValueContainer fieldValues, bool allFields, string url)
@@ -87,6 +90,7 @@ namespace Datahub.CKAN.Service
 
         private async Task<CKANApiResult> PostRequestAsync(string action, HttpContent content)
         {
+            var jsonResponse = "";
             try
             {
                 // this is to avoid developing on the VPN (test mode should be off in prod)
@@ -101,15 +105,16 @@ namespace Datahub.CKAN.Service
                 var response = await _httpClient.PostAsync($"{baseUrl}/{action}", content);
                 //response.EnsureSuccessStatusCode();
 
-                var jsonResponse = await response.Content.ReadAsStringAsync();
+                jsonResponse = await response.Content.ReadAsStringAsync();
                 var ckanResult = JsonSerializer.Deserialize<CKANResult>(jsonResponse, GetSerializationOptions());
 
                 var errorMessage = ckanResult.Success ? string.Empty : ckanResult.Error?.__type;
                 return new CKANApiResult(ckanResult.Success, errorMessage);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return new CKANApiResult(false, ex.Message);
+                _logger.LogWarning($"Invalid CKAN Request:\n{jsonResponse}");
+                return new CKANApiResult(false, "Unknow error received from the CKAN API, contact Dathub administrators.");
             }
         }
 
