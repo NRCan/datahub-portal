@@ -1,5 +1,4 @@
-﻿@page "/projects/{ProjectAcronym}/forms"
-@using Datahub.Core.Model.Datahub
+﻿@page "/w/{ProjectAcronym}/forms"
 @implements IDisposable
 @inject IDbContextFactory<DatahubProjectDBContext> DbFactory
 
@@ -24,13 +23,13 @@ else
     />
 }
 <AeFlex> 
-<AeButton To=@($"/{UrlPathSegment.PROJECTS}/{ProjectAcronym}/forms/new") class="blue">
+<AeButton To=@($"/w/{ProjectAcronym}/forms/new") class="blue">
     <AeIcon Icon="add-circle" IconStyle="Elemental.Code.RXIcon.RXStyle.Fill" />
     Create New Form
 </AeButton>
 @if(_project != null)
 {
-    <AeButton To=@($"/{UrlPathSegment.PROJECTS}/{ProjectAcronym}")>Back to @_project.ProjectName</AeButton>
+    <AeButton To=@($"/w/{ProjectAcronym}")>Back to @_project.ProjectName</AeButton>
 }
 </AeFlex>
 
@@ -57,7 +56,7 @@ else
 
     private List<Func<WebForm, RenderFragment>> renderFunctions = new List<Func<WebForm, RenderFragment>>()
     {
-        (f => @<a href=@($"/{UrlPathSegment.PROJECTS}/{f.Project.Project_Acronym_CD}/forms/{f.WebForm_ID}")>@f.Title_DESC</a>),
+        (f => @<a href=@($"/w/{f.Project.Project_Acronym_CD}/forms/{f.WebForm_ID}")>@f.Title_DESC</a>),
         null
     };
 

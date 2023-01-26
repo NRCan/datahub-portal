@@ -2,7 +2,6 @@
 @page "/initiatives/validate/{ProjectAcronym}"
 @using Datahub.Metadata.DTO
 @using Datahub.Metadata.Model
-@using Datahub.Core.Model.Datahub
 @inject NavigationManager NavigationManager
 
 <div class="d-flex flex-column align-center">
@@ -110,6 +109,6 @@
 
     private void HandleFinish()
     {
-        NavigationManager.NavigateTo($"/projects/{ProjectAcronym}");
+        NavigationManager.NavigateTo($"/w/{ProjectAcronym}");
     }
 }

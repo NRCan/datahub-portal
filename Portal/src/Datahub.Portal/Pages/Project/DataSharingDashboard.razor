@@ -1,11 +1,10 @@
-﻿@page "/projects/{ProjectAcronym}/datasharing"
+﻿@page "/w/{ProjectAcronym}/datasharing"
 @inject IPublicDataFileService PublicDataFileService
 @inject IMSGraphService GraphService
 @inject IUserInformationService UserService
 @inject UIControlsService UI
 @inject NotifierService NotifierService
 @using Datahub.Core.Services.Api
-@using Datahub.Core.Model.Datahub
 @implements IDisposable
 
 <style>
