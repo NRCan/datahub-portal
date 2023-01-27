@@ -12,9 +12,9 @@ namespace Datahub.ProjectTools.Services;
 
 public static class ProjectResourcesListingServiceExtensions
 {
-    public static void AddProjectResources(this IServiceCollection services)
+    public static void AddProjectResources(this IServiceCollection services, IConfiguration configuration)
     {
-        ProjectResourcesListingService.RegisterResources(services);
+        ProjectResourcesListingService.RegisterResources(services, configuration);
         services.AddScoped<ProjectResourcesListingService>();
     }
 }
@@ -43,18 +43,12 @@ public class ProjectResourcesListingService
         this.logger = logger;
     }
 
-    private static Type[] ResourceProviders = new[]
+   
+    public static void RegisterResources(IServiceCollection services, IConfiguration configuration)
     {
-        typeof(DHPublicSharing),
-        typeof(DHPowerBIResource),
-        typeof(DHDataEntry),
-        typeof(DHDatabricksResource),
-        typeof(DHStorageResource)
-    };
-
-    public static void RegisterResources(IServiceCollection services)
-    {
-        foreach (var resource in ResourceProviders)
+        DataProjectsConfiguration dataProjectsConfiguration = configuration.GetSection(nameof(DataProjectsConfiguration)).Get<DataProjectsConfiguration>()!;
+                
+        foreach (var resource in GetAllResourceProviders(dataProjectsConfiguration))
             services.AddTransient(resource);
         services.AddTransient<DHGitModuleResource>();
     }
@@ -122,7 +116,7 @@ public class ProjectResourcesListingService
 
     private static List<Type> GetAllResourceProviders(DataProjectsConfiguration config)
     {
-        var allResourceProviders = new List<Type>(ResourceProviders);
+        var allResourceProviders = new List<Type>();
 
         if (config.PowerBI)
         {
