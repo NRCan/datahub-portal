@@ -3,6 +3,7 @@ using Datahub.Core.Model.Datahub;
 using Datahub.Core.Services;
 using Datahub.ProjectTools.Catalog;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -44,9 +45,12 @@ public class ProjectResourcesListingService
 
     private static Type[] ResourceProviders = new[]
     {
-        typeof(DHPublicSharing)
-            
-    }; 
+        typeof(DHPublicSharing),
+        typeof(DHPowerBIResource),
+        typeof(DHDataEntry),
+        typeof(DHDatabricksResource),
+        typeof(DHStorageResource)
+    };
 
     public static void RegisterResources(IServiceCollection services)
     {
