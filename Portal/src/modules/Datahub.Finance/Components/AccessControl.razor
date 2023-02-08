@@ -5,6 +5,8 @@
 @inject IDbContextFactory<FinanceDBContext> DbFactory
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+@inject IUserInformationService UserInformationService
+@inject ServiceAuthManager ServiceAuthManager
 
 @code {
 
@@ -15,13 +17,17 @@
     public string Branch { get; set; }
     [Parameter]
     public EventCallback<bool> IsValid { get; set; }
+    private const string PROJECTACRONYM = "FINGC";
 
     private FinanceDBContext Context;
 
     protected async override Task OnInitializedAsync()
     {
         Context = DbFactory.CreateDbContext();
+        var user = await UserInformationService.GetCurrentGraphUserAsync();
         var isValid = Context.BranchAccess.Any(b => b.User.ToLower() == Email.ToLower() && b.BranchFundCenter.Trim() == Branch.Trim());
+        var isUserAdmin = await ServiceAuthManager.IsProjectAdmin(user.Id, PROJECTACRONYM);
+        isValid = isValid || isUserAdmin;
         if (!isValid)
         {
             Snackbar.Add(Localizer["Access Denied"]);

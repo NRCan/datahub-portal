@@ -15,7 +15,7 @@
     <Datahub.Finance.Components.AccessControl Branch="@_branch" Email="@_user.Mail" IsValid=@AllowAccess></Datahub.Finance.Components.AccessControl>
 }
 
-@if (_isAuthorized)
+@if (_isAuthorized || _isUserAdmin)
 {
     <MudCard>    
         <MudCardContent>
@@ -67,7 +67,7 @@
     [Parameter]
     public string fundcenterId { get; set; }
 
-    private const string PROJECTACRONYM = "FINIBP";
+    private const string PROJECTACRONYM = "FINGC";
     private bool _isAuthorized = false;
     private string _branch = string.Empty;
     private FinanceDBContext Context;
