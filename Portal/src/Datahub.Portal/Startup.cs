@@ -171,7 +171,9 @@ public class Startup
         services.Configure<GeoCoreConfiguration>(Configuration.GetSection("GeoCore"));
         services.Configure<PortalVersion>(Configuration.GetSection("PortalVersion"));
         services.AddScoped<IPortalVersionService, PortalVersionService>();
-        services.AddProjectResources();
+        services.AddProjectResources(Configuration);
+
+        
 
         services.AddScoped<CatalogImportService>();
         services.AddSingleton<ICatalogSearchEngine, CatalogSearchEngine>();

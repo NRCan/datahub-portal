@@ -1,17 +1,17 @@
 @using Datahub.Core.Model.Datahub
 
-<ToolCard Title="@Descriptor?.Title" 
-          Description="@Descriptor?.ResourceDescription"
+<ToolCard Title="@CurrentTitle"
+          Description="@CurrentDescription"
           ReadMorePath="@GitHubModule?.ReadMorePath"
           Tags="@Descriptor?.Tags?.ToList()">
     <Logo>
         @if (IsIconSvg)
         {
-            <img src="@Icon" alt="@Descriptor?.Title">
+            <img src="@CurrentIcon" alt="@Descriptor?.Title">
         }
         else
         {
-            <MudIcon Icon="@Icon" Color="Color.Secondary"/>
+            <MudIcon Icon="@CurrentIcon" Color="Color.Secondary" />
         }
     </Logo>
     <ToolActionsList>
@@ -32,7 +32,16 @@
     public bool ResourceRequested { get; set; }
     [Parameter]
     public Datahub_Project? Project { get; set; }
-    
-    private string Icon => GitHubModule?.Icon ?? "fa-solid fa-cloud-question";
+    [Parameter]
+    public string? Title { get; set; }
+    [Parameter]
+    public string? Description { get; set; }
+    [Parameter]
+    public string? Icon { get; set; }
+
+    public string CurrentTitle => Descriptor?.Title ?? "Storage Explorer";
+    public string CurrentDescription => Descriptor?.ResourceDescription ?? "Upload and download files from Azure storage";
+
+    private string CurrentIcon => GitHubModule?.Icon ?? "fa-solid fa-cloud-question";
     private string? TemplateName => GitHubModule?.Name;
 }
