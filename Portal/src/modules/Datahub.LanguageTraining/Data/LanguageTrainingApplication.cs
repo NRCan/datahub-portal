@@ -75,11 +75,11 @@ public class LanguageTrainingApplication
     [AeFormCategory("Language Assessment", 20)]
     public bool Employee_professional_dev_program { get; set; }
         
+    [AeFormCategory("Language Assessment", 20)]
+    public bool Employee_equity_group { get; set; }
 
     [AeFormCategory("Language Assessment", 20)]
     public bool Employee_talent_management_exercise { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
-    public bool Employee_equity_group { get; set; }
 
 
 
