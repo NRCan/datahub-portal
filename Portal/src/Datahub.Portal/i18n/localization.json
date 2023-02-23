@@ -1038,11 +1038,12 @@
   "Phase2_Development_ActualEndDate": "Phase2 Development Actual End Date",
   "Phase2_Testing_ActualEndDate": "Phase2 Testing Actual End Date",
   "Actual_Release_Date": "Actual Release Date",
+  "Manager Section": "Manager",
   "LanguageTrainingApplication": {
     "LanguageTableDisclaimer": "Only one registration permitted per student per session.",
     "Registrations_closed": "Registrations are currently closed.",
     "Registrations_open_from_to": "The {0} {1} registrations will open from {2} to {3}.",
-    "Registrations_open_until": "The registrations are open for the {0} {1} session until {2}, {3} {4}, {5} by 6:00 PM (EDT).",
+    "Registrations_open_until": "You may submit your application for the {0} {1} session until {2}, {3} {4}, {5} by 6:00 PM (ET).",
     "Spring": "Spring",
     "Summer": "Summer",
     "Fall": "Fall",

@@ -15,7 +15,7 @@ _Si l’École de langues de RNCan n’est pas en mesure de répondre à vos bes
 
 
 ### Évaluation linguistique
-_Un Plan d’évaluation et de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez en faire la demande [hyperlien vers le formulaire de demande ELPF] à l’École de langues de RNCan._
+_Un Plan d’évaluation et de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez en faire la demande à l’École de langues de RNCan en envoyant un courriel à languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
 
 ### Engagement et approbations
 _L’approbation de votre gestionnaire est requise pour soumettre une demande de formation linguistique, en plus de la confirmation de votre engagement à participer au programme de formation linguistique. Veuillez prendre connaissance des exigences d’engagement ci-dessous et fournir les renseignements afférents au gestionnaire._
