@@ -78,7 +78,7 @@ public class PackageGenerator
 
         // ready to publish
         dict["ready_to_publish"] = "true";
-        dict["imso_approval"] = "false";
+        dict["imso_approval"] = "true";
 
         return dict;
     }

@@ -439,7 +439,7 @@
         _languageTrainingApplication.Email_Address_EMAIL = _user.Mail;
         _languageTrainingApplication.First_Name = _user.GivenName;
         _languageTrainingApplication.Last_Name = _user.Surname;
-
+        _languageTrainingApplication.Completed_LETP_Assessment = true;
         // _currentPeriod shouldn't be null here!
         _languageTrainingApplication.Year_For_Language_Training = _currentPeriod is not null ? GetFiscalYear(_currentPeriod) : DateTime.Now.Year;
         _languageTrainingApplication.Quarter_NUM = _currentPeriod?.Quarter_NUM ?? 1;
