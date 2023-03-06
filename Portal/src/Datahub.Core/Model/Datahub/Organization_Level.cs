@@ -26,6 +26,8 @@ public class Organization_Level
     public string Org_Level { get; set; }
     public int? Superior_OrgId { get; set; }
 
+    public bool IsActive { get; set; }
+
     //[ForeignKey("SectorId")]
     public List<Datahub_Project> Sectors { get; set; }
     //[ForeignKey("BranchId")]
