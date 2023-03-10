@@ -18,6 +18,7 @@
 @using Datahub.Core.Services
 @using Datahub.Core.Services.Security;
 @using Elemental.Components
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.Extensions.Localization
 @using Microsoft.JSInterop
@@ -27,25 +28,27 @@
 
 @if (_isLoaded)
 {
-<Datahub.Core.Components.FormTemplate 
-        T="M365FormsApplication" 
-        U="M365FormsDBContext"
-        Context="Context"
-        Metadata="@_formMetadata" 
-        HandleSubmit="HandleValidSubmit"
-        OnChangeForms="OnChange"
-        OnConfigureForms="OnConfigure"
-        CreateNewRecord="CreateNewApplication"
-        SelectedRecord="@m365FormApplication"
-        SetFormEditRecord="SetFormEdit"
-        HandleFilterChange="HandleFilterChange"
-        DisableFirstSort="true"
-        />
-    <AeFlex>
-        <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
-            <SuccessIndicator @bind-IsLoading=@_submittingApproval @ref=@_submitApprovalInd />
-        </div>
-    </AeFlex>
+    <AuthorizeView Roles="@($"{PROJECTACRONYM}-admin, {RoleConstants.DATAHUB_ROLE_ADMIN}")">
+        <Datahub.Core.Components.FormTemplate 
+                T="M365FormsApplication" 
+                U="M365FormsDBContext"
+                Context="Context"
+                Metadata="@_formMetadata" 
+                HandleSubmit="HandleValidSubmit"
+                OnChangeForms="OnChange"
+                OnConfigureForms="OnConfigure"
+                CreateNewRecord="CreateNewApplication"
+                SelectedRecord="@m365FormApplication"
+                SetFormEditRecord="SetFormEdit"
+                HandleFilterChange="HandleFilterChange"
+                DisableFirstSort="true"
+                />
+        <AeFlex>
+            <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
+                <SuccessIndicator @bind-IsLoading=@_submittingApproval @ref=@_submitApprovalInd />
+            </div>
+        </AeFlex>
+    </AuthorizeView>
 }
 
 @code {

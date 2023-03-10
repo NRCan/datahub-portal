@@ -37,14 +37,14 @@
             </DHToolsCard>
         </MudItem>
     }
-    @if (ModuleManager.IsEnabled("M365FormsModule"))
+    @*@if (ModuleManager.IsEnabled("M365FormsModule"))
     {
         <MudItem xs="4">
             <DHToolsCard Icon="fad fa-folder-plus card-icon fa-xs" Title="M365 teams Application" Description="Application to create a m365 team">
                 <DHLink LinkType="DatahubLinkType.M365Form">@Localizer["Open"]</DHLink>
             </DHToolsCard>
         </MudItem>
-    }
+    }*@
     @if (CatalogReport.Exists())
     {
         <MudItem xs="4">
