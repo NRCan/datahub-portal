@@ -15,6 +15,7 @@ public enum DatahubLinkType
     StorageCostEstimator, 
     ComputeCostEstimator,
     M365Form,
-    Undefined,
-    ExternalUrl
+    ExternalUrl,
+    LanguageTraining,
+    Undefined
 }

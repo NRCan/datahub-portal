@@ -29,6 +29,14 @@
             </DHToolsCard>
         </MudItem>
     }
+    @if (ModuleManager.IsEnabled("LanguageTrainingModule"))
+    {
+        <MudItem xs="4">
+            <DHToolsCard Icon="fad fa-language card-icon fa-xs" Title="@Localizer["Language Training Webform"]" Description="@Localizer["LanguageApp"]">
+                <DHLink LinkType="DatahubLinkType.LanguageTraining">@Localizer["Open"]</DHLink>
+            </DHToolsCard>
+        </MudItem>
+    }
     @if (ModuleManager.IsEnabled("M365FormsModule"))
     {
         <MudItem xs="4">
