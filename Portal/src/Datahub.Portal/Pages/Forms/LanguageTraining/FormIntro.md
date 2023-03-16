@@ -1,4 +1,6 @@
-﻿_NRCan believes in supporting employees in achieving a working level ability in their second official language. Language training is available to indeterminate and term employees. Although the NRCan Language School is the preferred service provider, contracts with external providers may also be used._
+﻿_As of April 2023, no direct costing will be associated to language training with NRCan Language School (only). A centralized budget will be allocated to the school to provide language training to as many NRCan employees as possible, based on priority placement, capacity of the NRCan Language School and demand._
+
+_NRCan believes in supporting employees in achieving a working level ability in their second official language. Language training is available to indeterminate and term employees. Although the NRCan Language School is the preferred service provider, contracts with external providers may also be used._
 
 _Training options offered by the NRCan Language School are as follows:_
 
