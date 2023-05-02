@@ -27,6 +27,9 @@ public class PIPDBContext : DbContext
         //    .WithMany(b => b.User_License_Requests)
         //    .HasForeignKey(p => p.RequestID);
 
+        modelBuilder.Entity<PIP_IndicatorAndResults>()
+            .ToTable(tb => tb.HasTrigger("InsertIndicator"));
+
         modelBuilder.Entity<PIP_FiscalYears>().HasData(
             new PIP_FiscalYears { YearId = 2018, FiscalYear = "2017-18"},
             new PIP_FiscalYears { YearId = 2019, FiscalYear = "2018-19" },
