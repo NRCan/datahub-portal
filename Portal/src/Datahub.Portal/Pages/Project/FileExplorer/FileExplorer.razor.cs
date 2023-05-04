@@ -125,11 +125,11 @@ public partial class FileExplorer
 
         _ = InvokeAsync(async () =>
         {
-            //await _apiService.UploadGen2File(fileMetadata, ProjectAcronym.ToLower(), ContainerName, (uploadedBytes) =>
-            //{
-            //    fileMetadata.uploadedBytes = uploadedBytes;
-            //    StateHasChanged();
-            //});
+            await _apiService.UploadGen2File(fileMetadata, ProjectAcronym.ToLower(), ContainerName, (uploadedBytes) =>
+            {
+                fileMetadata.uploadedBytes = uploadedBytes;
+                StateHasChanged();
+            });
 
             _uploadingFiles.Remove(fileMetadata);
             if (folder == _currentFolder)
