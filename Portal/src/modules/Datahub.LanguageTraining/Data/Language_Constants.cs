@@ -29,7 +29,7 @@ public class Language_Constants
 
     public static readonly string[] QUARTERS = { "Q1 - April to June", "Q2 - July to September", "Q3 – October to December", "Q4 – January to March" };
 
-    public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Full-Time Training", "Group Training - Part-Time Training", "Individual - Coaching" };
+    public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Part-Time Training", "Individual - Coaching" };
     public static readonly string[] TRAININGTYPEENGLISH = { "Group training : Part-time (6 hours of class + 2 hours self-learning)", "Group training : Part-time (3 hours of class + 1 hour self-learning)", "Group training : Part-time (1.5 hours of class + 0 hours self-learning)*", "Private training: Coaching**" };
 
     public static readonly string[] CLASSES_E = { "Beginner 1",
@@ -139,7 +139,8 @@ public class Language_Constants
         "SPPIO ADM's Office",
         "SPPIO CanmetENERGY-Devon",
         "SPPIO Petroleum Resources",
-        "TMX - Special Projects"
+        "TMX - Special Projects",
+        "Other"
     };
 
 }

@@ -375,7 +375,8 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Completed_Training_Session, () => Language_Constants.QUARTERS);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => new[] { "Pending", "Approved", "Declined"});
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => GetTrainingTypes());
-            context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, "The manager must approve or decline this application to proceed");
+            context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, "The manager must approve or decline this application to proceed");            
+            context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
         }
 
         ToggleVisibility(context);
@@ -438,7 +439,7 @@
         _languageTrainingApplication.Email_Address_EMAIL = _user.Mail;
         _languageTrainingApplication.First_Name = _user.GivenName;
         _languageTrainingApplication.Last_Name = _user.Surname;
-
+        _languageTrainingApplication.Completed_LETP_Assessment = true;
         // _currentPeriod shouldn't be null here!
         _languageTrainingApplication.Year_For_Language_Training = _currentPeriod is not null ? GetFiscalYear(_currentPeriod) : DateTime.Now.Year;
         _languageTrainingApplication.Quarter_NUM = _currentPeriod?.Quarter_NUM ?? 1;
