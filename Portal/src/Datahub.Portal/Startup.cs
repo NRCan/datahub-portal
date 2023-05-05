@@ -348,7 +348,7 @@ public class Startup
             services.AddSingleton<IMSGraphService, MSGraphService>();
 
             services.AddScoped<IProjectDatabaseService, ProjectDatabaseService>();
-
+            services.AddScoped<MyDataService>();
             services.AddScoped<IDataSharingService, DataSharingService>();
             services.AddScoped<IDataCreatorService, DataCreatorService>();
             services.AddScoped<DataRetrievalService>();
