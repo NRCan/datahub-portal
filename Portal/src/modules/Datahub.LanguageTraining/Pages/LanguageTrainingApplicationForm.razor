@@ -114,7 +114,7 @@
     private void PrepareMetadata()
     {
         var baseuri = NavigationManager.BaseUri;
-        _formMetadata.Header = "NRCan Language Training Application Form";
+        _formMetadata.Header = "NRCan Language Training Request Form";
         _formMetadata.SubHeader = GetFormSubHeader();
         _formMetadata.TableRoles = "default";
         _formMetadata.DataSet = _languageTrainingApplications;
@@ -384,30 +384,17 @@
 
     private void ToggleVisibility(IModelFormContext context)
     {
-        context.SetVisible<LanguageTrainingApplication>(p => p.Language_Training_Since_LETP_Assessment, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Language_Training_Provided_By, _languageTrainingApplication.Completed_LETP_Assessment && _languageTrainingApplication.Language_Training_Since_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Last_Course_Successfully_Completed, _languageTrainingApplication.Completed_LETP_Assessment && (_languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Completed_Training_Year, _languageTrainingApplication.Completed_LETP_Assessment && (_languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Completed_Training_Session, _languageTrainingApplication.Completed_LETP_Assessment && (_languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Report_Sent_To_NRCan_Language_School, _languageTrainingApplication.Completed_LETP_Assessment  && (_languageTrainingApplication.Language_Training_Provided_By == "External Provider" || _languageTrainingApplication.Language_Training_Provided_By == "Fournisseur externe"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Second_Language_Evaluation_Results, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Reading, _languageTrainingApplication.Completed_LETP_Assessment && _languageTrainingApplication.Second_Language_Evaluation_Results);
-        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Writing, _languageTrainingApplication.Completed_LETP_Assessment && _languageTrainingApplication.Second_Language_Evaluation_Results);
-        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Oral, _languageTrainingApplication.Completed_LETP_Assessment && _languageTrainingApplication.Second_Language_Evaluation_Results);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Training_Type, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Test_Date, _languageTrainingApplication.Completed_LETP_Assessment && (_languageTrainingApplication.Training_Type == "Individual - Coaching" || _languageTrainingApplication.Training_Type == "Encadrement individuel"));
-        //context.SetVisible<LanguageTrainingApplication>(p => p.Session_For_Language_Training, _languageTrainingApplication.Completed_LETP_Assessment && !(_languageTrainingApplication.Training_Type == "Private training: Coaching**" || _languageTrainingApplication.Training_Type == "Individual - Coaching"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Class_For_Language_Training, _languageTrainingApplication.Completed_LETP_Assessment && !(_languageTrainingApplication.Training_Type == "Private training: Coaching**" || _languageTrainingApplication.Training_Type == "Individual - Coaching"));
-        context.SetVisible<LanguageTrainingApplication>(p => p.Delegate_Manager_First_Name, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Delegated_Manager_Last_Name, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Delegated_Manager_Email, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_Appointed_NonImperative_Basis, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_equity_group, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_language_profile_raised, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_professional_dev_program, _languageTrainingApplication.Completed_LETP_Assessment);
+        context.SetVisible<LanguageTrainingApplication>(p => p.Language_Training_Provided_By, _languageTrainingApplication.Language_Training_Since_LETP_Assessment);
+        context.SetVisible<LanguageTrainingApplication>(p => p.Last_Course_Successfully_Completed, _languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan");
+        context.SetVisible<LanguageTrainingApplication>(p => p.Completed_Training_Year, _languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan");
+        context.SetVisible<LanguageTrainingApplication>(p => p.Completed_Training_Session, _languageTrainingApplication.Language_Training_Provided_By == "NRCan Language School" || _languageTrainingApplication.Language_Training_Provided_By == "École de langues de RNCan");
+        context.SetVisible<LanguageTrainingApplication>(p => p.Report_Sent_To_NRCan_Language_School, _languageTrainingApplication.Language_Training_Provided_By == "External Provider" || _languageTrainingApplication.Language_Training_Provided_By == "Fournisseur externe");
+        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Reading, _languageTrainingApplication.Second_Language_Evaluation_Results);
+        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Writing, _languageTrainingApplication.Second_Language_Evaluation_Results);
+        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Results_Oral, _languageTrainingApplication.Second_Language_Evaluation_Results);
+        context.SetVisible<LanguageTrainingApplication>(p => p.SLE_Test_Date, _languageTrainingApplication.Training_Type == "Individual - Coaching" || _languageTrainingApplication.Training_Type == "Encadrement individuel");
+        context.SetVisible<LanguageTrainingApplication>(p => p.Class_For_Language_Training, !(_languageTrainingApplication.Training_Type == "Private training: Coaching**" || _languageTrainingApplication.Training_Type == "Individual - Coaching"));
 
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_In_Pardp, _languageTrainingApplication.Completed_LETP_Assessment);
-        context.SetVisible<LanguageTrainingApplication>(p => p.Employee_talent_management_exercise, _languageTrainingApplication.Completed_LETP_Assessment);
 
         var isDelegatedManager = _languageTrainingApplication.Delegated_Manager_Email?.ToLower() == _user.Mail.ToLower();
 
@@ -418,7 +405,7 @@
         context.SetVisible<LanguageTrainingApplication>(p => p.Decision, _isUserAdmin);
 
 
-        _formMetadata.IsSubmitEnabled = _isUserAdmin || isDelegatedManager || (_isNewApp && _languageTrainingApplication.Completed_LETP_Assessment);
+        _formMetadata.IsSubmitEnabled = _isUserAdmin || isDelegatedManager || _isNewApp;
         var footerfile = _formMetadata.IsSubmitEnabled ? (_isFrench ? "FormFooterFr.md" : "FormFooter.md") : (_isNewApp ? (_isFrench ? "FormFooterWarningFr.md" : "FormFooterWarning.md") : (_isFrench ? "FormFooterSubmittedFr.md" : "FormFooterSubmitted.md"));
 
         _formMetadata.MarkDownContentFooter = File.ReadAllLines($@"Pages\Forms\LanguageTraining\{footerfile}").ToList();
@@ -439,7 +426,6 @@
         _languageTrainingApplication.Email_Address_EMAIL = _user.Mail;
         _languageTrainingApplication.First_Name = _user.GivenName;
         _languageTrainingApplication.Last_Name = _user.Surname;
-        _languageTrainingApplication.Completed_LETP_Assessment = true;
         // _currentPeriod shouldn't be null here!
         _languageTrainingApplication.Year_For_Language_Training = _currentPeriod is not null ? GetFiscalYear(_currentPeriod) : DateTime.Now.Year;
         _languageTrainingApplication.Quarter_NUM = _currentPeriod?.Quarter_NUM ?? 1;
