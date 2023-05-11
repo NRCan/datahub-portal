@@ -4,9 +4,9 @@ _RNCan croit qu’il faut aider les employés à atteindre un niveau de compéte
 
 _Les options de formation offertes par l’École de langues de RNCan sont les suivantes :_
 
-_Formation de groupe virtuelle – Formation à temps partiel – entre 4 et 8 heures par semaine en groupes de 6 à 8 apprenants_
+_- Formation de groupe virtuelle – Formation à temps partiel – entre 4 et 8 heures par semaine en groupes de 6 à 8 apprenants._
 
-_Encadrement individuel – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
+_- Encadrement individuel – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
 _La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS. Une demande d’encadrement peut être envoyée par courriel au languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
 
@@ -17,7 +17,7 @@ _Si l’École de langues de RNCan n’est pas en mesure de répondre à vos bes
 
 
 ### Évaluation linguistique
-_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez en faire la demande à l’École de langues de RNCan en envoyant un courriel à languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
+_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez en faire la demande par courriel  à l’École de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
 
 ### Engagement et approbations
 _L’approbation de votre gestionnaire est requise pour soumettre une demande de formation linguistique, en plus de la confirmation de votre engagement à participer au programme de formation linguistique. Veuillez prendre connaissance des exigences d’engagement ci-dessous et fournir les renseignements afférents au gestionnaire._

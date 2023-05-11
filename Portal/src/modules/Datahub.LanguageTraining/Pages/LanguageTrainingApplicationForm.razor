@@ -377,6 +377,7 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => GetTrainingTypes());
             context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, "The manager must approve or decline this application to proceed");            
             context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
+            context.RegisterCategoryNotes("Language Assessment", DataLocalizer["LanguageAssessmentSubHeader"]);
         }
 
         ToggleVisibility(context);
@@ -439,10 +440,10 @@
         return _currentPeriod?.Quarter_NUM switch
         {
             null => string.Empty,
-            1 => "Q1 - April to June",
-            2 => "Q2 - July to September",
-            3 => "Q3 - October to December",
-            _ => "Q4 - January to March",
+            1 => DataLocalizer["Q1 - April to June"],
+            2 => DataLocalizer["Q2 - July to September"],
+            3 => DataLocalizer["Q3 - October to December"],
+            _ => DataLocalizer["Q4 - January to March"],
         };
     }
 
