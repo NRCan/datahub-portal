@@ -4,8 +4,8 @@ _NRCan believes in supporting employees in achieving a working level ability in 
 
 _Training options offered by the NRCan Language School are as follows:_
 
-- _Virtual Group Training - Part-Time Training – between 4 and 8 hours, in groups of 6 to 8 learners_
-- _Individual - Coaching – up to 5 one-hour sessions (in preparation of a scheduled SLE test date)) and can be requested via an e-mail to the NRCan Language School inbox at languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
+_- Virtual Group Training - Part-Time Training – between 4 and 8 hours, in groups of 6 to 8 learners_
+_- Individual - Coaching – up to 5 one-hour sessions (in preparation of a scheduled SLE test date) and can be requested via an e-mail to the NRCan Language School inbox at languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
 _Group training will be scheduled on a quarterly basis; whereas coaching is available on an ad hoc basis once an employee has been provided with a SLE testing date. Coaching requests can be sent by e-mail to languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
@@ -16,7 +16,7 @@ _Should the NRCan Language School be unable to fulfill your training needs, an e
 
 ### Language Assessment
 
-_A Language Evaluation and Training Plan (LETP) assessment is pre-requisite to language training. If you have not completed an LETP assessment, please submit a request by sending an email to languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
+_A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please submit a request by sending an email to languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
 
 ### Commitment and Approvals
 
