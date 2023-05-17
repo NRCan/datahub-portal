@@ -1,6 +1,5 @@
 ﻿@*LanguageTrainingApplicationForm.razor*@
 @inject IStringLocalizer DataLocalizer
-@inject IEmailNotificationService EmailService
 @implements IDisposable
 @inject IDbContextFactory<LanguageTrainingDBContext> DbFactory
 @inject ServiceAuthManager ServiceAuthManager
@@ -9,11 +8,12 @@
 @inject IJSRuntime JsInterop
 @inject IConfiguration Configuration
 @inject IDatahubAuditingService AuditingService
+@inject LanguageEmailService EmailService
 @page "/languagetraining/applications"
 @page "/languagetraining/applications/{AppId}"
 @using Datahub.LanguageTraining.Data
+@using Datahub.LanguageTraining.Services;
 @using Datahub.LanguageTraining.Utils
-@using Datahub.Core.Services.Notification
 
 <Datahub.Core.Components.FormTemplate 
         T="LanguageTrainingApplication"
@@ -170,16 +170,6 @@
 
     private string ToLowerIfFrench(string text) => _isFrench ? text.ToLower() : text;
 
-    private string GetFrenchTrainingType(string englishTrainingType)
-    {
-
-        if (englishTrainingType == "Group Training - Part-Time Training")
-            return "Formation en groupe – Formation à temps partiel";
-
-        return englishTrainingType;
-
-    }
-
     static string GetSeason(byte season) => season switch
     {
         1 => "Spring",
@@ -312,7 +302,7 @@
         param.EmployeeEmailAddress = _languageTrainingApplication.Email_Address_EMAIL;
         param.EmployeeName = $"{_languageTrainingApplication.First_Name} {_languageTrainingApplication.Last_Name}";
         param.TrainingType = _languageTrainingApplication.Training_Type;
-        param.TrainingTypeFr = GetFrenchTrainingType(_languageTrainingApplication.Training_Type);
+        param.TrainingTypeFr = DataLocalizer[_languageTrainingApplication.Training_Type];
         param.ManagerEmailAddress = _languageTrainingApplication.Delegated_Manager_Email;
         param.ManagerName = _languageTrainingApplication.Delegate_Manager_First_Name + " " + _languageTrainingApplication.Delegated_Manager_Last_Name;
         param.ManagerDecision = _languageTrainingApplication.Manager_Decision;
