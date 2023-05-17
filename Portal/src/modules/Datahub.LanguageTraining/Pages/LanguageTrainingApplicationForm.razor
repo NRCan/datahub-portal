@@ -302,6 +302,7 @@
         param.EmployeeEmailAddress = _languageTrainingApplication.Email_Address_EMAIL;
         param.EmployeeName = $"{_languageTrainingApplication.First_Name} {_languageTrainingApplication.Last_Name}";
         param.TrainingType = _languageTrainingApplication.Training_Type;
+        param.TrainingTypeFr = DataLocalizer[_languageTrainingApplication.Training_Type];
         param.ManagerEmailAddress = _languageTrainingApplication.Delegated_Manager_Email;
         param.ManagerName = _languageTrainingApplication.Delegate_Manager_First_Name + " " + _languageTrainingApplication.Delegated_Manager_Last_Name;
         param.ManagerDecision = _languageTrainingApplication.Manager_Decision;
