@@ -7,7 +7,7 @@ _Training options offered by the NRCan Language School are as follows:_
 _- Virtual Group Training - Part-Time Training – between 4 and 8 hours, in groups of 6 to 8 learners_
 _- Individual - Coaching – up to 5 one-hour sessions (in preparation of a scheduled SLE test date) and can be requested via an e-mail to the NRCan Language School inbox at languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
-_Group training will be scheduled on a quarterly basis; whereas coaching is available on an ad hoc basis once an employee has been provided with a SLE testing date. Coaching requests can be sent by e-mail to languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
+_Group training will be scheduled on a quarterly basis; whereas coaching is available on an ad hoc basis once an employee has been provided with a SLE testing date._
 
 **_NOTE – Language training is based on demand and capacity of the NRCan Language School. Submitting a request for language training does not guarantee a place in a session._**
 

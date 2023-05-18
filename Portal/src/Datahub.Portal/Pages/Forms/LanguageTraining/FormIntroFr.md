@@ -8,7 +8,7 @@ _- Formation de groupe virtuelle – Formation à temps partiel – entre 4 et 8
 
 _- Encadrement individuel – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
-_La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS. Une demande d’encadrement peut être envoyée par courriel au languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
+_La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS._
 
 **_REMARQUE – La formation linguistique est fondée sur la demande et la capacité de l’école de langues de RNCan. Le fait de soumettre une demande de formation linguistique ne garantit pas une place dans une session._**
 

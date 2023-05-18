@@ -1691,7 +1691,7 @@
     "LanguageTableDisclaimer": "Une seule inscription est autorisée par étudiant et par session.",
     "Registrations_closed": "Les inscriptions sont actuellement fermées.",
     "Registrations_open_from_to": "Les inscriptions pour {0} de {1} seront ouvertes de {2} à {3}.",
-    "Registrations_open_until": "La pré-inscriptions est maintenant ouverte, vous pouvez soumettre votre demande pour la session {0} {1} En s'inscrivant l’apprenant assistera aux deux premières semaines de la session, c’est obligatoire jusqu'au {2}, le {4} {3} {5}, à 18 h 00 (HAE).",
+    "Registrations_open_until": "La pré-inscription est maintenant accessible. Vous pouvez soumettre votre demande pour la session {0} {1} d'ici le {2} {4} {3} {5}, à 18 h 00 (HAE).",
     "Spring": "de printemps",
     "Summer": "d'été",
     "Fall": "d'automne",
