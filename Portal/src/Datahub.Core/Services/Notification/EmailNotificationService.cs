@@ -756,6 +756,7 @@ public class LanguageTrainingParameters
     public string EmployeeName;
     public string EmployeeEmailAddress;
     public string TrainingType;
+    public string TrainingTypeFr;
     public string Session;
     public string Class;
     public string ManagerEmailAddress;
