@@ -1,9 +1,10 @@
-﻿@using Datahub.LanguageTraining.Data;
+﻿@using Datahub.Core.Services.Notification;
+
 
 
 <p>A new request for language training has been approved by the manager. </p>
 <p>The request can be reviewed via the following link: </p>
-<p><a href=@ApplicationParameters?.AppUrl >@ApplicationParameters?.AppUrl</a></p>
+<p><a href=@ApplicationParameters.AppUrl >@ApplicationParameters.AppUrl</a></p>
 
 <p>NRCan Language School Database</p>
 
@@ -12,7 +13,7 @@
 
 <p>Une nouvelle demande de formation linguistique a été approuvée par le gestionnaire. </p>
 <p>Pour examiner la demande, veuillez cliquer sur le lien suivant : </p>
-<p><a href=@ApplicationParameters?.AppUrl >@ApplicationParameters?.AppUrl</a> </p>
+<p><a href=@ApplicationParameters.AppUrl >@ApplicationParameters.AppUrl</a> </p>
 
 <p>Base de données de l’École de langues de RNCan </p>
 
@@ -20,6 +21,6 @@
 @code {
 
     [Parameter]
-    public LanguageTrainingParameters? ApplicationParameters { get; set; }
+    public LanguageTrainingParameters ApplicationParameters { get; set; }
 
 }
