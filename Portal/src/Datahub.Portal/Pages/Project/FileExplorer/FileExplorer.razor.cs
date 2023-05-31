@@ -113,10 +113,15 @@ public partial class FileExplorer
 
         var fileMetadata = new FileMetaData
         {
+            id = Guid.NewGuid().ToString(),
+            createdby = GraphUser.Mail,
             folderpath = folder,
             filename = (folder + browserFile.Name).TrimStart('/'),
             filesize = browserFile.Size.ToString(),
             uploadStatus = FileUploadStatus.SelectedToUpload,
+            bytesToUpload = browserFile.Size,
+            createdts = DateTime.UtcNow,
+            lastmodifiedts = DateTime.UtcNow,
             BrowserFile = browserFile
         };
 
@@ -125,20 +130,25 @@ public partial class FileExplorer
 
         _ = InvokeAsync(async () =>
         {
-            await _apiService.UploadGen2File(fileMetadata, ProjectAcronym.ToLower(), ContainerName, (uploadedBytes) =>
+            var succeeded = await _projectDataRetrievalService.UploadFileAsync(ProjectAcronym.ToLower(), ContainerName, fileMetadata, uploadedBytes =>
             {
                 fileMetadata.uploadedBytes = uploadedBytes;
-                StateHasChanged();
+                _ = InvokeAsync(StateHasChanged);
             });
 
             _uploadingFiles.Remove(fileMetadata);
             if (folder == _currentFolder)
             {
-                _files.RemoveAll(f => f.name == fileMetadata.name);
-                _files.Add(fileMetadata);
+                if (succeeded)
+                {
+                    if (1 == 0)
+                    {
+                        _files.RemoveAll(f => f.name == fileMetadata.name);
+                    }
+                    _files.Add(fileMetadata);
+                }
             }
 
-            await _achievementService.AddOrIncrementTelemetryEvent(DatahubUserTelemetry.TelemetryEvents.UserUploadFile);
             StateHasChanged();
         });
 

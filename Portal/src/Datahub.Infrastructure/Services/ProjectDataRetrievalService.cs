@@ -330,7 +330,8 @@ public class ProjectDataRetrievalService : IProjectDataRetrievalService
     private string GetProjectStorageAccountName(string projectAcronym)
     {
         var envName = GetEnvironmentName();
-        return $"{_portalConfiguration.ResourcePrefix}proj{projectAcronym.ToLower()}{envName}";
+        return $"{_portalConfiguration.ResourcePrefix}{projectAcronym.ToLower()}{envName}";
+        //return $"{_portalConfiguration.ResourcePrefix}proj{projectAcronym.ToLower()}{envName}";
     }
 
     private async Task<SecretBundle> GetProjectStorageAccountKeyAsync(string projectAcronym)
@@ -355,7 +356,8 @@ public class ProjectDataRetrievalService : IProjectDataRetrievalService
     private string GetProjectKeyVaultName(string projectAcronym)
     {
         var envName = GetEnvironmentName();
-        return $"{_portalConfiguration.ResourcePrefix}-proj-{projectAcronym}-{envName}-kv".ToLower();
+        return $"datahub-key-{envName}".ToLower();
+        //return $"{_portalConfiguration.ResourcePrefix}-proj-{projectAcronym}-{envName}-kv".ToLower();
     }
 
     private static string GetEnvironmentName()

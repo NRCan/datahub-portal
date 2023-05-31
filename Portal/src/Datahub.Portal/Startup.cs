@@ -63,6 +63,7 @@ using Datahub.Infrastructure.Services;
 using Datahub.Portal.Services.Notification;
 using Datahub.LanguageTraining.Services;
 using Datahub.M365Forms.Services;
+using Datahub.Application.Configuration;
 
 [assembly: InternalsVisibleTo("Datahub.Tests")]
 
@@ -164,6 +165,7 @@ public class Startup
         // configure db contexts in this method
         ConfigureDbContexts(services);
 
+        services.Configure<DatahubPortalConfiguration>(Configuration);
         services.Configure<DataProjectsConfiguration>(Configuration.GetSection("DataProjectsConfiguration"));
         services.Configure<APITarget>(Configuration.GetSection("APITargets"));
         services.Configure<TelemetryConfiguration>(Configuration.GetSection("ApplicationInsights"));
@@ -362,7 +364,7 @@ public class Startup
 
             services.AddScoped<UpdateProjectMonthlyCostService>();
             services.AddScoped<IProjectCreationService, ProjectCreationService>();
-            services.AddDatahubApplicationServices();
+            services.AddDatahubApplicationServices(Configuration);
             services.AddDatahubInfrastructureServices(Configuration);
 
         }
