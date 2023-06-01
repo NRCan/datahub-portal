@@ -408,7 +408,7 @@
         context.SetVisible<LanguageTrainingApplication>(p => p.Class_For_Language_Training, !(_languageTrainingApplication.Training_Type == "Private training: Coaching**" || _languageTrainingApplication.Training_Type == "Individual - Coaching"));
 
 
-        var isDelegatedManager = _languageTrainingApplication.Delegated_Manager_Email?.ToLower() == _user.Mail.ToLower();
+        var isDelegatedManager = _languageTrainingApplication.Delegated_Manager_Email?.ToLower().Trim() == _user.Mail.ToLower().Trim();
 
         context.SetVisible<LanguageTrainingApplication>(p => p.Manager_First_Name, _isUserAdmin || isDelegatedManager);
         context.SetVisible<LanguageTrainingApplication>(p => p.Manager_Last_Name, _isUserAdmin || isDelegatedManager);
