@@ -50,9 +50,7 @@ public class PIP_Risks
     [AeLabel(row: "8", column: "1")]
     [MaxLength(7500)] public string Risk_Drivers_TXT4 { get; set; }
 
-    //[MaxLength(7500)] public string Residual_Risk_Level_TXT { get; set; }
-    //[AeLabel(placeholder: "What is the level of risk that would be optimal, or that the department/ program should aim for")]
-
+    
     [AeFormCategory("Risk Level", 10)]
     [AeLabel(isDropDown: true, placeholder: "Please Select", row: "9", column: "1")]
     [Required] public string Impact1 { get; set; }
