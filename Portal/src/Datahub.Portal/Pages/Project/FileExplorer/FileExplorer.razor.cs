@@ -158,8 +158,8 @@ public partial class FileExplorer
     private async Task HandleFileDownload(string filename)
     {   
         var selectedFile = _files?.FirstOrDefault(f => f.name == filename);
-        var uri = await _dataRetrievalService.DownloadFile(ContainerName, selectedFile, ProjectAcronym);
-        
+        //var uri = await _dataRetrievalService.DownloadFile(ContainerName, selectedFile, ProjectAcronym);
+        var uri = await _projectDataRetrievalService.DownloadFileAsync(ProjectAcronym, ContainerName, filename);
         await _module.InvokeVoidAsync("downloadFile", uri.ToString());
     }
     
