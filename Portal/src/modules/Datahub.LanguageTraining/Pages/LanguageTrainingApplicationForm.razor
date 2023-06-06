@@ -11,6 +11,7 @@
 @inject LanguageEmailService EmailService
 @page "/languagetraining/applications"
 @page "/languagetraining/applications/{AppId}"
+@using Datahub.Core.Services.Notification;
 @using Datahub.LanguageTraining.Data
 @using Datahub.LanguageTraining.Services;
 @using Datahub.LanguageTraining.Utils
@@ -278,7 +279,7 @@
         return (!string.IsNullOrEmpty(_languageTrainingApplication.Decision));
     }
 
-    private async Task SendLanguageSchoolDecisionEmails(LanguageTrainingParameters param)
+    private async Task SendLanguageSchoolDecisionEmails(Core.Services.Notification.LanguageTrainingParameters param)
     {
         await EmailService.SendLanguageSchoolDecision(param);
         _languageTrainingApplication.LSUDecisionSent = true;
@@ -287,7 +288,7 @@
         await Context.TrackSaveChangesAsync(AuditingService);
     }
 
-    private async Task SendManagerDecisionEmails(LanguageTrainingParameters param)
+    private async Task SendManagerDecisionEmails(Core.Services.Notification.LanguageTrainingParameters param)
     {
         if (_languageTrainingApplication.Manager_Decision == "Approved" || _languageTrainingApplication.Manager_Decision == "Declined")
         { 
@@ -299,14 +300,14 @@
         }  
     }
 
-    private async Task SendApplicationCompletedEmails(LanguageTrainingParameters param)
+    private async Task SendApplicationCompletedEmails(Core.Services.Notification.LanguageTrainingParameters param)
     {
         await EmailService.SendApplicationCompleteNotification(param);    
     }
 
-    private LanguageTrainingParameters GetLanguageTrainingParameters()
+    private Core.Services.Notification.LanguageTrainingParameters GetLanguageTrainingParameters()
     {
-        LanguageTrainingParameters param = new();
+        Core.Services.Notification.LanguageTrainingParameters param = new();
         param.ApplicationId = _languageTrainingApplication.Application_ID.ToString();
         param.AppUrl = $"/languagetraining/applications/{_languageTrainingApplication.Application_ID}";
         param.EmployeeEmailAddress = _languageTrainingApplication.Email_Address_EMAIL;
@@ -408,7 +409,7 @@
         context.SetVisible<LanguageTrainingApplication>(p => p.Class_For_Language_Training, !(_languageTrainingApplication.Training_Type == "Private training: Coaching**" || _languageTrainingApplication.Training_Type == "Individual - Coaching"));
 
 
-        var isDelegatedManager = _languageTrainingApplication.Delegated_Manager_Email?.ToLower() == _user.Mail.ToLower();
+        var isDelegatedManager = _languageTrainingApplication.Delegated_Manager_Email?.ToLower().Trim() == _user.Mail.ToLower().Trim();
 
         context.SetVisible<LanguageTrainingApplication>(p => p.Manager_First_Name, _isUserAdmin || isDelegatedManager);
         context.SetVisible<LanguageTrainingApplication>(p => p.Manager_Last_Name, _isUserAdmin || isDelegatedManager);

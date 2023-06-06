@@ -154,7 +154,9 @@ public class PIP_Constants
         "Contributions in support of Cyber Security and Critical Energy Infrastructure Protection (voted)",
         "Contributions in support of Wildland Fire Resilience (voted)",
         "Contributions in support of Earthquake Early Warning (voted)",
-        "Climate Action Support Payments (Energy Manager Program and Clean Energy for Rural and Remote Communities Program)"};
+        "Climate Action Support Payments (Energy Manager Program and Clean Energy for Rural and Remote Communities Program)",
+        "Contributions for Indigenous engagement on Mapping Community Wildfire Risk"
+    };
 
     public static readonly string[] HORIZONTAL_INITIATIVES = { "CGCC – Clean Growth and Climate Change (ECCC)",
         "Emergency Management Strategy (PSC)",
