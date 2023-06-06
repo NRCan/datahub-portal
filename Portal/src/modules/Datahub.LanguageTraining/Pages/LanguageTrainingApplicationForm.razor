@@ -279,7 +279,7 @@
         return (!string.IsNullOrEmpty(_languageTrainingApplication.Decision));
     }
 
-    private async Task SendLanguageSchoolDecisionEmails(Core.Services.Notification.LanguageTrainingParameters param)
+    private async Task SendLanguageSchoolDecisionEmails(LanguageTrainingParameters param)
     {
         await EmailService.SendLanguageSchoolDecision(param);
         _languageTrainingApplication.LSUDecisionSent = true;
@@ -288,7 +288,7 @@
         await Context.TrackSaveChangesAsync(AuditingService);
     }
 
-    private async Task SendManagerDecisionEmails(Core.Services.Notification.LanguageTrainingParameters param)
+    private async Task SendManagerDecisionEmails(LanguageTrainingParameters param)
     {
         if (_languageTrainingApplication.Manager_Decision == "Approved" || _languageTrainingApplication.Manager_Decision == "Declined")
         { 
@@ -300,14 +300,14 @@
         }  
     }
 
-    private async Task SendApplicationCompletedEmails(Core.Services.Notification.LanguageTrainingParameters param)
+    private async Task SendApplicationCompletedEmails(LanguageTrainingParameters param)
     {
         await EmailService.SendApplicationCompleteNotification(param);    
     }
 
-    private Core.Services.Notification.LanguageTrainingParameters GetLanguageTrainingParameters()
+    private LanguageTrainingParameters GetLanguageTrainingParameters()
     {
-        Core.Services.Notification.LanguageTrainingParameters param = new();
+        LanguageTrainingParameters param = new();
         param.ApplicationId = _languageTrainingApplication.Application_ID.ToString();
         param.AppUrl = $"/languagetraining/applications/{_languageTrainingApplication.Application_ID}";
         param.EmployeeEmailAddress = _languageTrainingApplication.Email_Address_EMAIL;
