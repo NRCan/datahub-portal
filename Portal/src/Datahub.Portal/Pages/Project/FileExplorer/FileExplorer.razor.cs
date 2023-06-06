@@ -15,9 +15,9 @@ public partial class FileExplorer
     {
         _loading = true;
         StateHasChanged();
-
-        var (folders, files, continuationToken) =
-            await _dataRetrievalService.GetStorageBlobPagesAsync(ProjectAcronym, ContainerName, GraphUser, _currentFolder, _continuationToken);
+        
+        var (folders, files, continuationToken) = await _projectDataRetrievalService.GetDfsPagesAsync(ProjectAcronym,
+            ContainerName, _currentFolder, _continuationToken);
 
         _continuationToken = continuationToken;
         _files = files;
@@ -41,18 +41,28 @@ public partial class FileExplorer
         await _achievementService.AddOrIncrementTelemetryEvent(DatahubUserTelemetry.TelemetryEvents.UserCreateFolder);
     }
     
-    private async Task HandleFileDelete(string filename)
+    private async Task HandleFileDelete(string fileName)
     {
-        var selectedFile = _files?.FirstOrDefault(f => f.name == filename);
-        var success = await _dataRemovalService.DeleteStorageBlob(selectedFile, ProjectAcronym, ContainerName, GraphUser);
-        if (success)
-        {
-            _files?.RemoveAll(f => f.name.Equals(filename, StringComparison.OrdinalIgnoreCase));
-        }
+        var message = string.Format(Localizer["Are you sure you want to delete file \"{0}\"?"], fileName);
+        if (!await _jsRuntime.InvokeAsync<bool>("confirm", message))
+            return;
 
-        _selectedItems = new HashSet<string> {_currentFolder};
+        if (!await _projectDataRetrievalService.DeleteFileAsync(ProjectAcronym, ContainerName, JoinPath(_currentFolder, fileName)))
+            return;
+
+        _files?.RemoveAll(f => f.name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+
+        _selectedItems = new HashSet<string> { _currentFolder };
+
         await _achievementService.AddOrIncrementTelemetryEvent(DatahubUserTelemetry.TelemetryEvents.UserDeleteFile);
 
+    }
+
+    private string JoinPath(string folder, string fileName)
+    {
+        var splitPath = (folder ?? "").Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
+        splitPath.Add(fileName);
+        return string.Join("/", splitPath);
     }
 
     private async Task HandleFileItemDrop(string folder, string filename)
@@ -69,21 +79,42 @@ public partial class FileExplorer
             _files.RemoveAll(f => f.name == oldFilename);
         }
     }
-    
+
+    private async Task<(bool FileExists, bool AllowOverride)> VerifyOverwrite(string filePath)
+    {
+        if (!await _projectDataRetrievalService.FileExistsAsync(ProjectAcronym, ContainerName, filePath))
+            return (false, true);
+
+        var allowOverride = await _jsRuntime.InvokeAsync<bool>("confirm",
+            string.Format(Localizer["File '{0}' already exists. Do you want to overwrite it?"], filePath));
+
+        return (true, allowOverride);
+    }
     private async Task HandleFileRename(string fileRename)
     {
-        if (!string.IsNullOrWhiteSpace(fileRename))
-        {
-            var oldFilename = (_currentFolder + GetFileName(_selectedItem)).TrimStart('/');
-            var newFilename = (_currentFolder + fileRename).TrimStart('/');
+        if (string.IsNullOrWhiteSpace(fileRename))
+            return;
 
-            if (await PreventOverwrite(newFilename))
-                return;
-            
-            //await _dataUpdatingService.RenameStorageBlob(oldFilename, newFilename, ProjectAcronym, ContainerName);
-            var file = _files.First(f => f.name == oldFilename);
-            file.name = newFilename;
+        var currentFileName = GetFileName(_selectedItem);
+
+        var oldFileName = JoinPath(_currentFolder, currentFileName);
+        var newFileName = JoinPath(_currentFolder, fileRename);
+
+        var (fileExists, allowOverride) = await VerifyOverwrite(newFileName);
+        if (!allowOverride)
+            return;
+
+        if (!await _projectDataRetrievalService.RenameFileAsync(ProjectAcronym, ContainerName, oldFileName, newFileName))
+            return;
+
+        if (fileExists)
+        {
+            _files.RemoveAll(f => f.name == fileRename);
         }
+
+        var targetFile = _files.FirstOrDefault(f => f.name == currentFileName);
+        if (targetFile is not null)
+            targetFile.name = fileRename;
     }
 
     private async Task<bool> IfFileExistsInLocation(string filename)
