@@ -101,8 +101,8 @@ public class ProjectUserManagementService : IProjectUserManagementService
         {
             
             await context.SaveChangesAsync();
-            await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
-            _logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
+            //await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
+            //_logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
             scope.Complete();
         }
         catch (Exception ex)
@@ -154,8 +154,8 @@ public class ProjectUserManagementService : IProjectUserManagementService
             await context.SaveChangesAsync();
             _logger.LogInformation("User {UserGraphId} removed from project {ProjectAcronym}", userGraphId, projectAcronym);
             
-            await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
-            _logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
+            //await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
+            //_logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
             scope.Complete();
         }
         catch (Exception ex)
