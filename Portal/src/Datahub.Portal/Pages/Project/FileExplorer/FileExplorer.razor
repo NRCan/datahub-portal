@@ -1,3 +1,4 @@
+@using Datahub.Application.Services;
 @using Datahub.Core.Components.FileUpload
 @using Datahub.Core.Services.Storage;
 
@@ -8,6 +9,7 @@
 @inject IJSRuntime _jsRuntime
 @inject AchievementService _achievementService
 @inject MyDataService _apiService
+@inject IProjectDataRetrievalService _projectDataRetrievalService
 
 <div class="file-explorer-layout">
     <Heading

@@ -528,20 +528,6 @@ public class DataRetrievalService : BaseService
             ? lastModifiedBy
             : "lastmodifiedby";
 
-        if (Environment.GetEnvironmentVariable("HostingProfile") == "ssc")
-        {
-            return new FileMetaData()
-            {
-                id = fileId,
-                filename = blobItem.Name,
-                ownedby = ownedBy,
-                createdby = createdBy,
-                lastmodifiedby = lastModifiedBy,
-                lastmodifiedts = blobItem.Properties.LastModified?.DateTime ?? DateTime.Now,
-                filesize = blobItem.Properties.ContentLength.ToString()
-            };
-        }
-
         string lastModified = blobItem.Metadata.TryGetValue(FileMetaData.LastModified, out lastModified)
             ? lastModified
             : DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
@@ -558,8 +544,8 @@ public class DataRetrievalService : BaseService
             ownedby = ownedBy,
             createdby = createdBy,
             lastmodifiedby = lastModifiedBy,
-            lastmodifiedts = parsedModifiedDate,
-            filesize = fileSize
+            lastmodifiedts = blobItem.Properties.LastModified?.DateTime ?? DateTime.Now,
+            filesize = blobItem.Properties.ContentLength.ToString()
         };
     }
 
