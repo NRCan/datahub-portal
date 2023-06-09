@@ -114,7 +114,8 @@
                  SubmitLabel="@SubmitLabel"
                  LabelForPropertyFunc="@GetDataLabel"
                  OnChange=@FormChanged
-                 OnConfigure="OnConfigure" />
+                 OnConfigure="OnConfigure"
+                 RowColor="white" />
 
         @if (_project.Project_ID > 0)
         {
@@ -156,7 +157,8 @@
                  OnValidSubmit="HandleValidCommentSubmit"
                  CancelLabel="Cancel"
                  SubmitLabel="Save Comment"
-                 LabelForPropertyFunc="@GetDataLabel" />
+                 LabelForPropertyFunc="@GetDataLabel"
+                 RowColor="white" />
         }
 
     </AeCard>
