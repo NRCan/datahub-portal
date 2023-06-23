@@ -228,7 +228,7 @@ public class RequestManagementService : IRequestManagementService
         await RequestServiceWithDefaults(serviceRequest);
     }
 
-    public static string GetTerraformServiceType(string templateName) => $"terraform:{templateName}";
+    public static string GetTerraformServiceType(string templateName) => $"{templateName}";
 
     public async Task<bool> HandleTerraformRequestServiceAsync(Datahub_Project project, string terraformTemplate)
     {
