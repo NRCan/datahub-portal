@@ -7,7 +7,6 @@
 @inject IStringLocalizer<DataLabels> DataLocalizer
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsInterop
-@implements IDisposable
 @inject IDbContextFactory<DatahubProjectDBContext> _dbContextFactory
 @inject IUserInformationService UserInformationService
 
@@ -44,14 +43,13 @@
     private IPageableComponent _myTable;
 
     private List<Datahub_Project> _projects;
-    DatahubProjectDBContext Context;
 
     private int _lastClicked = 0;
 
 
     private void OnPageClick(int pageIndex)
     {
-    _lastClicked = pageIndex;
+        _lastClicked = pageIndex;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -64,16 +62,11 @@
     {
         var currentUserId = await UserInformationService.GetUserIdString();
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        var databricksTemplateName = RequestManagementService.GetTerraformServiceType(IRequestManagementService.DATABRICKS); 
-        
-        _projects = Context.Project_Users
-            .Where(u => u.User_ID == currentUserId)
-            .Select(u => u.Project)
-            .Include(p => p.Resources
-                .Where(r => r.ResourceType == databricksTemplateName))            
-            .Distinct()
-            .ToList();
+
+        var databricksTemplateName = RequestManagementService.GetTerraformServiceType(IRequestManagementService.DATABRICKS);      
+
+        _projects = context.Projects
+            .Where(p => p.Users.Any(u => u.User_ID == currentUserId) && p.Resources.Any(r => r.ResourceType == databricksTemplateName)).ToList();        
 
         FillAccessorFunctions();
         
@@ -108,9 +101,5 @@
             new Func<Datahub_Project, string>(Datahub_Project => { return Datahub_Project?.ProjectDescription; }),
         };
     }
-    
-    public void Dispose() 
-    { 
-        Context.Dispose();         
-    }
+        
 }
