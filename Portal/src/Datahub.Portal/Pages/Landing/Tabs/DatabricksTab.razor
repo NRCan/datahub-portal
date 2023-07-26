@@ -66,7 +66,7 @@
         var databricksTemplateName = RequestManagementService.GetTerraformServiceType(IRequestManagementService.DATABRICKS);      
 
         _projects = context.Projects
-            .Where(p => p.Users.Any(u => u.User_ID == currentUserId) && p.Resources.Any(r => r.ResourceType == databricksTemplateName)).ToList();        
+            .Where(p => p.Users.Any(u => u.User_ID == currentUserId) && p.Resources.Any(r => r.ResourceType == databricksTemplateName)).Distinct().ToList();        
 
         FillAccessorFunctions();
         
