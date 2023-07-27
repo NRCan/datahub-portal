@@ -61,8 +61,15 @@ public class CatalogObject
     /// </summary>
     public ClassificationType Classification_Type { get; set; }
     /// <summary>
+    /// CatalogDepartments: HR, Assyst, and others
+    /// </summary>
+    public AreasOfBusiness Areas_Of_Business { get; set; }
+
+
+    /// <summary>
     /// Grouping for linking catalog objects
     /// </summary>
+    /// 
     public Guid? GroupId { get; set; }
     /// <summary>
     /// Optional project id
