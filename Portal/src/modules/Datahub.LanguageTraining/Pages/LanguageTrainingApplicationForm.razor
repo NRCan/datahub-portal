@@ -146,7 +146,7 @@
 
             var openFormatted = _nextPeriod.Open_DT.ToShortDateString();
             var closeFormatted = _nextPeriod.Close_DT.ToShortDateString();
-            var season = DataLocalizer[GetSeason(_nextPeriod.Quarter_NUM)];
+            var season = DataLocalizer[$"LanguageTrainingApplication.{GetSeason(_nextPeriod.Quarter_NUM)}"];
             var fiscalYear = GetFiscalYear(_nextPeriod);
 
             return string.Format(template, season, fiscalYear, openFormatted, closeFormatted);
@@ -382,12 +382,12 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.SLE_Results_Writing, () => Language_Constants.SLESTATUS);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.SLE_Results_Oral, () => Language_Constants.SLESTATUS);
             //context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Session_For_Language_Training, () => Language_Constants.QUARTERS);
-            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Class_For_Language_Training, () => Language_Constants.CLASSES_E);        
+            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Class_For_Language_Training, () => _isFrench ? Language_Constants.CLASSES_E_FRENCH : Language_Constants.CLASSES_E);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Decision, () => Language_Constants.LANGUAGE_SCHOOL_SELECTION);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Completed_Training_Session, () => Language_Constants.QUARTERS);
-            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => new[] { "Pending", "Approved", "Declined"});
+            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => new[] { "", "Approved", "Declined"});
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => GetTrainingTypes());
-            context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, "The manager must approve or decline this application to proceed");            
+            context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, DataLocalizer["ManagerDecisionSubText"]);
             context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
             context.RegisterCategoryNotes("Language Assessment", DataLocalizer["LanguageAssessmentSubHeader"]);
         }

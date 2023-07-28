@@ -700,11 +700,6 @@
   "Client_Information": "Client Information",
   "Product Information": "Information",
   "Product_Name": "Initiative Name",
-
-
-
-
-
   "GCdocs_Hyperlink_URL": "GCdocs Hyperlink",
   "Expected_Lifespan_DT": "Expected lifespan or retirement date for the Team",
   "Name_of_Team": "Name of Team",
@@ -750,7 +745,8 @@
   "Employment_Status": "Employment Status (Term less than 1 year or casual employees are not eligible)",
   "I_am_seeking": "I am seeking",
   "Completed_LETP_Assessment": "Have you completed a LETP assessment with the NRCan Language School in the last two (2) years",
-  "Language_Training_Since_LETP_Assessment": "Have you taken language training since your LETP assessment",
+  "Language_Training_Since_LETP_Assessment": "Have you taken language training since your LETP",
+  "Group Choices": "Do you belong to any of the following groups (for placement purposes)?",
   "Language_Training_Provided_By": "The language training was provided by",
   "Last_Course_Successfully_Completed": "What was the last course you successfully completed",
   "Completed_Training_Year": "Year",
@@ -778,6 +774,8 @@
   "Manager_Last_Name": "Last Name",
   "Manager_Email_Address": "Email Address",
   "Decision": "Decision",
+  "Manager_Decision": "Manager Decision",
+  "ManagerDecisionSubText": "The manager must approve or decline this application to proceed.",
   "LanguageAssessmentSubHeader": "Do you belong to any of the following groups (for placement purposes)?",
   "LanguageTrainingApplicationSubHeader": "Please note that Full-Time Training will not be offered in the Spring session.",
   "OPENDATA-DASHBOARD": {
@@ -1033,7 +1031,7 @@
   "Final_Updates_EndDate": "Final Updates End Date",
   "Final_Release_Date": "Final Release Date",
   "Requirements_Gathering_ActualEndDate": "Requirements Gathering Actual End Date",
-  "Phase1_Development_ActualEndDate": "Phase1 Development Actual End Date",
+  "Phase1_Development_ActualEndDate": "Phase1 Development Actual End Date",  
   "Phase1_Testing_ActualEndDate": "Phase1 Testing Actual End Date",
   "Phase2_Development_ActualEndDate": "Phase2 Development Actual End Date",
   "Phase2_Testing_ActualEndDate": "Phase2 Testing Actual End Date",
@@ -1042,8 +1040,8 @@
   "LanguageTrainingApplication": {
     "LanguageTableDisclaimer": "Only one registration permitted per student per session.",
     "Registrations_closed": "Registrations are currently closed.",
-    "Registrations_open_from_to": "The {0} {1} registrations will open from {2} to {3}.",
-    "Registrations_open_until": "Pre-registration is now available. You may submit your request for the {0} {1} session until {2}, {3} {4}, {5} by 6:00 PM (EDT) (ET).",
+    "Registrations_open_from_to": "Pre-registration Period for the {0} {1} session: from {2} to {3}.",
+    "Registrations_open_until": "Pre-registration is now available. You may submit your request for the {0} {1} session until {2}, {3} {4}, {5} by 11:59 PM (EDT).",
     "Spring": "Spring",
     "Summer": "Summer",
     "Fall": "Fall",
