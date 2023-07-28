@@ -4,7 +4,8 @@ _NRCan believes in supporting employees in achieving a working level ability in 
 
 _Training options offered by the NRCan Language School are as follows:_
 
-_- Virtual Group Training - Part-Time Training – between 4 and 8 hours, in groups of 6 to 8 learners_
+_- Virtual - Part-Time Training: between 4 and 8 hours per week, in groups of 6 to 8 learners_
+_- Virtual – Full-Time Training (French program only): 37.5 hours per week, in groups of 6 to 8 learners_
 _- Individual - Coaching – up to 5 one-hour sessions (in preparation of a scheduled SLE test date) and can be requested via an e-mail to the NRCan Language School inbox at languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
 _Group training will be scheduled on a quarterly basis; whereas coaching is available on an ad hoc basis once an employee has been provided with a SLE testing date._
@@ -16,9 +17,14 @@ _Should the NRCan Language School be unable to fulfill your training needs, an e
 
 ### Language Assessment
 
-_A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please submit a request by sending an email to languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
+_A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please complete the following form https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786._
 
 ### Commitment and Approvals
 
 _Approval from your manager is required to submit an application for language training, in addition to confirming your commitment to participate in the language-training program. Please review the below commitment requirements and provide the requested manager information._
 
+_By submitting this application, I confirm that:
+_- I have had a discussion with my supervisor/manager about language training and it is part of my learning plan;_
+_- I commit to attend the first two weeks of the session should I be accepted;_
+_- I commit to the language training plan and will not miss more than 20% of classes;_
+_- I commit to using my second official language in the workplace and maintaining my level once my objectives are reached._

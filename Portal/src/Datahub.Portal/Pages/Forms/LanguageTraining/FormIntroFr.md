@@ -4,8 +4,8 @@ _RNCan croit qu’il faut aider les employés à atteindre un niveau de compéte
 
 _Les options de formation offertes par l’École de langues de RNCan sont les suivantes :_
 
-_- Formation de groupe virtuelle – Formation à temps partiel – entre 4 et 8 heures par semaine en groupes de 6 à 8 apprenants._
-
+_- Formation virtuelle à temps partiel : entre 4 et 8 heures par semaine, en groupes de 6 à 8 apprenants._
+_- Formation virtuelle à temps plein (programme français seulement) : 37,5 heures par semaine, pour une période de quatre semaines, en groupes de 6 à 8 apprenants._
 _- Encadrement individuel – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca_
 
 _La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS._
@@ -17,7 +17,13 @@ _Si l’École de langues de RNCan n’est pas en mesure de répondre à vos bes
 
 
 ### Évaluation linguistique
-_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez en faire la demande par courriel  à l’École de langues de RNCan au languagetraining-formationlinguistique@nrcan-rncan.gc.ca._
+_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez remplir le formulaire suivant https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786._
 
 ### Engagement et approbations
 _L’approbation de votre gestionnaire est requise pour soumettre une demande de formation linguistique, en plus de la confirmation de votre engagement à participer au programme de formation linguistique. Veuillez prendre connaissance des exigences d’engagement ci-dessous et fournir les renseignements afférents au gestionnaire._
+
+_En soumettant cette demande, je confirme que :_
+_- J’ai eu une discussion avec mon superviseur/gestionnaire au sujet de la formation linguistique et celle-ci fait partie de mon plan d’apprentissage;_
+-_ J’assisterai aux deux premières semaines de la session;_
+-_ Je respecterai le plan de formation linguistique et à ne pas manquer plus de 20 % des cours;_
+-_ Je m’engage à utiliser ma deuxième langue officielle en milieu de travail et à maintenir mon niveau une fois mes objectifs atteints._
