@@ -12,18 +12,18 @@ _La formation de groupe sera établie sur une base trimestrielle, tandis que l�
 
 **_REMARQUE – La formation linguistique est fondée sur la demande et la capacité de l’école de langues de RNCan. Le fait de soumettre une demande de formation linguistique ne garantit pas une place dans une session._**
 
-_Si l’École de langues de RNCan n’est pas en mesure de répondre à vos besoins de formation, vous pouvez envisager de recourir à un fournisseur externe. Veuillez_ [_communiquer avec votre conseiller en approvisionnement_](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621) _pour confirmer les options qui vous sont offertes en matière de fournisseurs externes._
+_Si l’École de langues de RNCan n’est pas en mesure de répondre à vos besoins de formation, vous pouvez envisager de recourir à un fournisseur externe. Veuillez_ <u>[_communiquer avec votre conseiller en approvisionnement_](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621)</u> _pour confirmer les options qui vous sont offertes en matière de fournisseurs externes._
 
 
 
 ### Évaluation linguistique
-_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez remplir le formulaire suivant https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786._
+_Une Évaluation linguistique et Plan de formation linguistiques (ELPF) est un prérequis à la formation linguistique. Si vous n’avez pas effectué une évaluation ELPF, veuillez remplir le formulaire suivant <u>[_https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786 _](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786)</u>._
 
 ### Engagement et approbations
 _L’approbation de votre gestionnaire est requise pour soumettre une demande de formation linguistique, en plus de la confirmation de votre engagement à participer au programme de formation linguistique. Veuillez prendre connaissance des exigences d’engagement ci-dessous et fournir les renseignements afférents au gestionnaire._
 
 _En soumettant cette demande, je confirme que :_
 _- J’ai eu une discussion avec mon superviseur/gestionnaire au sujet de la formation linguistique et celle-ci fait partie de mon plan d’apprentissage;_
--_ J’assisterai aux deux premières semaines de la session;_
--_ Je respecterai le plan de formation linguistique et à ne pas manquer plus de 20 % des cours;_
--_ Je m’engage à utiliser ma deuxième langue officielle en milieu de travail et à maintenir mon niveau une fois mes objectifs atteints._
+_- J’assisterai aux deux premières semaines de la session;_
+_- Je respecterai le plan de formation linguistique et à ne pas manquer plus de 20 % des cours;_
+_- Je m’engage à utiliser ma deuxième langue officielle en milieu de travail et à maintenir mon niveau une fois mes objectifs atteints._

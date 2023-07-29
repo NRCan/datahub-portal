@@ -12,18 +12,18 @@ _Group training will be scheduled on a quarterly basis; whereas coaching is avai
 
 **_NOTE – Language training is based on demand and capacity of the NRCan Language School. Submitting a request for language training does not guarantee a place in a session._**
 
-_Should the NRCan Language School be unable to fulfill your training needs, an external provider may be considered. For external provider options, please_ [_contact your procurement advisor_](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621) _for confirmation of the procurement options available to you._
+_Should the NRCan Language School be unable to fulfill your training needs, an external provider may be considered. For external provider options, please_ <u>[_contact your procurement advisor_](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621)</u> _for confirmation of the procurement options available to you._
 
 
 ### Language Assessment
 
-_A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please complete the following form https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786._
+_A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please complete the following form <u>[_https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786 _](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786)</u>._
 
 ### Commitment and Approvals
 
 _Approval from your manager is required to submit an application for language training, in addition to confirming your commitment to participate in the language-training program. Please review the below commitment requirements and provide the requested manager information._
 
-_By submitting this application, I confirm that:
+_By submitting this application, I confirm that:_
 _- I have had a discussion with my supervisor/manager about language training and it is part of my learning plan;_
 _- I commit to attend the first two weeks of the session should I be accepted;_
 _- I commit to the language training plan and will not miss more than 20% of classes;_
