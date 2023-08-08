@@ -388,7 +388,7 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => new[] { "", "Approved", "Declined"});
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => GetTrainingTypes());
             context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, DataLocalizer["ManagerDecisionSubText"]);
-            context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
+            //context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
         }
 
         ToggleVisibility(context);
