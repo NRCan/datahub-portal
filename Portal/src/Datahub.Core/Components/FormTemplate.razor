@@ -34,7 +34,7 @@ else
                     @foreach (var filter in Metadata.FilterProperties)
                     {   
                         var validDisplayValues = filter.Choices.DynamicInvoke() as List<string>;
-                        var filterLabel = $"{filter.Label.DynamicInvoke() as string}: {_selectedFilter}";                    
+                        var filterLabel = $"{DataLocalizer[filter.Label.DynamicInvoke() as string]}: {DataLocalizer[_selectedFilter]}";                    
                         var filterClass = "filterDropdown";
                         <AeDropdown Items="validDisplayValues" OnChange="HandleFilterChanges" Label="@filterLabel" class="@filterClass"/>                
                     }
