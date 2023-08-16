@@ -114,6 +114,22 @@
 
     private void PrepareMetadata()
     {
+        var accessorFunctions = new List<Func<LanguageTrainingApplication, string>>
+        {
+            new Func<LanguageTrainingApplication, string>(p => { return p.NRCan_Username; }),
+            new Func<LanguageTrainingApplication, string>(p => { return p.Sector_Branch; }),
+            new Func<LanguageTrainingApplication, string>(p => { return (p.Delegate_Manager_First_Name + " " + p.Delegated_Manager_Last_Name); }),
+            new Func<LanguageTrainingApplication, string>(p => { return DataLocalizer[p.I_am_seeking]; }),
+            new Func<LanguageTrainingApplication, string>(p => { return DataLocalizer[p.Manager_Decision]; }),
+        };
+
+        var filterChoices = new List<string>
+        {
+            DataLocalizer["All"], DataLocalizer["Awaiting Approval"], DataLocalizer["Approved"], DataLocalizer["Declined"]
+        };
+
+        var status = DataLocalizer["Status"];
+
         var baseuri = NavigationManager.BaseUri;
         _formMetadata.Header = "NRCan Language Training Request Form";
         _formMetadata.SubHeader = GetFormSubHeader();
@@ -125,7 +141,7 @@
         _formMetadata.GridTemplateColumns = "3fr 3fr 3fr 4fr 3fr";
         _formMetadata.IsSubmitEnabled = false;
         _formMetadata.SaveButtonText = DataLocalizer["Submit"];
-        var filters = new List<(Delegate Label, Delegate Choices)>() { (() => "Status", () => new List<string> { "All", "Pending", "Approved", "Declined" }) };
+        var filters = new List<(Delegate Label, Delegate Choices)>() { (() => "Status", () => filterChoices) };
         _formMetadata.FilterProperties = filters;
         _formMetadata.TableDisclaimer = DataLocalizer["LanguageTrainingApplication.LanguageTableDisclaimer"];
         var introfile = _isFrench ? "FormIntroFr.md" : "FormIntro.md";
@@ -211,16 +227,6 @@
         4 => period.Year_NUM + 1,
         _ => period.Year_NUM
     };
-
-    private List<Func<LanguageTrainingApplication, string>> accessorFunctions = new List<Func<LanguageTrainingApplication, string>>
-    {
-        new Func<LanguageTrainingApplication, string>(p => { return p.NRCan_Username; }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.Sector_Branch; }),
-        new Func<LanguageTrainingApplication, string>(p => { return (p.Delegate_Manager_First_Name + " " + p.Delegated_Manager_Last_Name); }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.I_am_seeking; }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.Manager_Decision; }),
-    };
-
 
     private async void HandleFilterChange(string selection)
     {
@@ -349,13 +355,13 @@
                 .ToList();
         }
 
-        if (filter == "All" || string.IsNullOrEmpty(filter))
+        if (filter == DataLocalizer["All"] || string.IsNullOrEmpty(filter))
         {
             _formMetadata.DataSet = _languageTrainingApplications;
         }
         else
         {
-            _formMetadata.DataSet = _languageTrainingApplications.Where(r => r.Manager_Decision == filter).ToList();
+            _formMetadata.DataSet = _languageTrainingApplications.Where(r => DataLocalizer[r.Manager_Decision] == filter).ToList();
         }
     }
 
@@ -382,7 +388,7 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => Language_Constants.MANAGERDECISIONS);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => Language_Constants.TRAININGTYPEFRENCH);
             context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, DataLocalizer["ManagerDecisionSubText"]);
-            context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
+            //context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
         }
 
         ToggleVisibility(context);
@@ -427,7 +433,7 @@
     private void CreateNewApplication()
     {
         _isNewApp = true;
-        _languageTrainingApplication = new LanguageTrainingApplication() { Last_Updated_DT = DateTime.Now, Manager_Decision = "Pending" };
+        _languageTrainingApplication = new LanguageTrainingApplication() { Last_Updated_DT = DateTime.Now, Manager_Decision = "Awaiting Approval" };
         //var user = await UserInformationService.GetUserAsync();
         _languageTrainingApplication.Email_Address_EMAIL = _user.Mail;
         _languageTrainingApplication.First_Name = _user.GivenName;
