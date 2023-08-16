@@ -96,7 +96,7 @@ else
             <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
                 @foreach (var content in Metadata.MarkDownContent)
                 {
-                    <AeMarkdown Content="@($"{content}")"></AeMarkdown>
+                    <MudMarkdown Value="@($"{content}")" /> 
                 }
             </AeCard>
         }
@@ -122,7 +122,7 @@ else
             <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
                 @foreach (var content in Metadata.MarkDownContentFooter)
                 {
-                    <AeMarkdown Content="@($"{content}")"></AeMarkdown>
+                    <MudMarkdown Value="@($"{content}")" />
                 }
             </AeCard>
         }
