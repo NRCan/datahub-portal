@@ -211,7 +211,7 @@ public class ProjectUserManagementService : IProjectUserManagementService
             exists.IsAdmin = exists.IsDataApprover || projectMember.Role == ProjectMemberRole.Admin;
             await context.SaveChangesAsync();
             _logger.LogInformation("User {UserGraphId} removed from project {ProjectAcronym}", projectMember.UserId, projectAcronym);
-            await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
+            //await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
             _logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
             scope.Complete();
         }
