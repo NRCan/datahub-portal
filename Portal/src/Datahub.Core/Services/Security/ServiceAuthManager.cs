@@ -167,7 +167,7 @@ public class ServiceAuthManager
 
 
 
-    public bool InvalidateAuthCache()
+    public async Task<bool> InvalidateAuthCache()
     {
         var cache = serviceAuthCache as MemoryCache;
         if (cache != null)
@@ -176,10 +176,12 @@ public class ServiceAuthManager
             //this weird trick removes all the entries
             var percentage = 1.0;//100%
             cache.Compact(percentage);
+            await checkCacheForAdmins();
             return true;
         }
         else
         {
+            await checkCacheForAdmins();
             return false;
         }
     }
@@ -271,7 +273,7 @@ public class ServiceAuthManager
 
         await ctx.SaveChangesAsync();
         //await ClearProjectAdminCache();
-        InvalidateAuthCache();
+        await InvalidateAuthCache();
         ctx.Dispose();
     }
     private async Task<List<string>> GetProjectRoles()

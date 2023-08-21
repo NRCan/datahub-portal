@@ -390,7 +390,7 @@ public class ProjectUserManagementServiceTests
             _mockFactory.Object,
             _mockUserInformationService.Object,
             _mockIMSGraphService.Object,
-            _mockRequestManagementService.Object);
+            _mockRequestManagementService.Object, null);
 
         return projectUserManagementService;
     }

@@ -4,6 +4,7 @@ using Datahub.Core.Data.Project;
 using Datahub.Core.Model.Datahub;
 using Datahub.Core.Services;
 using Datahub.Core.Services.Projects;
+using Datahub.Core.Services.Security;
 using Datahub.Core.Services.UserManagement;
 using Datahub.Shared.Entities;
 using Datahub.Shared.Exceptions;
@@ -19,13 +20,15 @@ public class ProjectUserManagementService : IProjectUserManagementService
     private readonly IRequestManagementService _requestManagementService;
     private readonly ILogger<ProjectUserManagementService> _logger;
     private readonly IDbContextFactory<DatahubProjectDBContext> _contextFactory;
+    private readonly ServiceAuthManager _serviceAuthManager;
 
     public ProjectUserManagementService(
         ILogger<ProjectUserManagementService> logger,
         IDbContextFactory<DatahubProjectDBContext> contextFactory,
         IUserInformationService userInformationService,
         IMSGraphService msGraphService,
-        IRequestManagementService requestManagementService
+        IRequestManagementService requestManagementService,
+        ServiceAuthManager serviceAuthManager
     )
     {
         _userInformationService = userInformationService;
@@ -33,6 +36,7 @@ public class ProjectUserManagementService : IProjectUserManagementService
         _requestManagementService = requestManagementService;
         _logger = logger;
         _contextFactory = contextFactory;
+        _serviceAuthManager = serviceAuthManager;
     }
 
     public async Task AddUsersToProject(string projectAcronym, IEnumerable<string> userGraphIds)
@@ -211,8 +215,9 @@ public class ProjectUserManagementService : IProjectUserManagementService
             exists.IsAdmin = exists.IsDataApprover || projectMember.Role == ProjectMemberRole.Admin;
             await context.SaveChangesAsync();
             _logger.LogInformation("User {UserGraphId} removed from project {ProjectAcronym}", projectMember.UserId, projectAcronym);
+            await _serviceAuthManager.InvalidateAuthCache();
             //await _requestManagementService.HandleTerraformRequestServiceAsync(project, TerraformTemplate.VariableUpdate);
-            _logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
+            //_logger.LogInformation("Terraform variable update request created for project {ProjectAcronym}", projectAcronym);
             scope.Complete();
         }
         catch (Exception ex)
