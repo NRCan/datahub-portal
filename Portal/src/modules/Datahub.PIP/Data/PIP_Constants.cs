@@ -62,6 +62,12 @@ public class PIP_Constants
         "Promote a diverse and inclusive workforce while supporting resource communities",
         "Protect Canadians from the impacts of natural and human-induced hazards and support climate action"};
 
+    public static readonly string[] STRATEGIC2023 = {
+        "Climate Mitigation and Economic Transformation" ,
+        "Energy & Mineral Security" ,
+        "Adaptation, Emergency Preparedness, & Nature-Based Solutions" ,
+    };
+
     public static readonly string[] STRATEGIC1 = {"Protecting Canadians from the impacts of natural and human-induced hazards",
         "Accelerating the adoption of clean technology and supporting the transition to a low-carbon future",
         "Advancing reconciliation, building relationships, and sharing economic benefits with Indigenous peoples"};
@@ -104,6 +110,42 @@ public class PIP_Constants
         "25 - Create a new Canada Water Agency",
         "26 - Support the efforts of foresters to reduce emissions and build resilience as key partners in the fight against climate change",
         "27 - Develop a comprehensive blue economy strategy",
+    };
+
+    public static readonly string[] COMMITMENTS2023 = {
+         "Advance Canada’s global leadership on critical minerals by working with international partners and allies." ,
+         "Implement the Canada–U.S. Joint Action Plan on Critical Minerals Collaboration." ,
+         "Implement the Canada-EU Strategic Partnership on Raw Materials." ,
+         "Advance near-term consultations with provinces, territories and Indigenous communities to develop and implement strategies to decarbonize electricity systems." ,
+         "Establish a Pan-Canadian Grid Council to promote infrastructure investments, smart grids, grid integration and electricity sector innovation." ,
+         "Work with Indigenous partners and communities to support the transformation from diesel-fueled power to clean, renewable and reliable energy by 2030." ,
+         "Work to connect regions with carbon intensive electricity systems to more clean power by supporting transmission lines and the integration of renewables and clean fuels.",
+         "Move forward with legislation and comprehensive action to achieve a Just Transition." ,
+         "Deliver on investments to train workers and create opportunities for green jobs" ,
+         "Increase inclusion in the clean energy workforce by creating more opportunities for women, LGBTQ2 and other under-represented people in the energy sector." ,
+         "Develop and launch a Canadian Critical Minerals Strategy to supply the green and digitized economy and improve critical minerals supply chain resiliency." ,
+         "Launch a Canada-U.S. Battery Alliance for stakeholders in both countries to identify shared priorities and create environmental requirements." ,
+         "Add 50,000 new electric vehicle chargers and hydrogen stations to Canada’s network and support the installation of charging stations in existing buildings." ,
+         "Make investments to retrofit large trucks currently on the road" ,
+         "Support the production, distribution and use of clean fuels, including low or zero carbon hydrogen." ,
+         "Develop and implement a National Net-Zero Emissions Building Strategy to achieve net-zero emissions from buildings by 2050." ,
+         "Accelerate net-zero emissions new builds and deep retrofits of existing buildings through codes and incentives." ,
+         "Require EnerGuide labeling of homes at the time of sale." ,
+         "Transition away from fossil-fuel home heating systems" ,
+         "Launch a community level net-zero emissions homes initiative." ,
+         "Develop strategies around incentives, training programs and pilot initiatives to ensure effective implementation of model building codes." ,
+         "Provide grants of up to $5,000 for home retrofits through the Canada Greener Homes Grants Program." ,
+         "Create a Climate Adaptation Home Rating Program as a companion to the EnerGuide home energy audits to protect homeowners from the impacts of climate change." ,
+         "Launch a Low-Carbon Building Materials Innovation Hub." ,
+         "Implement the Natural Climate Solutions Fund." ,
+         "Plant 2 billion trees across the country over 10 years." ,
+         "Develop flood maps for higher-risk areas." ,
+         "Advance work to complete flood mapping nation-wide." ,
+         "Support the development of a portal to provide centralized access to information on flood risks." ,
+         "Expand the eligibility requirements of the Canada Greener Home Grants to include more climate resilience measures." ,
+         "Train 1,000 new community-based firefighters, invest in equipment and other measures to reduce risks from wildfire and support fire management by Indigenous communities to make Canadian communities safe and increase forest resilience to wildfire." ,
+         "Develop a new national benefits-sharing framework to ensure that First Nations and Métis Nation communities directly benefit from major resource projects in their territories, and that Inuit communities benefit from major resource projects in Inuit Nunangat" ,
+         "Establish an international centre of excellence focused on firefighter training and coordination and wildfire management and engage with the Canadian Interagency Forest Fire Centre." ,
     };
 
     public static readonly string[] TRANSFER_PROGRAMS = {"Contributions in support of the Green Construction through Wood Program (voted)",
@@ -171,6 +213,20 @@ public class PIP_Constants
         "SCP – Strengthen Climate Plan (ECCC)",
         "YESS - Youth Employment Skills Strategy (ESDC)",
     };
+
+    public static readonly string[] HORIZONTAL_INITIATIVES2023 = {
+        "Investing in Canada Plan (IICP);" ,
+        "Oceans Protection Plan (OPP);" ,
+        "Emergency Management Strategy (EMS);" ,
+        "Impact Assessment Processes (IAP);" ,
+        "Clean Change Mitigation (CCM);" ,
+        "Natural Climate Solutions Fund (NCSF);" ,
+        "Nature Legacy – Species at Risk (NLSR);" ,
+        "Youth Employment and Skills Strategy (YESS)" ,
+        "Federal Contaminated Sites Action Plan (FCSAP);" ,
+        "Achieving Marine Conservation Targets (MCT)." ,
+    };
+
     public static readonly string[] GOC_OUTCOMES = {"Economic Affairs - income security and employment for Canadians",
         "Economic Affairs - Strong economic growth",
         "Economic Affairs - an innovative and knowledge based economy",
