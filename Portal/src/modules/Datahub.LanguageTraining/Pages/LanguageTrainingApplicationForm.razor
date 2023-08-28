@@ -114,6 +114,22 @@
 
     private void PrepareMetadata()
     {
+        var accessorFunctions = new List<Func<LanguageTrainingApplication, string>>
+        {
+            new Func<LanguageTrainingApplication, string>(p => { return p.NRCan_Username; }),
+            new Func<LanguageTrainingApplication, string>(p => { return p.Sector_Branch; }),
+            new Func<LanguageTrainingApplication, string>(p => { return (p.Delegate_Manager_First_Name + " " + p.Delegated_Manager_Last_Name); }),
+            new Func<LanguageTrainingApplication, string>(p => { return DataLocalizer[p.I_am_seeking]; }),
+            new Func<LanguageTrainingApplication, string>(p => { return DataLocalizer[p.Manager_Decision]; }),
+        };
+
+        var filterChoices = new List<string>
+        {
+            DataLocalizer["All"], DataLocalizer["Awaiting Approval"], DataLocalizer["Approved"], DataLocalizer["Declined"]
+        };
+
+        var status = DataLocalizer["Status"];
+
         var baseuri = NavigationManager.BaseUri;
         _formMetadata.Header = "NRCan Language Training Request Form";
         _formMetadata.SubHeader = GetFormSubHeader();
@@ -125,7 +141,7 @@
         _formMetadata.GridTemplateColumns = "3fr 3fr 3fr 4fr 3fr";
         _formMetadata.IsSubmitEnabled = false;
         _formMetadata.SaveButtonText = DataLocalizer["Submit"];
-        var filters = new List<(Delegate Label, Delegate Choices)>() { (() => "Status", () => new List<string> { "All", "Pending", "Approved", "Declined" }) };
+        var filters = new List<(Delegate Label, Delegate Choices)>() { (() => "Status", () => filterChoices) };
         _formMetadata.FilterProperties = filters;
         _formMetadata.TableDisclaimer = DataLocalizer["LanguageTrainingApplication.LanguageTableDisclaimer"];
         var introfile = _isFrench ? "FormIntroFr.md" : "FormIntro.md";
@@ -211,16 +227,6 @@
         4 => period.Year_NUM + 1,
         _ => period.Year_NUM
     };
-
-    private List<Func<LanguageTrainingApplication, string>> accessorFunctions = new List<Func<LanguageTrainingApplication, string>>
-    {
-        new Func<LanguageTrainingApplication, string>(p => { return p.NRCan_Username; }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.Sector_Branch; }),
-        new Func<LanguageTrainingApplication, string>(p => { return (p.Delegate_Manager_First_Name + " " + p.Delegated_Manager_Last_Name); }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.I_am_seeking; }),
-        new Func<LanguageTrainingApplication, string>(p => { return p.Manager_Decision; }),
-    };
-
 
     private async void HandleFilterChange(string selection)
     {
@@ -349,20 +355,14 @@
                 .ToList();
         }
 
-        if (filter == "All" || string.IsNullOrEmpty(filter))
+        if (filter == DataLocalizer["All"] || string.IsNullOrEmpty(filter))
         {
             _formMetadata.DataSet = _languageTrainingApplications;
         }
         else
         {
-            _formMetadata.DataSet = _languageTrainingApplications.Where(r => r.Manager_Decision == filter).ToList();
+            _formMetadata.DataSet = _languageTrainingApplications.Where(r => DataLocalizer[r.Manager_Decision] == filter).ToList();
         }
-    }
-
-    private List<string> GetTrainingTypes()
-    {
-        var languageClass = _languageTrainingApplication.I_am_seeking;
-        return languageClass == "English Language Training" ? Language_Constants.TRAININGTYPEENGLISH.ToList() : Language_Constants.TRAININGTYPEFRENCH.ToList();
     }
 
     private void OnConfigure(IModelFormContext context)
@@ -385,10 +385,10 @@
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Class_For_Language_Training, () => _isFrench ? Language_Constants.CLASSES_E_FRENCH : Language_Constants.CLASSES_E);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Decision, () => Language_Constants.LANGUAGE_SCHOOL_SELECTION);
             context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Completed_Training_Session, () => Language_Constants.QUARTERS);
-            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => new[] { "", "Approved", "Declined"});
-            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => GetTrainingTypes());
+            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Manager_Decision, () => Language_Constants.MANAGERDECISIONS);
+            context.RegisterOptionValueProperty<LanguageTrainingApplication>(p => p.Training_Type, () => Language_Constants.TRAININGTYPEFRENCH);
             context.RegisterFieldNotes<LanguageTrainingApplication>(p => p.Manager_Decision, DataLocalizer["ManagerDecisionSubText"]);
-            context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
+            //context.RegisterCategoryNotes("Language Training Application", DataLocalizer["LanguageTrainingApplicationSubHeader"]);
         }
 
         ToggleVisibility(context);
@@ -433,7 +433,7 @@
     private void CreateNewApplication()
     {
         _isNewApp = true;
-        _languageTrainingApplication = new LanguageTrainingApplication() { Last_Updated_DT = DateTime.Now, Manager_Decision = "Pending" };
+        _languageTrainingApplication = new LanguageTrainingApplication() { Last_Updated_DT = DateTime.Now, Manager_Decision = "Awaiting Approval" };
         //var user = await UserInformationService.GetUserAsync();
         _languageTrainingApplication.Email_Address_EMAIL = _user.Mail;
         _languageTrainingApplication.First_Name = _user.GivenName;
@@ -448,13 +448,17 @@
 
     private string GetSessionForTraining()
     {
+        var q1 = DataLocalizer["Q1 - April to June"];
+        var q2 = DataLocalizer["Q2 - July to September"];
+        var q3 = DataLocalizer["Q3 – October to December"];
+        var q4 = DataLocalizer["Q4 - January to March"];
         return _currentPeriod?.Quarter_NUM switch
         {
             null => string.Empty,
-            1 => DataLocalizer["Q1 - April to June"],
-            2 => DataLocalizer["Q2 - July to September"],
-            3 => DataLocalizer["Q3 - October to December"],
-            _ => DataLocalizer["Q4 - January to March"],
+            1 => q1,
+            2 => q2,
+            3 => q3,
+            _ => q4,
         };
     }
 

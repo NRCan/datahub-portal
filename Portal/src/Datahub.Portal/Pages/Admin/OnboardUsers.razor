@@ -178,7 +178,7 @@
             _chosenUsers.Clear();
             _chosenUsers = Context.Project_Users.Where(p => p.Project == _project).ToList();
         }
-        ServiceAuthManager.InvalidateAuthCache();
+        await ServiceAuthManager.InvalidateAuthCache();
         StateHasChanged();
     }
 
