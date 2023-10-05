@@ -19,6 +19,8 @@ public class Language_Constants
         "NVT"
     };
 
+    public static readonly string[] MANAGERDECISIONS = { "Awaiting Approval", "Approved", "Declined" };
+
     public static readonly string[] LANGUAGE_TRAINING = { "French Language Training", "English Language Training"};
 
     public static readonly string[] LANGUAGE_TRAINING_PROVIDERS = { "NRCan Language School", "External Provider" };
@@ -29,10 +31,11 @@ public class Language_Constants
 
     public static readonly string[] QUARTERS = { "Q1 - April to June", "Q2 - July to September", "Q3 – October to December", "Q4 – January to March" };
 
-    public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Part-Time Training" };
+    public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Part-Time Training", "Group Training – Full-time Training (French program only)" };
     public static readonly string[] TRAININGTYPEENGLISH = { "Group training : Part-time (6 hours of class + 2 hours self-learning)", "Group training : Part-time (3 hours of class + 1 hour self-learning)", "Group training : Part-time (1.5 hours of class + 0 hours self-learning)*", "Private training: Coaching**" };
 
-    public static readonly string[] CLASSES_E = { "Beginner 1",
+    public static readonly string[] CLASSES_E = {
+        "Beginner 1",
         "Beginner 2",
         "Beginner 3",
         "Intermediate 1 (BBB)",
@@ -41,13 +44,34 @@ public class Language_Constants
         "Intermediate 4 (BBB)",
         "Intermediate 5 (BBB)",
         "Intermediate 6 (BBB)",
-        "Intermediate 7 – Test Oral Proficiency – B level",
+        "Preparation B",
         "Advanced 1 (CBC)",
         "Advanced 2 (CBC)",
         "Advanced 3 (CBC)",
         "Advanced 4 (CBC)",
         "Advanced 5 (CBC)",
-        "Advanced 6 – Test Oral Proficiency – C level"
+        "Preparation C"
+    };
+
+    public static readonly string[] CLASSES_E_FRENCH = {
+        "Débutant 1",
+        "Débutant 2",
+        "Débutant 3",
+        "Intermédiaire 1 (BBB)",
+        "Intermédiaire 2 (BBB)",
+        "Intermédiaire 3 (BBB)",
+        "Intermédiaire 4 (BBB)",
+        "Intermédiaire 5 (BBB)",
+        "Intermédiaire 6 (BBB)",
+        "Préparation B",
+        "Maintien B",
+        "Enrichi 1 (CBC)",
+        "Enrichi 2 (CBC)",
+        "Enrichi 3 (CBC)",
+        "Enrichi 4 (CBC)",
+        "Enrichi 5 (CBC)",
+        "Préparation C",
+        "Maintien C"
     };
 
     public static readonly string[] CLASSES_F = {   "Intermediate 1 (BBB)",

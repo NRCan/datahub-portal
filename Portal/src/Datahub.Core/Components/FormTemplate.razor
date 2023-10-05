@@ -34,7 +34,7 @@ else
                     @foreach (var filter in Metadata.FilterProperties)
                     {   
                         var validDisplayValues = filter.Choices.DynamicInvoke() as List<string>;
-                        var filterLabel = $"{filter.Label.DynamicInvoke() as string}: {_selectedFilter}";                    
+                        var filterLabel = $"{DataLocalizer[filter.Label.DynamicInvoke() as string]}: {DataLocalizer[_selectedFilter]}";                    
                         var filterClass = "filterDropdown";
                         <AeDropdown Items="validDisplayValues" OnChange="HandleFilterChanges" Label="@filterLabel" class="@filterClass"/>                
                     }
@@ -96,7 +96,7 @@ else
             <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
                 @foreach (var content in Metadata.MarkDownContent)
                 {
-                    <AeMarkdown Content="@($"{content}")"></AeMarkdown>
+                    <MudMarkdown Value="@($"{content}")" /> 
                 }
             </AeCard>
         }
@@ -122,7 +122,7 @@ else
             <AeCard class="facardForms" CardPosition="AeCard.CardStyle.Horizontal">
                 @foreach (var content in Metadata.MarkDownContentFooter)
                 {
-                    <AeMarkdown Content="@($"{content}")"></AeMarkdown>
+                    <MudMarkdown Value="@($"{content}")" />
                 }
             </AeCard>
         }

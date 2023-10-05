@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Elemental.Components;
 
 namespace Datahub.PIP.Data;
@@ -14,8 +15,12 @@ public class PIP_IndicatorAndResults
     [AeFormIgnore]
     public string IndicatorCode { get; set; }
 
-    [AeFormCategory("Fiscal Year", 1)]
+    [AeFormIgnore]
     public int FiscalYearId { get; set; }
+    
+    [AeFormCategory("Fiscal Year", 1)]
+    [NotMapped]
+    public string FiscalYearString => FiscalYear.FiscalYear;
 
     [AeFormCategory("Indicator Status", 1)]
     [MaxLength(100)]

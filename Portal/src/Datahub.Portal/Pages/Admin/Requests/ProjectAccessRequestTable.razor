@@ -128,7 +128,7 @@
             Error = "Cannot send email message";
             _logger.LogError(ex, "Cannot send email message");
         }
-        _serviceAuthManager.InvalidateAuthCache();
+        await _serviceAuthManager.InvalidateAuthCache();
         await RefreshData();
     }
 

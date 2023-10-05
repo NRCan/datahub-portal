@@ -18,8 +18,6 @@ public class PIP_Tombstone
     public string ProgramCode { get; set; }
 
     [AeFormIgnore]
-    //[AeLabel(row: "1", column: "1")]
-    //[AeFormCategory("Program Information", 1)]
     [Editable(false)] public int FiscalYearId { get; set; }
 
     [AeLabel(row: "1", column: "1")]

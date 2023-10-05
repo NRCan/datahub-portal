@@ -48,53 +48,53 @@ public class LanguageTrainingApplication
     public bool Completed_LETP_Assessment { get; set; }
     [AeFormCategory("Language Assessment", 20)]        
     public bool Language_Training_Since_LETP_Assessment { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]        
     public string Language_Training_Provided_By { get; set; }
 
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]        
     public string Last_Course_Successfully_Completed { get; set; }
         
-    [AeFormCategory("Language Assessment", 20)]        
+    [AeFormCategory("Group Choices", 20)]        
     public int Completed_Training_Year { get; set; }
         
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]
     public string Completed_Training_Session { get; set; }
         
-    [AeFormCategory("Language Assessment", 20)]        
+    [AeFormCategory("Group Choices", 20)]        
     public bool Report_Sent_To_NRCan_Language_School { get; set; }
         
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_Appointed_NonImperative_Basis { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_language_profile_raised { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_In_Pardp { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_professional_dev_program { get; set; }
         
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_equity_group { get; set; }
 
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     public bool Employee_talent_management_exercise { get; set; }
 
 
 
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
         
     public bool Second_Language_Evaluation_Results { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]
         
     public string SLE_Results_Reading { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]
         
     public string SLE_Results_Writing { get; set; }
-    [AeFormCategory("Language Assessment", 20)]
+    [AeFormCategory("Group Choices", 20)]
     [AeLabel(isDropDown: true)]        
     public string SLE_Results_Oral { get; set; }
         

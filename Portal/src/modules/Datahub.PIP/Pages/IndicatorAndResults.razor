@@ -8,10 +8,13 @@
 @inject IDbContextFactory<PIPDBContext> DbFactory
 @inject IDatahubAuditingService AuditingService
 @inject ServiceAuthManager ServiceAuthManager
+@using Datahub.PIP.Dialogs;
 @using Microsoft.Extensions.Logging 
 @using Datahub.PIP.Data
+@using MudBlazor;
 @inject ILogger<ProgramInventory> Logger
-
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 @page "/pip/indicators/{tombstone}/{fiscalYear}"
 
@@ -99,12 +102,10 @@
      <AeFlex>
         <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
             <FAButton Text="Save and Lock" @onclick="e => SaveAndLock()" Disabled=@(!_enableSave) />
-            <SuccessIndicator @bind-IsLoading=@_submittingApproval @ref=@_submitApprovalInd />
         </div>
     </AeFlex>
     <AeFlex>
         <div class="icon-container" style="margin-bottom: 10px; margin-left: 5px;">
-            <SuccessIndicator @bind-IsLoading=@_submittingApproval @ref=@_submitApprovalInd />
         </div>
     </AeFlex>
 
@@ -140,8 +141,6 @@
     private int _lastClicked = 0;
     private IPageableComponent _myTable;
     private bool _reloadOptions = true;
-    private SuccessIndicator _submitApprovalInd;
-    private bool _submittingApproval = false;
     private int _indicatorFiscalYear;
     private List<string> _markDownContent;
     
@@ -430,10 +429,8 @@
     }
 
     
-    private async void OnConfirmSave(bool isConfirmed, dynamic item)
+    private async Task OnConfirmSave(bool isConfirmed, dynamic item)
     {
-        await UI.ToggleModal();
-        _submittingApproval = true;
         if (isConfirmed && _indicator != null)
         {
             var timeUtc = DateTime.UtcNow;
@@ -452,18 +449,11 @@
             var result = await Context.TrackSaveChangesAsync(AuditingService);
             if (result < 1)
             {
-                var textList = new List<string>()
-                {
-                    $"The record you were trying to update has been modified by another user. Please copy your changes, refresh the page and re-enter the data."
-                };                
-                await UI.ToggleModal(
-    @<WarningModal OnDecision="HandleWarningDecision" WarningTextString=@textList />);
-
-                await _submitApprovalInd.SignalFailure();
+                Snackbar.Add("Error on saving, please try again", Severity.Warning);
             }
             else
             {
-                await _submitApprovalInd.SignalSuccess();
+                Snackbar.Add("Saved!", Severity.Success);
             }
         }
         else if (!isConfirmed && _indicator != null)
@@ -495,27 +485,13 @@
         _indicators = Context.IndicatorAndResults.OrderBy(o => o.Indicator_DESC).Where(p => p.PIP_Tombstone.Tombstone_ID == _tombstone.Tombstone_ID && !p.IsDeleted && p.FiscalYear == _fiscalYear).ToList();
     }
 
-    // public void CleanEditingUser()
-    //{
-    //    if (_indicator != null && _enableSave && !string.IsNullOrEmpty(_indicator.EditingUserId) && _indicator.EditingUserId == CurrentUser.Id)
-    //    {                        
-    //        try
-    //        {
-    //            _indicator.EditingUserId = null;
-    //            Context.SaveChanges();
-    //        }
-    //        catch (Exception e)
-    //        {                
-    //            Logger.LogDebug(e, $"Cannot clean current user in IndicatorAndResults");
-    //        }
-    //    } 
-    //}
-
     private async Task HandleValidSubmit()
     {
-        var messages = new List<string>() { "Would you like to save indicator data?" };
-        await UI.ToggleModal(
-        @<UserChoiceModal HeaderText="Save Data" ChoiceTextList=@messages OnDecision="(a) => OnConfirmSave(a, null)" ConfirmText="Yes" CancelText="No"  />);
+        var options = new DialogOptions { CloseOnEscapeKey = false };
+        var dialog = DialogService.Show<SaveRecord>("Warning", options);
+        var result = await dialog.Result;
+
+        await OnConfirmSave(!result.Cancelled, null);
     }
 
     private async Task GoToNextSheet()
@@ -546,15 +522,16 @@
 
         if (Context.ChangeTracker.HasChanges())
         {
-            var messages = new List<string>() { "Data has been edited, would you like to save?" };
-            await UI.ToggleModal(@<UserChoiceModal HeaderText="Save Data" ChoiceTextList=@messages OnDecision="(a) => OnConfirmSave(a, indicator)" ConfirmText="Yes" CancelText="No" />
-    );
+            var options = new DialogOptions { CloseOnEscapeKey = false };
+            var dialog = DialogService.Show<SaveRecord>("Warning", options);
+            var result = await dialog.Result;
+
+            await OnConfirmSave(!result.Cancelled, indicator);
+            
         }
         else
         {
-            //if (_indicator != null)
-            //    CleanEditingUser();
-
+        
             _indicator = Context.IndicatorAndResults.Where(i => i.IndicatorAndResult_ID == indicator.IndicatorAndResult_ID).First();
             await PrepareItemForEdit(_indicator);
 
