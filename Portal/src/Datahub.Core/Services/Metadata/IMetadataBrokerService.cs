@@ -53,5 +53,6 @@ public record CatalogSearchRequest
     List<ClassificationType> Classifications,
     List<MetadataObjectType> ObjectTypes,
     List<int> Sectors,
-    List<int> Branches
+    List<int> Branches,
+    List<AreasOfBusiness> BusinessAreas
 );

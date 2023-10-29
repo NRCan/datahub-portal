@@ -1,0 +1,41 @@
+﻿@*Datasets.razor*@
+@page "/datasets"
+@using Datahub.Metadata.DTO;
+@using Datahub.Metadata.Model;
+@inject IDbContextFactory<MetadataDbContext> _dbContextFactory
+
+<DHPageTitle PageTitleKey="@Localizer["Enterprise Data"]" />
+
+<MudText Typo=Typo.h3>@Localizer["Enterprise Datasets"]</MudText>
+
+@if (_datasets is not null)
+{
+        <MudGrid>
+            @foreach (var dataset in _datasets)
+            {
+                <MudItem xs="4">
+                    <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
+                </MudItem>
+            }  
+        </MudGrid>
+
+}
+
+@code {
+    private List<FieldChoice> _datasets;
+    private List<CatalogObjectResult> _searchResults = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        var fieldDefinition = await dbContext.FieldDefinitions.Where(f => f.Field_Name_TXT == "BusinessArea").SingleOrDefaultAsync();
+        _datasets = await dbContext.FieldChoices.Where(c => c.FieldDefinitionId == fieldDefinition.FieldDefinitionId).ToListAsync();
+    }
+
+    private async Task GetDataSets(string businessArea)
+    {
+            
+        
+    }
+}

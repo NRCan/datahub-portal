@@ -3,6 +3,7 @@
 public enum AreasOfBusiness : int
 {
     HR,
+    Finance,
     Assyst
 }
 

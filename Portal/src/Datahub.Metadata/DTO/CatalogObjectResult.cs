@@ -16,6 +16,7 @@ public class CatalogObjectResult
     public int Branch { get; set; }
     public string Contact { get; set; }
     public ClassificationType ClassificationType {  get; set; }
+    public AreasOfBusiness BusinessArea { get; set; }
     public string Url_English { get; set; }
     public string Url_French { get; set; }
     public CatalogObjectLanguage Language { get; init; }
