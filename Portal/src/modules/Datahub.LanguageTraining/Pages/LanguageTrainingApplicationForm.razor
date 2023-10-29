@@ -244,6 +244,11 @@
     {
         if (_languageTrainingApplication != null)
         {
+            if(_languageTrainingApplication.Sector_Branch == "NOTSELECTED")
+            {
+                return;            
+            }
+
             if (_languageTrainingApplication.Application_ID == 0)
             {
                 _languageTrainingApplication = Context.LanguageTrainingApplications.Add(_languageTrainingApplication).Entity;
