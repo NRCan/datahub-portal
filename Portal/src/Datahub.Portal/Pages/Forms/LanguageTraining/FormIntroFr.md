@@ -14,7 +14,7 @@ Si l’École de langues de RNCan n’est pas en mesure de répondre à vos beso
 
 
 ##### Évaluation linguistique
-Une Évaluation linguistique et Plan de formation linguistiques (ELPF) approuvée par votre gestionnaire et votre directeur/directrice générale (DG) est un prérequis à la formation linguistique.
+Une Évaluation linguistique et Plan de formation linguistiques (ELPF) approuvée par votre gestionnaire et votre directeur/directrice général•e (DG) est un prérequis à la formation linguistique.
 
 ##### Engagement et approbations
 L’approbation de votre gestionnaire est requise pour soumettre une demande de formation linguistique, en plus de la confirmation de votre engagement à participer au programme de formation linguistique. Veuillez prendre connaissance des exigences d’engagement ci-dessous et fournir les renseignements afférents au gestionnaire.
