@@ -2,7 +2,11 @@
 @page "/datasets"
 @using Datahub.Metadata.DTO;
 @using Datahub.Metadata.Model;
+@using Datahub.Portal.Pages.Catalog
 @inject IDbContextFactory<MetadataDbContext> _dbContextFactory
+@inject IMetadataBrokerService MetadataBrokerService
+@inject IOrganizationLevelsService OrganizationLevelsService 
+@inject UIControlsService uiControlService
 
 <DHPageTitle PageTitleKey="@Localizer["Enterprise Data"]" />
 
@@ -16,7 +20,29 @@
                 <MudItem xs="4">
                     <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
                 </MudItem>
-            }  
+            }
+            @if (_searchResults.Any())
+            {
+                    <InfiniteScrolling Preloaded=@_searchResults ItemsProvider=@GetMore>
+                        <ItemTemplate Context="item">
+                            <div class="catalog-cards">
+                                <CatalogCards @key=@item
+                                      CatalogResult=@item
+                                      Project=@GetProject(item)
+                                      MapSector=@GetSector
+                                      MapBranch=@GetBranch
+                                      OnShowLinks=@HandleShowLinks
+                                      ShowLinks>
+                                    @RenderTypeSpecificDownloadFragment(item)
+                                </CatalogCards>
+                            </div>
+                        </ItemTemplate>
+                        <LoadingTemplate>
+                            <div>@Localizer["Loading..."]</div>
+                        </LoadingTemplate>
+                    </InfiniteScrolling>
+             
+            }
         </MudGrid>
 
 }
@@ -24,18 +50,205 @@
 @code {
     private List<FieldChoice> _datasets;
     private List<CatalogObjectResult> _searchResults = new();
+    private CatalogSearchRequest _catalogSearchRequest;
+    private bool _isFrench;
+    private HashSet<AreasOfBusiness> _AreasOfBusinessTypes = new();
 
+    private List<OrganizationLevel> _allSectors = new();
+    private Dictionary<int, OrganizationLevel> _sectors = new();
+    private Dictionary<int, OrganizationLevel> _branches = new();
 
     protected override async Task OnInitializedAsync()
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
         var fieldDefinition = await dbContext.FieldDefinitions.Where(f => f.Field_Name_TXT == "BusinessArea").SingleOrDefaultAsync();
+        _isFrench = CultureInfo.CurrentCulture.Name.StartsWith("fr", StringComparison.InvariantCulture);
+        _sectors = (await OrganizationLevelsService.GetSectors()).ToDictionary(s => s.Id);
+        _allSectors = await OrganizationLevelsService.GetSectors();
+        _branches = (await OrganizationLevelsService.GetBranches()).ToDictionary(b => b.Id);
         _datasets = await dbContext.FieldChoices.Where(c => c.FieldDefinitionId == fieldDefinition.FieldDefinitionId).ToListAsync();
     }
 
     private async Task GetDataSets(string businessArea)
     {
-            
+        //_AreasOfBusinessTypes = new(ParseSet<AreasOfBusiness>(QueryClassifications, ',', isByte: true));
+
+        var areasOfBusiness = new List<AreasOfBusiness>();
+        areasOfBusiness.Add(AreasOfBusiness.Assyst);
+        areasOfBusiness.Add(AreasOfBusiness.Finance);
+        areasOfBusiness.Add(AreasOfBusiness.HR);
+        _catalogSearchRequest = new(0, 10, _isFrench, new List<string>(), 
+            new List<CatalogObjectLanguage>(), new List<ClassificationType>(), new List<MetadataObjectType>(), new List<int>(), new List<int>(), areasOfBusiness);
+
+        _searchResults = await MetadataBrokerService.SearchCatalog(_catalogSearchRequest, CheckValidResult);
+        await InvokeAsync(StateHasChanged);
+
+    }
+
+    private bool CheckValidResult(CatalogObjectResult result)
+    {
+        // filter incomplete metadata
+        var fieldValues = result.Metadata;
+
+        // name
+        if (string.IsNullOrEmpty(result.Name_English))
+            return false;
+
+        // contact
+        if (string.IsNullOrEmpty(result.Contact))
+            return false;
+
+        // subject
+        if (string.IsNullOrEmpty(fieldValues.GetValue("subject")))
+            return false;
+
+        // title
+        if (string.IsNullOrEmpty(fieldValues.GetValue(_isFrench ? "title_translated_fr" : "title_translated_en")))
+            return false;
         
+        // filter Power BI workspaces
+        //if (result.DataType == MetadataObjectType.PowerBIWorkspace && !_filteredDataTypes.Contains(MetadataObjectType.PowerBIWorkspace))
+        //    return false;
+
+        // filter Power BI datasets
+        //if (result.DataType == MetadataObjectType.PowerBIDataset && !_filteredDataTypes.Contains(MetadataObjectType.PowerBIDataset))
+        //    return false;
+
+        return true;
+    }
+
+    private async Task<IEnumerable<CatalogObjectResult>> GetMore(InfiniteScrollingItemsProviderRequest<CatalogObjectResult> request)
+    {
+        // if keywords are used there is no more results
+        if (_catalogSearchRequest.Keywords.Count > 0)
+            return new List<CatalogObjectResult>();
+
+        var newRequest = _catalogSearchRequest with
+            {
+                LastPageId = request.Items.LastOrDefault()?.CatalogObjectId ?? 0
+            };
+
+        var newResults = await MetadataBrokerService.SearchCatalog(newRequest, CheckValidResult);
+
+        // select the groups
+        var groups = new HashSet<Guid>(_searchResults.Where(r => r.GroupId.HasValue).Select(r => r.GroupId.Value));
+
+        // filter new results not grouped
+        var validNewResults = newResults.Where(r => !r.GroupId.HasValue || !groups.Contains(r.GroupId.Value)).ToList();
+
+        // add new items not grouped
+        _searchResults.AddRange(validNewResults);
+
+        return validNewResults;
+    }
+    private Datahub_Project GetProject(CatalogObjectResult result)
+    {
+        return null;
+    }
+    private string GetSector(CatalogObjectResult result, bool french) => GetLabel(_sectors.GetValueOrDefault(result.Sector), french);
+
+    private string GetBranch(CatalogObjectResult result, bool french) => GetLabel(_branches.GetValueOrDefault(result.Branch), french);
+
+    private string GetLabel(OrganizationLevel orgLevel, bool french) => (french ? orgLevel?.FrenchLabel : orgLevel?.EnglishLabel) ?? "-";
+    private async Task HandleShowLinks(CatalogObjectResult result)
+    {
+        if (result.GroupId.HasValue)
+        {
+            var group = await MetadataBrokerService.GetCatalogGroup(result.GroupId.Value);
+
+            // apply localization on bilingual entries
+            ApplyLocalization(group);
+
+            await ShowGroup(group);
+        }
+    }
+	private async Task ShowGroup(List<CatalogObjectResult> group)
+    {
+        RenderFragment groupFragment = 
+			@<div class="cards">
+				<div class="catalog-cards">
+					<CatalogCardGroup
+						CatalogResults=@group
+						GetProject=@GetProject
+						MapSector=@GetSector
+						MapBranch=@GetBranch
+						GetDownLoadFragment=@RenderTypeSpecificDownloadFragment />
+				</div>
+			</div>;
+		await uiControlService.ToggleModal(@<RenderFragmentModal Fragment=@groupFragment />);
+	}
+    private RenderFragment RenderTypeSpecificDownloadFragment(CatalogObjectResult result) => result.DataType switch
+    {
+        MetadataObjectType.PowerBIReport => RenderPowerBiReportFragment(result),
+        _ => RenderGenericDownloadButton(result)
+    };
+    
+	private RenderFragment RenderGenericDownloadButton(CatalogObjectResult result)
+	{
+		var action = GetButtonAction(result);
+		if (action == null)
+		{
+			return @<MudSpacer/>;
+		}
+		else
+		{
+			return @<AeButton class=@GetButtonClass(result) onclick=@GetButtonAction(result)>@GetButtonCaption(result)</AeButton>;
+		}
+	}
+
+    // renderer functions
+	private Action GetButtonAction(CatalogObjectResult result) => result.DataType switch
+	{
+		//MetadataObjectType.File => async () => await DownloadFile(result),
+		//MetadataObjectType.FileUrl => async () => await DownloadFileUrl(result),
+		//MetadataObjectType.PowerBIReport => async () => await ViewPowerBIReport(result),
+		//MetadataObjectType.DatasetUrl => async () => await DownloadDatasetUrl(result),
+		//MetadataObjectType.Database or
+		//MetadataObjectType.DataInitiative => () => NavigationManager.NavigateTo($"projects/{result.Location}"),
+		//MetadataObjectType.Databricks => async () => await RedirectAndDownload(result.Location),
+		_ => null
+	};
+
+	private string GetButtonCaption(CatalogObjectResult result) => result.ClassificationType switch
+	{
+		ClassificationType.ProtectedA => Localizer["Protected A - Request Access"],
+		ClassificationType.ProtectedB => Localizer["Protected B - Request Access"],
+		_ => GetButtonText(result)
+	};
+
+    private string GetButtonText(CatalogObjectResult result)
+    {
+        return result.DataType switch
+        {
+            MetadataObjectType.File or MetadataObjectType.FileUrl => Localizer["Download File"],
+            MetadataObjectType.PowerBIReport => Localizer["Open Report"],
+            MetadataObjectType.PowerBIWorkspace => Localizer["Open Workspace"],
+            MetadataObjectType.PowerBIDataset => Localizer["Open Dataset"],
+            MetadataObjectType.GeoObject => Localizer["Open Geo Object"],
+            MetadataObjectType.Database or
+        MetadataObjectType.DataInitiative => Localizer["Open Initiative"],
+            MetadataObjectType.Databricks => Localizer["Open Databricks"],
+            _ => Localizer["Download"]
+        };
+    }
+
+	private string GetButtonClass(CatalogObjectResult result) => result.ClassificationType == ClassificationType.Unclassified ? "blue" : "red";
+
+
+	private RenderFragment RenderPowerBiReportFragment(CatalogObjectResult result) =>
+		@<MudStack Row AlignItems=@AlignItems.Center>
+			<InternalPublishedPowerBIReportLinks ReportID=@result.MetadataObjectId_TXT />
+			@RenderGenericDownloadButton(result)
+		</MudStack>;
+
+
+    private void ApplyLocalization(List<CatalogObjectResult> results)
+    {
+        foreach (var r in results)
+        {
+            r.IsFrench = r.Language == CatalogObjectLanguage.Bilingual ? _isFrench : r.Language == CatalogObjectLanguage.French;
+        }
     }
 }
+
+

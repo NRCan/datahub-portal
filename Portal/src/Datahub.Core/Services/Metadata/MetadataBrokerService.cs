@@ -363,6 +363,9 @@ public class MetadataBrokerService : IMetadataBrokerService
             query = query.Where(e => hits.Contains(e.CatalogObjectId));
         }
 
+        if (request.BusinessAreas.Count > 0)
+            query = query.Where(e => request.BusinessAreas.Contains(e.Areas_Of_Business));
+
         if (request.Classifications.Count > 0)
             query = query.Where(e => request.Classifications.Contains(e.Classification_Type));
 
