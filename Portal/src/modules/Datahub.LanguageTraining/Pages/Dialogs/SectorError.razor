@@ -1,0 +1,19 @@
+﻿@using MudBlazor;
+
+<MudDialog>
+    <DialogContent>
+        The sector field is mandatory. 
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance? MudDialog { get; set; }
+    void Submit() => MudDialog?.Close(DialogResult.Ok(true));    
+}
+
+
+

@@ -214,6 +214,7 @@
     "databricks": "Databricks"
   },
   "404-Page-Error": "Invalid URL, please contact administrator if in error.",
+  "NOTSELECTED": "",
   "ChangeOwner": "Change Owner",
   "CreateFolder": "Create Folder",
   "Delete": "Delete",
@@ -1032,7 +1033,7 @@
   "Final_Updates_EndDate": "Final Updates End Date",
   "Final_Release_Date": "Final Release Date",
   "Requirements_Gathering_ActualEndDate": "Requirements Gathering Actual End Date",
-  "Phase1_Development_ActualEndDate": "Phase1 Development Actual End Date",  
+  "Phase1_Development_ActualEndDate": "Phase1 Development Actual End Date",
   "Phase1_Testing_ActualEndDate": "Phase1 Testing Actual End Date",
   "Phase2_Development_ActualEndDate": "Phase2 Development Actual End Date",
   "Phase2_Testing_ActualEndDate": "Phase2 Testing Actual End Date",

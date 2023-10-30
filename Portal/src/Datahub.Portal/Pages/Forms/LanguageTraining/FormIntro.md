@@ -4,7 +4,7 @@ NRCan believes in supporting employees in achieving a working level ability in t
 
 Training options offered by the NRCan Language School are as follows:
 
--  Virtual - Part-Time Training: between 4 and 8 hours per week, in groups of 6 to 8 learners
+-  Hybrid and Virtual - Part-Time Training: between 4 and 8 hours per week, in groups of 6 to 8 learners
 -  Virtual – Full-Time Training (French program only): 37.5 hours per week, in groups of 6 to 8 learners
 -  Individual - Coaching – up to 5 one-hour sessions (in preparation of a scheduled SLE test date) and can be requested via an e-mail to the NRCan Language School inbox at [languagetraining-formationlinguistique@nrcan-rncan.gc.ca](mailto:languagetraining-formationlinguistique@nrcan-rncan.gc.ca)
 
@@ -17,7 +17,7 @@ Should the NRCan Language School be unable to fulfill your training needs, an ex
 
 ##### Language Assessment
 
-A Language Evaluation and Training Plan (LETP) assessment is a pre-requisite to language training. If you have not completed an LETP assessment, please complete the following form <u>[https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/82014786)</u>.
+A Language Evaluation and Training Plan (LETP) assessment approved by your manager and Director General (DG) is a pre-requisite to language training.
 
 ##### Commitment and Approvals
 
