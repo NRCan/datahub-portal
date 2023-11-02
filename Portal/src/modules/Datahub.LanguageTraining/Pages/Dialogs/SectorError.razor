@@ -1,11 +1,11 @@
 ﻿@using MudBlazor;
-
+@inject IStringLocalizer Localizer
 <MudDialog>
     <DialogContent>
-        The sector field is mandatory. 
+        @Localizer["The sector field is mandatory."] 
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">@Localizer["OK"]</MudButton>
     </DialogActions>
 </MudDialog>
 
