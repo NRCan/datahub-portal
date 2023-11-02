@@ -193,8 +193,15 @@
     private string GetFrenchTrainingType(string englishTrainingType)
     {
 
-        if (englishTrainingType == "Group Training - Part-Time Training")
+        if (englishTrainingType == "Group Training - Part-time Training")
             return "Formation en groupe – Formation à temps partiel";
+
+        if (englishTrainingType == "Group Training – Full-time Training (French program only)")
+            return "Formation en groupe – Formation à temps plein (programme français seulement)";
+
+        if (englishTrainingType == "Group Training – Part-time Training (EX Program)")
+            return "Formation en groupe – Formation à temps partiel (programme EX)";
+
 
         return englishTrainingType;
 
@@ -250,7 +257,7 @@
             if(_languageTrainingApplication.Sector_Branch == "NOTSELECTED")
             {
                 var options = new DialogOptions { CloseOnEscapeKey = false };
-                var dialog = DialogService.Show<SectorError>("Warning", options);
+                var dialog = DialogService.Show<SectorError>(DataLocalizer["Warning"], options);
                 var result = await dialog.Result;                
                 return;            
             }
