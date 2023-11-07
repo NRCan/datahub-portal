@@ -347,7 +347,7 @@
     }
 
 
-    private async void OnConfirmDelete(bool isConfirmed, dynamic item)
+    private async Task OnConfirmDelete(bool isConfirmed)
     {
         if (isConfirmed && _indicator != null)
         {
@@ -366,10 +366,10 @@
 
     private async void DeleteRecord(int recordId)
     {
-        var messages = new List<string>() { "Would you like to delete this record?" };
-        await UI.ToggleModal(
-    @<UserChoiceModal HeaderText="Save Data" ChoiceTextList=@messages OnDecision="(a) => OnConfirmDelete(a, recordId)" ConfirmText="Yes" CancelText="No"  />
-    );
+        var options = new DialogOptions { CloseOnEscapeKey = false };
+        var dialog = DialogService.Show<DeleteRecord>("Warning", options);
+        var result = await dialog.Result;
+        await OnConfirmDelete(!result.Cancelled);
     }
 
     private List<Func<PIP_IndicatorAndResults, string>> accessorFunctions = new List<Func<PIP_IndicatorAndResults, string>>
