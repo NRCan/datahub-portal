@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Datahub.PIP.Data;
-
+//obselete
 public class PIP_TombstoneRisks
 {
     [Key]
