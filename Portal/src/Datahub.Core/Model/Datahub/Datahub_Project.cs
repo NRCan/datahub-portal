@@ -178,7 +178,6 @@ public class Datahub_Project : IComparable<Datahub_Project>
 
     [StringLength(400)]
     [AeFormCategory("Initiative Connections")]
-    [Obsolete("Use the new Project Resources relationship instead.", true)]
     public string Databricks_URL { get; set; }
 
     [AeFormCategory("Initiative Connections")]

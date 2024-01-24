@@ -35,7 +35,7 @@ namespace Datahub.LanguageTraining.Services
         {
             var parametersDict = BuildEmailParameteres(parameters);
 
-            var subject = $"Language Training Request / Demande de formation linguistique - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+            var subject = $"Language Training Request / Demande de formation linguistique";
 
             var html = await _emailNotificationService.RenderTemplate<ConfirmEmployeeRequest>(parametersDict);
 
@@ -52,7 +52,7 @@ namespace Datahub.LanguageTraining.Services
 
             if (parameters.ManagerDecision == "Approved")
             {
-                var subject = $"Language Training Request – MANAGER APPROVED / Demande de formation linguistique – APPROUVÉE PAR LA GESTION - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – MANAGER APPROVED / Demande de formation linguistique – APPROUVÉE PAR LA GESTION";
                 var html = await _emailNotificationService.RenderTemplate<ManagerRequestApproved>(parametersDict);
 
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
@@ -67,7 +67,7 @@ namespace Datahub.LanguageTraining.Services
             }
             else
             {
-                var subject = $"Language Training Request / Demande de formation linguistique  - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request / Demande de formation linguistique";
                 var html = await _emailNotificationService.RenderTemplate<ManagerRequestDenied>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, parameters.EmployeeEmailAddress, parameters.EmployeeName);
             }
@@ -80,7 +80,7 @@ namespace Datahub.LanguageTraining.Services
 
             if (parameters.LanguageSchoolDecision == "Training accepted")
             {
-                var subject = $"Language Training Request – PLACEMENT ACCEPTED / Demande de formation linguistique - PLACE APPROUVÉE - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – PLACEMENT ACCEPTED / Demande de formation linguistique - PLACE APPROUVÉE";
                 var html = await _emailNotificationService.RenderTemplate<LSUApproved>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
             {
@@ -90,7 +90,7 @@ namespace Datahub.LanguageTraining.Services
             }
             else if (parameters.LanguageSchoolDecision == "Requires LETP assessment")
             {
-                var subject = $"Language Training Request – NEW LETP REQUIRED / Demande de formation linguistique - NOUVEAU ELPF REQUIS - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – NEW LETP REQUIRED / Demande de formation linguistique - NOUVEAU ELPF REQUIS";
                 var html = await _emailNotificationService.RenderTemplate<LSUNewLTPReq>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
             {
@@ -100,7 +100,7 @@ namespace Datahub.LanguageTraining.Services
             }
             else if (parameters.LanguageSchoolDecision == "Insufficient interest at level")
             {
-                var subject = $"Language Training Request – INSUFFICIENT REGISTRATIONS / Demande de formation linguistique - INSCRIPTIONS INSUFFISANTES - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – INSUFFICIENT REGISTRATIONS / Demande de formation linguistique - INSCRIPTIONS INSUFFISANTES";
                 var html = await _emailNotificationService.RenderTemplate<LSUInsufficientInterest>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
             {
@@ -110,7 +110,7 @@ namespace Datahub.LanguageTraining.Services
             }
             else if (parameters.LanguageSchoolDecision == "Demand exceeds capacity")
             {
-                var subject = $"Language Training Request – EXCESS IN DEMAND / Demande de formation linguistique - SURPLUS DE DEMANDE - {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – EXCESS IN DEMAND / Demande de formation linguistique - SURPLUS DE DEMANDE";
                 var html = await _emailNotificationService.RenderTemplate<LSUExcessInDemand>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
             {
@@ -120,7 +120,7 @@ namespace Datahub.LanguageTraining.Services
             }
             else if (parameters.LanguageSchoolDecision == "Late application")
             {
-                var subject = $"Language Training Request – APPLICATION PERIOD CLOSED / Demande de formation linguistique - PÉRIODE D’INSCRIPTION FERMÉE -  {parameters.EmployeeName} – {parameters.TrainingType} - {parameters.ApplicationId} ";
+                var subject = $"Language Training Request – APPLICATION PERIOD CLOSED / Demande de formation linguistique - PÉRIODE D’INSCRIPTION FERMÉE";
                 var html = await _emailNotificationService.RenderTemplate<LSUApplicationPeriodClosed>(parametersDict);
                 await _emailNotificationService.SendEmailMessage(subject, html, new List<DatahubEmailRecipient>
             {

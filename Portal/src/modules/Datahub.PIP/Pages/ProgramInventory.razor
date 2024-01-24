@@ -194,7 +194,7 @@
 
     private void OnChange(ModelFormChangeArgs args)
     {
-      
+
     }
 
 
@@ -218,29 +218,29 @@
 
     private string[] GetHorizontalInitiatives()
     {
-        return _fiscalYear.YearId switch
+        if (_fiscalYear.YearId >= 2024)
         {
-            2024 => PIP_Constants.HORIZONTAL_INITIATIVES2023,
-            _ => PIP_Constants.HORIZONTAL_INITIATIVES
-        };
+            return PIP_Constants.HORIZONTAL_INITIATIVES2023;
+        }
+        return PIP_Constants.HORIZONTAL_INITIATIVES;
     }
 
     private string[] GetDepartmentalPriorities()
     {
-        return _fiscalYear.YearId switch
+        if (_fiscalYear.YearId >= 2024)
         {
-            2024 => PIP_Constants.STRATEGIC2023,
-            _ => PIP_Constants.STRATEGIC
-        };
+            return PIP_Constants.STRATEGIC2023;
+        }
+        return PIP_Constants.STRATEGIC;        
     }
 
     private string[] GetCommitments()
     {
-        return _fiscalYear.YearId switch
+        if (_fiscalYear.YearId >= 2024)
         {
-            2024 => PIP_Constants.COMMITMENTS2023,
-            _ => PIP_Constants.COMMITMENTS
-        };
+            return PIP_Constants.COMMITMENTS2023;
+        }
+        return PIP_Constants.COMMITMENTS;
     }
 
     private void OnConfigure(IModelFormContext context)
