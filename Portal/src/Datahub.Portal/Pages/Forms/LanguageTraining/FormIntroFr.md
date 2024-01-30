@@ -9,8 +9,8 @@ Les options de formation offertes par l’École de langues de RNCan sont les su
 La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS.
 
 **REMARQUES:**
-**L’École de langues de RNCan usera de son pouvoir discrétionnaire dans le but de s’assurer du respect de la continuité de l’apprentissage des apprenants existants, des besoins découlant d’exigences obligatoires et de l’équité.**
-**La formation linguistique est fondée sur la demande et la capacité de l’École de langues de RNCan. Le fait de soumettre une demande de formation linguistique ne garantit pas une place dans une session.**
+- **L’École de langues de RNCan usera de son pouvoir discrétionnaire dans le but de s’assurer du respect de la continuité de l’apprentissage des apprenants existants, des besoins découlant d’exigences obligatoires et de l’équité.**
+- **La formation linguistique est fondée sur la demande et la capacité de l’École de langues de RNCan. Le fait de soumettre une demande de formation linguistique ne garantit pas une place dans une session.**
 
 Si l’École de langues de RNCan n’est pas en mesure de répondre à vos besoins de formation, vous pouvez envisager de recourir à un fournisseur externe. Veuillez <u>[communiquer avec votre conseiller en approvisionnement](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621)</u> pour confirmer les options qui vous sont offertes en matière de fournisseurs externes.
 

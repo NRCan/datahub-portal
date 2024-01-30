@@ -12,8 +12,8 @@ Training options offered by the NRCan Language School are as follows:
 Group training will be scheduled on a quarterly basis; whereas coaching is available on an ad hoc basis once an employee has been provided with a SLE testing date.
 
 **NOTES:**
-**The NRCan Language School discretion will be applied to ensure continuity of training for existing learners, mandatory needs and equitability.**
-**Language training is based on demand and capacity of the NRCan Language School. Submitting a request for language training does not guarantee a place in a session.**
+- **The NRCan Language School discretion will be applied to ensure continuity of training for existing learners, mandatory needs and equitability.**
+- **Language training is based on demand and capacity of the NRCan Language School. Submitting a request for language training does not guarantee a place in a session.**
 
 Should the NRCan Language School be unable to fulfill your training needs, an external provider may be considered. For external provider options, please <u>[contact your procurement advisor](https://gcdocs.gc.ca/nrcan-rncan/llisapi.dll/link/19125621)</u> for confirmation of the procurement options available to you.
 
