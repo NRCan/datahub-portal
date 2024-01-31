@@ -3,8 +3,8 @@ RNCan croit qu’il faut aider les employés à atteindre un niveau de compéten
 Les options de formation offertes par l’École de langues de RNCan sont les suivantes :
 - Formation en présentiel à temps partiel : entre 4 et 8 heures par semaine, en groupes de 6 à 8 apprenants, au lieu de travail du 588, rue Booth (Ottawa).
 - Formation hybride et virtuelle à temps partiel : entre 4 et 8 heures par semaine, en groupes de 6 à 8 apprenants.
-- Formation en présentiel et en virtuel à temps plein (programme français seulement) : 37,5 heures par semaine, pour une période de quatre semaines, en groupes de 6 à 8 apprenants.
-- Encadrement individuel (lorsque recommander dans la ELPF) – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au [languagetraining-formationlinguistique@nrcan-rncan.gc.ca](mailto:languagetraining-formationlinguistique@nrcan-rncan.gc.ca)
+- Formation en présentiel et en virtuel à temps plein (programme français seulement) : 37,5 heures par semaine, en groupes de 6 à 8 apprenants.
+- Encadrement individuel (lorsque recommandé dans la ELPF) – jusqu’à 5 séances d’une heure (en préparation d’une date prévue pour le test d’ELS) et peut être demandé par l’entremise d’un courriel à l’adresse courriel de l’École de l’école de langues de RNCan au [languagetraining-formationlinguistique@nrcan-rncan.gc.ca](mailto:languagetraining-formationlinguistique@nrcan-rncan.gc.ca)
 
 La formation de groupe sera établie sur une base trimestrielle, tandis que l’encadrement est disponible sur une base ponctuelle une fois que l’employé a reçu une date de test d’ELS.
 

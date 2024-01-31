@@ -4,7 +4,7 @@ NRCan believes in supporting employees in achieving a working level ability in t
 
 Training options offered by the NRCan Language School are as follows:
 
-- In-Person Group Training (part-time): four to eight hours a week in groups of six and eight learners at the 588 Booth Street (Ottawa) work location
+- In-Person Group Training (part-time): four to eight hours a week in groups of six to eight learners at the 588 Booth Street (Ottawa) work location
 - Hybrid and Virtual - Part-Time Training: between 4 and 8 hours per week, in groups of 6 to 8 learners
 - In-Person and Virtual – Full-Time Training (French program only): 37.5 hours per week, in groups of 6 to 8 learners
 - Individual - Coaching (when recommended in the LETP) – up to 5 one-hour sessions (in preparation of a scheduled SLE test date) and can be requested via an e-mail to the NRCan Language School inbox at [languagetraining-formationlinguistique@nrcan-rncan.gc.ca](mailto:languagetraining-formationlinguistique@nrcan-rncan.gc.ca)
