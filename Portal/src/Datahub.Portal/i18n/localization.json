@@ -1042,8 +1042,8 @@
   "LanguageTrainingApplication": {
     "LanguageTableDisclaimer": "Only one registration permitted per student per session.",
     "Registrations_closed": "Registrations are currently closed.",
-    "Registrations_open_from_to": "Pre-registration Period for the {0} {1} session: from {2} to {3}.",
-    "Registrations_open_until": "Pre-registration is now available. You may submit your request for the {0} {1} session until {3} {4}, {5} by 11:59 PM (EST).",
+    "Registrations_open_from_to": "Registration Period for the {0} {1} session: from {2} to {3}.",
+    "Registrations_open_until": "You may submit your request for the {0} {1} session until {3} {4}, {5} by 11:59 PM (EST).",
     "Spring": "Spring",
     "Summer": "Summer",
     "Fall": "Fall",
