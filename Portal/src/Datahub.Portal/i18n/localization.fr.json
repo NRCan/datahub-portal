@@ -1704,7 +1704,7 @@
   "LanguageTrainingApplication": {
     "LanguageTableDisclaimer": "Une seule inscription est autorisée par étudiant et par session.",
     "Registrations_closed": "Les inscriptions sont actuellement fermées.",
-    "Registrations_open_from_to": "Période d'inscription pour la session {0} {1}: du {2} au {3}.",
+    "Registrations_open_from_to": "Période d'inscription pour la session {0} {1} : du {2} au {3}.",
     "Registrations_open_until": "Vous pouvez soumettre votre demande pour la session {0} {1} d'ici le {4} {3} {5}, à 23 h 59 (HNE).",
     "Spring": "du printemps",
     "Summer": "d'été",
