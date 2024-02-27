@@ -13,38 +13,46 @@
 <MudText Typo=Typo.h3>@Localizer["Enterprise Datasets"]</MudText>
 
 @if (_datasets is not null)
-{
-        <MudGrid>
-            @foreach (var dataset in _datasets)
-            {
-                <MudItem xs="4">
-                    <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
-                </MudItem>
-            }
-            @if (_searchResults.Any())
-            {
-                    <InfiniteScrolling Preloaded=@_searchResults ItemsProvider=@GetMore>
-                        <ItemTemplate Context="item">
-                            <div class="catalog-cards">
-                                <CatalogCards @key=@item
-                                      CatalogResult=@item
-                                      Project=@GetProject(item)
-                                      MapSector=@GetSector
-                                      MapBranch=@GetBranch
-                                      OnShowLinks=@HandleShowLinks
-                                      ShowLinks>
-                                    @RenderTypeSpecificDownloadFragment(item)
-                                </CatalogCards>
-                            </div>
-                        </ItemTemplate>
-                        <LoadingTemplate>
-                            <div>@Localizer["Loading..."]</div>
-                        </LoadingTemplate>
-                    </InfiniteScrolling>
-             
-            }
-        </MudGrid>
-
+{  
+    <MudGrid>
+        @foreach (var dataset in _datasets)
+        {
+            <MudItem xs="4">
+                <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
+            </MudItem>
+        }
+        @if (_searchResults.Any())
+        {
+            <MudTable Items="@_searchResults" Hover="true" Striped="true">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Available Datasets</MudText>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Description</MudTh>
+                    <MudTh>Created Date</MudTh>
+                    <MudTh>Sensitivity</MudTh>
+                    <MudTh>Author</MudTh>
+                    <MudTh>Template</MudTh>
+                    <MudTh>Blank Slate</MudTh>
+                    <MudTh>Download PBIX</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Name_English</MudTd>
+                    <MudTd DataLabel="Description"></MudTd>
+                    <MudTd DataLabel="Created Date"></MudTd>
+                    <MudTd DataLabel="Sensitivity">@context.ClassificationType</MudTd>
+                    <MudTd DataLabel="Author"></MudTd>
+                    <MudTd DataLabel="Template"></MudTd>
+                    <MudTd DataLabel="Blank Slate"></MudTd>
+                    <MudTd DataLabel="Download PBIX"></MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>             
+        }
+    </MudGrid>
 }
 
 @code {
@@ -71,12 +79,15 @@
 
     private async Task GetDataSets(string businessArea)
     {
-        //_AreasOfBusinessTypes = new(ParseSet<AreasOfBusiness>(QueryClassifications, ',', isByte: true));
-
+        
         var areasOfBusiness = new List<AreasOfBusiness>();
-        areasOfBusiness.Add(AreasOfBusiness.Assyst);
-        areasOfBusiness.Add(AreasOfBusiness.Finance);
-        areasOfBusiness.Add(AreasOfBusiness.HR);
+        if (businessArea == "Assyst")
+            areasOfBusiness.Add(AreasOfBusiness.Assyst);
+        if (businessArea == "Finance")
+            areasOfBusiness.Add(AreasOfBusiness.Finance);
+        if (businessArea == "HR")
+            areasOfBusiness.Add(AreasOfBusiness.HR);
+
         _catalogSearchRequest = new(0, 10, _isFrench, new List<string>(), 
             new List<CatalogObjectLanguage>(), new List<ClassificationType>(), new List<MetadataObjectType>(), new List<int>(), new List<int>(), areasOfBusiness);
 

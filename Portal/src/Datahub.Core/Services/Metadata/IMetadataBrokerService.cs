@@ -26,7 +26,7 @@ public interface IMetadataBrokerService
     Task<List<SubjectKeyword>> GetSubjectKeywords(IEnumerable<string> subjectIds);
     Task UpdateCatalog(long objectId, Entities.MetadataObjectType dataType, string englishName, string frenchName, string location,
         int sector, int branch, string contact, ClassificationType securityClass, string englishText, string frenchText,
-        CatalogObjectLanguage language, int? projectId, bool anonymous = false);
+        CatalogObjectLanguage language, int? projectId, bool anonymous = false, AreasOfBusiness areasOfBusiness = AreasOfBusiness.None);
     Task<List<CatalogObjectResult>> SearchCatalog(CatalogSearchRequest request, Func<CatalogObjectResult, bool> validateResult);
     Task<List<CatalogObjectResult>> GetCatalogGroup(Guid groupId);
     Task<FieldDefinitions> GetFieldDefinitions();

@@ -272,7 +272,7 @@ public class MetadataBrokerService : IMetadataBrokerService
 
     public async Task UpdateCatalog(long objectMetadataId, MetadataObjectType dataType, string englishName, string frenchName,
         string location, int sector, int branch, string contact, ClassificationType securityClass, string englishText, string frenchText,
-        CatalogObjectLanguage language, int? projectId, bool anonymous = false)
+        CatalogObjectLanguage language, int? projectId, bool anonymous = false, AreasOfBusiness areasOfBusiness = AreasOfBusiness.None)
     {
         using var ctx = _contextFactory.CreateDbContext();
 
@@ -297,6 +297,7 @@ public class MetadataBrokerService : IMetadataBrokerService
                 catalogObject.Search_French_TXT = frenchText;
                 catalogObject.Language = language;
                 catalogObject.ProjectId = projectId;
+                catalogObject.Areas_Of_Business = areasOfBusiness;
             };
 
             if (catalogObject.CatalogObjectId == 0)

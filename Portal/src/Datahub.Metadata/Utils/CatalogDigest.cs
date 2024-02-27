@@ -15,5 +15,6 @@ public record CatalogDigest
     int Branch, 
     string EnglishCatalog, 
     string FrenchCatalog, 
-    ClassificationType Classification
+    ClassificationType Classification,
+    AreasOfBusiness AreasOfBusiness
 );
