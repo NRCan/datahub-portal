@@ -21,36 +21,38 @@
                 <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
             </MudItem>
         }
-        @if (_searchResults.Any())
+        @if (_searchResultsDictionary.Any())
         {
-            <MudTable Items="@_searchResults" Hover="true" Striped="true">
-                <ToolBarContent>
-                    <MudText Typo="Typo.h6">Available Datasets</MudText>
-                </ToolBarContent>
-                <HeaderContent>
-                    <MudTh>Name</MudTh>
-                    <MudTh>Description</MudTh>
-                    <MudTh>Created Date</MudTh>
-                    <MudTh>Sensitivity</MudTh>
-                    <MudTh>Author</MudTh>
-                    <MudTh>Template</MudTh>
-                    <MudTh>Blank Slate</MudTh>
-                    <MudTh>Download PBIX</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Name">@context.Name_English</MudTd>
-                    <MudTd DataLabel="Description"></MudTd>
-                    <MudTd DataLabel="Created Date"></MudTd>
-                    <MudTd DataLabel="Sensitivity">@context.ClassificationType</MudTd>
-                    <MudTd DataLabel="Author"></MudTd>
-                    <MudTd DataLabel="Template"></MudTd>
-                    <MudTd DataLabel="Blank Slate"></MudTd>
-                    <MudTd DataLabel="Download PBIX"></MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager />
-                </PagerContent>
-            </MudTable>             
+            <div style="padding: 12px; width: 100%">
+                <MudTable Items="@_searchResultsDictionary" Hover="true" Striped="true">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Available Datasets</MudText>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Description</MudTh>
+                        <MudTh>Created Date</MudTh>
+                        <MudTh>Sensitivity</MudTh>
+                        <MudTh>Author</MudTh>
+                        <MudTh>Template</MudTh>
+                        <MudTh>Blank Slate</MudTh>
+                        <MudTh>Download PBIX</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Key.Name_English</MudTd>
+                        <MudTd DataLabel="Description">@context.Value["notes_translated_en"]</MudTd>
+                        <MudTd DataLabel="Created Date"></MudTd>
+                        <MudTd DataLabel="Sensitivity">@context.Key.ClassificationType</MudTd>
+                        <MudTd DataLabel="Author"></MudTd>
+                        <MudTd DataLabel="Template"></MudTd>
+                        <MudTd DataLabel="Blank Slate"></MudTd>
+                        <MudTd DataLabel="Download PBIX"></MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>             
+            </div>
         }
     </MudGrid>
 }
@@ -58,10 +60,11 @@
 @code {
     private List<FieldChoice> _datasets;
     private List<CatalogObjectResult> _searchResults = new();
+    private Dictionary<CatalogObjectResult, Dictionary<string,string>> _searchResultsDictionary = new();
     private CatalogSearchRequest _catalogSearchRequest;
     private bool _isFrench;
     private HashSet<AreasOfBusiness> _AreasOfBusinessTypes = new();
-
+    private FieldValueContainer _fieldValues;
     private List<OrganizationLevel> _allSectors = new();
     private Dictionary<int, OrganizationLevel> _sectors = new();
     private Dictionary<int, OrganizationLevel> _branches = new();
@@ -75,11 +78,13 @@
         _allSectors = await OrganizationLevelsService.GetSectors();
         _branches = (await OrganizationLevelsService.GetBranches()).ToDictionary(b => b.Id);
         _datasets = await dbContext.FieldChoices.Where(c => c.FieldDefinitionId == fieldDefinition.FieldDefinitionId).ToListAsync();
+
     }
 
     private async Task GetDataSets(string businessArea)
     {
-        
+        _searchResultsDictionary.Clear();
+
         var areasOfBusiness = new List<AreasOfBusiness>();
         if (businessArea == "Assyst")
             areasOfBusiness.Add(AreasOfBusiness.Assyst);
@@ -92,8 +97,20 @@
             new List<CatalogObjectLanguage>(), new List<ClassificationType>(), new List<MetadataObjectType>(), new List<int>(), new List<int>(), areasOfBusiness);
 
         _searchResults = await MetadataBrokerService.SearchCatalog(_catalogSearchRequest, CheckValidResult);
+        foreach(var result in _searchResults)
+        {
+            _fieldValues = result.Metadata;
+            var allfieldValues = IndexFieldValues(_fieldValues);
+            _searchResultsDictionary.Add(result, allfieldValues);
+        }
         await InvokeAsync(StateHasChanged);
 
+    }
+
+    private Dictionary<string, string> IndexFieldValues(FieldValueContainer fieldValues)
+    {
+        var names = fieldValues.GetAllFieldNames();
+        return names.ToDictionary(n => n, n => fieldValues.GetValue(n));
     }
 
     private bool CheckValidResult(CatalogObjectResult result)
@@ -128,30 +145,7 @@
         return true;
     }
 
-    private async Task<IEnumerable<CatalogObjectResult>> GetMore(InfiniteScrollingItemsProviderRequest<CatalogObjectResult> request)
-    {
-        // if keywords are used there is no more results
-        if (_catalogSearchRequest.Keywords.Count > 0)
-            return new List<CatalogObjectResult>();
-
-        var newRequest = _catalogSearchRequest with
-            {
-                LastPageId = request.Items.LastOrDefault()?.CatalogObjectId ?? 0
-            };
-
-        var newResults = await MetadataBrokerService.SearchCatalog(newRequest, CheckValidResult);
-
-        // select the groups
-        var groups = new HashSet<Guid>(_searchResults.Where(r => r.GroupId.HasValue).Select(r => r.GroupId.Value));
-
-        // filter new results not grouped
-        var validNewResults = newResults.Where(r => !r.GroupId.HasValue || !groups.Contains(r.GroupId.Value)).ToList();
-
-        // add new items not grouped
-        _searchResults.AddRange(validNewResults);
-
-        return validNewResults;
-    }
+   
     private Datahub_Project GetProject(CatalogObjectResult result)
     {
         return null;
@@ -161,33 +155,7 @@
     private string GetBranch(CatalogObjectResult result, bool french) => GetLabel(_branches.GetValueOrDefault(result.Branch), french);
 
     private string GetLabel(OrganizationLevel orgLevel, bool french) => (french ? orgLevel?.FrenchLabel : orgLevel?.EnglishLabel) ?? "-";
-    private async Task HandleShowLinks(CatalogObjectResult result)
-    {
-        if (result.GroupId.HasValue)
-        {
-            var group = await MetadataBrokerService.GetCatalogGroup(result.GroupId.Value);
-
-            // apply localization on bilingual entries
-            ApplyLocalization(group);
-
-            await ShowGroup(group);
-        }
-    }
-	private async Task ShowGroup(List<CatalogObjectResult> group)
-    {
-        RenderFragment groupFragment = 
-			@<div class="cards">
-				<div class="catalog-cards">
-					<CatalogCardGroup
-						CatalogResults=@group
-						GetProject=@GetProject
-						MapSector=@GetSector
-						MapBranch=@GetBranch
-						GetDownLoadFragment=@RenderTypeSpecificDownloadFragment />
-				</div>
-			</div>;
-		await uiControlService.ToggleModal(@<RenderFragmentModal Fragment=@groupFragment />);
-	}
+    
     private RenderFragment RenderTypeSpecificDownloadFragment(CatalogObjectResult result) => result.DataType switch
     {
         MetadataObjectType.PowerBIReport => RenderPowerBiReportFragment(result),
