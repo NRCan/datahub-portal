@@ -24,5 +24,10 @@ public class CatalogObjectResult
     public bool IsFrench { get; set; }
     public Guid? GroupId { get; set; }
     public int? ProjectId { get; set; }
+    
+    public string WorkspaceId { get; set; }
     public FieldValueContainer Metadata { get; set; }
+
+    public string DatasetUri => $"https://app.powerbi.com/groups/{WorkspaceId}/datasets/{MetadataObjectId_TXT}?experience=power-bi";
+    
 }

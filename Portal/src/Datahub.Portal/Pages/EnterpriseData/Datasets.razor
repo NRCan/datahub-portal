@@ -35,8 +35,6 @@
                         <MudTh>Sensitivity</MudTh>
                         <MudTh>Author</MudTh>
                         <MudTh>Template</MudTh>
-                        <MudTh>Blank Slate</MudTh>
-                        <MudTh>Download PBIX</MudTh>
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="Name">@context.Key.Name_English</MudTd>
@@ -44,9 +42,9 @@
                         <MudTd DataLabel="Created Date"></MudTd>
                         <MudTd DataLabel="Sensitivity">@context.Key.ClassificationType</MudTd>
                         <MudTd DataLabel="Author"></MudTd>
-                        <MudTd DataLabel="Template"></MudTd>
-                        <MudTd DataLabel="Blank Slate"></MudTd>
-                        <MudTd DataLabel="Download PBIX"></MudTd>
+                        <MudTd DataLabel="Template">
+                            <MudLink Href="@context.Key.DatasetUri" Target="_blank">View Template</MudLink>
+                        </MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager />
@@ -97,10 +95,13 @@
             new List<CatalogObjectLanguage>(), new List<ClassificationType>(), new List<MetadataObjectType>(), new List<int>(), new List<int>(), areasOfBusiness);
 
         _searchResults = await MetadataBrokerService.SearchCatalog(_catalogSearchRequest, CheckValidResult);
+        _searchResults = _searchResults.Where(r => r.DataType == MetadataObjectType.PowerBIDataset).ToList();
+        var workspaces = await MetadataBrokerService.GetWorkspaces(_searchResults);
         foreach(var result in _searchResults)
         {
             _fieldValues = result.Metadata;
             var allfieldValues = IndexFieldValues(_fieldValues);
+            result.WorkspaceId = workspaces.GetValueOrDefault(result.MetadataObjectId_TXT);
             _searchResultsDictionary.Add(result, allfieldValues);
         }
         await InvokeAsync(StateHasChanged);

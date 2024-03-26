@@ -1,8 +1,10 @@
 ﻿using Datahub.CatalogSearch;
+using Datahub.Core.Model.Datahub;
 using Datahub.Metadata.DTO;
 using Datahub.Metadata.Model;
 using Datahub.Metadata.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,16 +22,41 @@ public class MetadataBrokerService : IMetadataBrokerService
     private readonly ILogger<MetadataBrokerService> _logger;
     private readonly IDatahubAuditingService _auditingService;
     private readonly ICatalogSearchEngine _catalogSearchEngine;
+    private readonly IDbContextFactory<DatahubProjectDBContext> _projectContextFactory;
 
     public MetadataBrokerService(IDbContextFactory<MetadataDbContext> contextFactory, ILogger<MetadataBrokerService> logger,
-        IDatahubAuditingService auditingService, ICatalogSearchEngine catalogSearchEngine)
+        IDatahubAuditingService auditingService, ICatalogSearchEngine catalogSearchEngine, IDbContextFactory<DatahubProjectDBContext> projectContextFactory)
     {
         _contextFactory = contextFactory;
         _logger = logger;
         _auditingService = auditingService;
         _catalogSearchEngine = catalogSearchEngine;
+        _projectContextFactory = projectContextFactory;
     }
 
+    public async Task<Dictionary<string, string>> GetWorkspaces(List<CatalogObjectResult> searchResults)
+    {
+        //foreach searchresult, get a dbcontext, and get the workspace id from the table "POwerbi_datasets". add to the dictioary the key, which is searchResults.MetadataObjectId_TXT, and the value, which is the workspace id
+        Dictionary<string, string> workspaces = new Dictionary<string, string>();
+
+        foreach (CatalogObjectResult result in searchResults)
+        {
+            using var ctx = _projectContextFactory.CreateDbContext(); // Replace YourDbContext with the actual DbContext class
+            
+                // Query the "Powerbi_datasets" table to retrieve the workspace ID
+            string workspaceId = await ctx.PowerBi_DataSets
+                .Where(dataset => dataset.DataSet_ID.ToString() == result.MetadataObjectId_TXT)
+                .Select(dataset => dataset.Workspace_Id.ToString())
+                .FirstOrDefaultAsync();
+
+            // Add the workspace ID to the dictionary
+
+            workspaces.Add(result.MetadataObjectId_TXT, workspaceId);
+            
+        }
+
+        return workspaces;
+    }
     public async Task<List<Entities.MetadataProfile>> GetProfiles()
     {
         using var ctx = _contextFactory.CreateDbContext();
