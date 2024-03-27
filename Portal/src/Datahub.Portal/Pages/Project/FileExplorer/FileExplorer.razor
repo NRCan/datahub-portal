@@ -117,7 +117,8 @@
                         ProjectId=@ProjectId 
                         File=@file 
                         Readonly="!OwnsFile(file)" 
-                        OnMetadataChanged=@HandleMetadataChanged />
+                        OnMetadataChanged=@HandleMetadataChanged 
+                        AccountName=@_storageMetadata.AccountName/>
                 }
             </div>
         </div>
@@ -140,7 +141,7 @@
     public string ContainerName { get; set; }
 
     private string _userId;
-
+    private StorageMetadata _storageMetadata;
     private bool _loading = true;
     private List<FileMetaData> _uploadingFiles;
     private string _continuationToken;
@@ -179,6 +180,8 @@
         _uploadingFiles = new List<FileMetaData>();
 
         await FetchStorageBlobsPageAsync();
+
+        _storageMetadata = await _dataRetrievalService.GetStorageMetadata(ProjectAcronym);
     }
 
     private bool OwnsFile(FileMetaData file) => (file?.ownedby ?? "").Equals(_userId, StringComparison.InvariantCulture);

@@ -66,6 +66,8 @@
 
     [Parameter]
     public EventCallback OnMetadataChanged { get; set; }
+    [Parameter]
+    public string AccountName { get; set; }
 
     private List<(string, string)> _properties;
     private string _powerBiPasteText;
@@ -83,8 +85,8 @@
             .Select(p => (p.key, Value: File.GetMetadataPropertyValue(p.key)))
             .ToList();
 
-        _powerBiPasteText = $"abfs://{_commonAzureServices.FileSystemName}@{_commonAzureServices.StorageAccountName}.dfs.core.windows.net/{File.folderpath}/{File.filename}";
-        _fileLinkUrl = $"https://{_commonAzureServices.StorageAccountName}.blob.core.windows.net/datahub/{File.folderpath}/{File.filename}";
+        _powerBiPasteText = $"abfs://{_commonAzureServices.FileSystemName}@{AccountName}.dfs.core.windows.net/{File.folderpath}/{File.filename}";
+        _fileLinkUrl = $"https://{AccountName}.blob.core.windows.net/datahub/{File.folderpath}/{File.filename}";
     }
 
     private void ShowMetadataEditor()
