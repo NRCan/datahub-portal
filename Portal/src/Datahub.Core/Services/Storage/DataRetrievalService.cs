@@ -438,7 +438,8 @@ public class DataRetrievalService : BaseService
             Url = containerClient.Uri.ToString(),
             Versioning = "True",
             GeoRedundancy = accountInfo.SkuName.ToString(),
-            StorageAccountType = accountInfo.AccountKind.ToString()
+            StorageAccountType = accountInfo.AccountKind.ToString(),
+            AccountName = containerClient.AccountName,
         };
 
         return storageMetadata;
