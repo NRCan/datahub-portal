@@ -15,12 +15,12 @@
 @if (_datasets is not null)
 {  
     <MudGrid>
-        @foreach (var dataset in _datasets)
-        {
-            <MudItem xs="4">
-                <DatasetCard FieldChoice="@dataset" GetDataSets="GetDataSets"></DatasetCard>
-            </MudItem>
-        }
+        <MudSelect T="string" Value="@_selectedDataset" Label="Dataset" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetDataSets">
+            @foreach (var dataset in _datasets)
+            {
+                <MudSelectItem Value="@dataset.Label_English_TXT" />
+            }
+        </MudSelect>
         @if (_searchResultsDictionary.Any())
         {
             <div style="padding: 12px; width: 100%">
@@ -66,6 +66,7 @@
     private List<OrganizationLevel> _allSectors = new();
     private Dictionary<int, OrganizationLevel> _sectors = new();
     private Dictionary<int, OrganizationLevel> _branches = new();
+    private string _selectedDataset;
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,16 +80,16 @@
 
     }
 
-    private async Task GetDataSets(string businessArea)
+    private async Task GetDataSets(string dataset)
     {
         _searchResultsDictionary.Clear();
-
+        _selectedDataset = dataset;
         var areasOfBusiness = new List<AreasOfBusiness>();
-        if (businessArea == "Assyst")
+        if (_selectedDataset == "Assyst")
             areasOfBusiness.Add(AreasOfBusiness.Assyst);
-        if (businessArea == "Finance")
+        if (_selectedDataset == "Finance")
             areasOfBusiness.Add(AreasOfBusiness.Finance);
-        if (businessArea == "HR")
+        if (_selectedDataset == "HR")
             areasOfBusiness.Add(AreasOfBusiness.HR);
 
         _catalogSearchRequest = new(0, 10, _isFrench, new List<string>(), 
