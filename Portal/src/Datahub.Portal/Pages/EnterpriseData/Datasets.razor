@@ -15,18 +15,22 @@
 @if (_datasets is not null)
 {  
     <MudGrid>
-        <MudSelect T="string" Value="@_selectedDataset" Label="Dataset" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetDataSets">
-            @foreach (var dataset in _datasets)
-            {
-                <MudSelectItem Value="@dataset.Label_English_TXT" />
-            }
-        </MudSelect>
+        <div style="padding: 12px; width: 25%">
+            <MudSelect T="string" Value="@_selectedDataset" Label="Dataset" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetDataSets">
+                @foreach (var dataset in _datasets)
+                {
+                    <MudSelectItem Value="@dataset.Label_English_TXT" />
+                }
+            </MudSelect>
+        </div>
         @if (_searchResultsDictionary.Any())
         {
             <div style="padding: 12px; width: 100%">
-                <MudTable Items="@_searchResultsDictionary" Hover="true" Striped="true">
+                <MudTable Items="@_searchResultsList" Hover="true" Striped="true" Filter="new Func<CatalogObjectResult, bool>(FilterFunc1)">
                     <ToolBarContent>
-                        <MudText Typo="Typo.h6">Available Datasets</MudText>
+                        <MudText Typo="Typo.h6">@_selectedDataset Datasets</MudText>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <HeaderContent>
                         <MudTh>Name</MudTh>
@@ -37,13 +41,13 @@
                         <MudTh>Template</MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        <MudTd DataLabel="Name">@context.Key.Name_English</MudTd>
-                        <MudTd DataLabel="Description">@context.Value["notes_translated_en"]</MudTd>
+                        <MudTd DataLabel="Name">@context.Name_English</MudTd>
+                        <MudTd DataLabel="Description">@_searchResultsDictionary[context]["notes_translated_en"]</MudTd>  
                         <MudTd DataLabel="Created Date"></MudTd>
-                        <MudTd DataLabel="Sensitivity">@context.Key.ClassificationType</MudTd>
+                        <MudTd DataLabel="Sensitivity">@context.ClassificationType</MudTd>
                         <MudTd DataLabel="Author"></MudTd>
                         <MudTd DataLabel="Template">
-                            <MudLink Href="@context.Key.DatasetUri" Target="_blank">View Template</MudLink>
+                            <MudLink Href="@context.DatasetUri" Target="_blank">View Template</MudLink>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -59,6 +63,7 @@
     private List<FieldChoice> _datasets;
     private List<CatalogObjectResult> _searchResults = new();
     private Dictionary<CatalogObjectResult, Dictionary<string,string>> _searchResultsDictionary = new();
+    private List<CatalogObjectResult> _searchResultsList = new();
     private CatalogSearchRequest _catalogSearchRequest;
     private bool _isFrench;
     private HashSet<AreasOfBusiness> _AreasOfBusinessTypes = new();
@@ -67,7 +72,7 @@
     private Dictionary<int, OrganizationLevel> _sectors = new();
     private Dictionary<int, OrganizationLevel> _branches = new();
     private string _selectedDataset;
-
+    private string _searchString = "";
     protected override async Task OnInitializedAsync()
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
@@ -80,9 +85,21 @@
 
     }
 
+    private bool FilterFunc1(CatalogObjectResult catalogObject) => FilterFunc(catalogObject, _searchString);
+
+    private bool FilterFunc(CatalogObjectResult catalogObject, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (catalogObject.Name_English.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
     private async Task GetDataSets(string dataset)
     {
         _searchResultsDictionary.Clear();
+        _searchResultsList.Clear();
         _selectedDataset = dataset;
         var areasOfBusiness = new List<AreasOfBusiness>();
         if (_selectedDataset == "Assyst")
@@ -104,6 +121,7 @@
             var allfieldValues = IndexFieldValues(_fieldValues);
             result.WorkspaceId = workspaces.GetValueOrDefault(result.MetadataObjectId_TXT);
             _searchResultsDictionary.Add(result, allfieldValues);
+            _searchResultsList.Add(result);
         }
         await InvokeAsync(StateHasChanged);
 
