@@ -4,6 +4,7 @@ using Datahub.Metadata.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Datahub.Metadata.Migrations
 {
     [DbContext(typeof(MetadataDbContext))]
-    partial class MetadataDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230726170541_AddedCatalogDepartments")]
+    partial class AddedCatalogDepartments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,10 +141,10 @@ namespace Datahub.Metadata.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CatalogObjectId"));
 
-                    b.Property<int>("Areas_Of_Business")
+                    b.Property<int>("Branch_NUM")
                         .HasColumnType("int");
 
-                    b.Property<int>("Branch_NUM")
+                    b.Property<int>("Catalog_Departments")
                         .HasColumnType("int");
 
                     b.Property<byte>("Classification_Type")

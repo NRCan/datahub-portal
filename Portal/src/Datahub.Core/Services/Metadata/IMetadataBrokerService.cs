@@ -26,7 +26,7 @@ public interface IMetadataBrokerService
     Task<List<SubjectKeyword>> GetSubjectKeywords(IEnumerable<string> subjectIds);
     Task UpdateCatalog(long objectId, Entities.MetadataObjectType dataType, string englishName, string frenchName, string location,
         int sector, int branch, string contact, ClassificationType securityClass, string englishText, string frenchText,
-        CatalogObjectLanguage language, int? projectId, bool anonymous = false);
+        CatalogObjectLanguage language, int? projectId, bool anonymous = false, AreasOfBusiness areasOfBusiness = AreasOfBusiness.None);
     Task<List<CatalogObjectResult>> SearchCatalog(CatalogSearchRequest request, Func<CatalogObjectResult, bool> validateResult);
     Task<List<CatalogObjectResult>> GetCatalogGroup(Guid groupId);
     Task<FieldDefinitions> GetFieldDefinitions();
@@ -41,6 +41,7 @@ public interface IMetadataBrokerService
     Task<List<CatalogObjectResult>> GetProjectCatalogItems(int projectId);
     Task<ClassificationType?> GetObjectClassification(string objectId);
     Task UpdateMetadata(Stream stream);
+    Task<Dictionary<string, string>> GetWorkspaces(List<CatalogObjectResult> searchResults);
 }
 
 public record CatalogSearchRequest
@@ -53,5 +54,6 @@ public record CatalogSearchRequest
     List<ClassificationType> Classifications,
     List<MetadataObjectType> ObjectTypes,
     List<int> Sectors,
-    List<int> Branches
+    List<int> Branches,
+    List<AreasOfBusiness> BusinessAreas
 );

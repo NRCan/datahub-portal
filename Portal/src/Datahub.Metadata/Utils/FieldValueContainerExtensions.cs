@@ -35,11 +35,22 @@ public static class FieldValueContainerExtensions
         var titleFrench = fields.GetValue("title_translated_fr", objectName);
 
         return new(titleEnglish, titleFrench, contact, sector, branch, englishCatalog, frenchCatalog, 
-            fields.GetSecurityClassification());
+            fields.GetSecurityClassification(), fields.GetAreasOfBusiness());
     }
 
     const string SecurityClassificationName = "security_classification";
+    const string BusinessAreasName = "BusinessArea";
 
+    public static AreasOfBusiness GetAreasOfBusiness(this FieldValueContainer fields)
+    {
+        return fields.GetValue(BusinessAreasName, "None") switch
+        {
+            "HR" => AreasOfBusiness.HR,
+            "Finance" => AreasOfBusiness.Finance,
+            "Assyst" => AreasOfBusiness.Assyst,
+            _ => AreasOfBusiness.None
+        };
+    }
     public static ClassificationType GetSecurityClassification(this FieldValueContainer fields)
     {
         return fields.GetValue(SecurityClassificationName, "0") switch
