@@ -31,7 +31,8 @@ public class Language_Constants
 
     public static readonly string[] QUARTERS = { "Q1 - April to June", "Q2 - July to September", "Q3 – October to December", "Q4 – January to March" };
 
-    public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Part-time Training", "Group Training – Full-time Training (French program only)", "Group Training – Part-time Training (EX Program)" };
+    //public static readonly string[] TRAININGTYPEFRENCH = { "Group Training - Part-time Training", "Group Training – Full-time Training (French program only)", "Group Training – Part-time Training (EX Program)" };
+    public static readonly string[] TRAININGTYPEFRENCH = { "In-Person Group Training – Part-time Training (588 Booth, Ottawa)", "Virtual Group Training – Part-time Training", "In-Person Group Training – Full-time Training, French program only (588 Booth, Ottawa)", "Virtual Group Training – Full-time Training, French program only", "Group Training – Part-time Training (EX Program)" };
     public static readonly string[] TRAININGTYPEENGLISH = { "Group training : Part-time (6 hours of class + 2 hours self-learning)", "Group training : Part-time (3 hours of class + 1 hour self-learning)", "Group training : Part-time (1.5 hours of class + 0 hours self-learning)*", "Private training: Coaching**" };
 
     public static readonly string[] CLASSES_E = {
@@ -45,12 +46,15 @@ public class Language_Constants
         "Intermediate 5 (BBB)",
         "Intermediate 6 (BBB)",
         "Preparation B",
+        "Maintenance B",
+        "Consolidation B",
         "Advanced 1 (CBC)",
         "Advanced 2 (CBC)",
         "Advanced 3 (CBC)",
         "Advanced 4 (CBC)",
         "Advanced 5 (CBC)",
-        "Preparation C"
+        "Preparation C",
+        "Maintenance C"
     };
 
     public static readonly string[] CLASSES_E_FRENCH = {
@@ -65,6 +69,7 @@ public class Language_Constants
         "Intermédiaire 6 (BBB)",
         "Préparation B",
         "Maintien B",
+        "Consolidation B",
         "Enrichi 1 (CBC)",
         "Enrichi 2 (CBC)",
         "Enrichi 3 (CBC)",
