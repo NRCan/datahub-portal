@@ -50,10 +50,10 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
         var user = await _userInformationService.GetCurrentGraphUserAsync();
         _authorizedLinks = GetAuthorizedLinks(user.Id);
-        
+
         _userHasInitiatives = !(await _userInformationService.IsUserWithoutInitiatives());
         _navTextStyle = new StyleBuilder()
             .AddStyle("font-size", ".5rem")
@@ -79,7 +79,7 @@
             ("/discovery", Icon.CATALOG, "SIDEBAR.Catalog", (IsFeatureEnabled("DataCatalog") && _userHasInitiatives)),
             ("/profile", Icon.PROFILE, "My Profile", true),
             //("/data", Icon.STORAGE, "SIDEBAR.Storage"),
-            //("/datasets", Icon.DATASETS, "SIDEBAR.Datasets"),
+
             //("/powerbi", Icon.POWERBI, "SIDEBAR.PowerBI"),      
         };
     }
@@ -87,15 +87,17 @@
     private List<(string Href, Icon Icon, string Label, List<string> Roles)> GetAuthorizedLinks(string userId = null)
     {
         var projects = ServiceAuthManager.GetAdminProjectRoles(userId);
+
         if (projects.Any())
         {
             return new()
             {
                 ("/administration", Icon.ADMIN, "SIDEBAR.Admin", projects),
+                ("/datasets", Icon.DATASETS, "SIDEBAR.Datasets", projects)
             };
         }
 
-        return new List<(string, Icon, string, List<string>)>();
+        return new() { ("/datasets", Icon.DATASETS, "SIDEBAR.Datasets", projects) };
     }
 
     private bool IsFeatureEnabled(string name)

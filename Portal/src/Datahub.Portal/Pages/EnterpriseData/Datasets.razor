@@ -1,0 +1,253 @@
+﻿@*Datasets.razor*@
+@page "/datasets"
+@using Datahub.Metadata.DTO;
+@using Datahub.Metadata.Model;
+@using Datahub.Portal.Pages.Catalog
+@inject IDbContextFactory<MetadataDbContext> _dbContextFactory
+@inject IMetadataBrokerService MetadataBrokerService
+@inject IOrganizationLevelsService OrganizationLevelsService 
+@inject UIControlsService uiControlService
+
+<DHPageTitle PageTitleKey="@Localizer["Enterprise Data"]" />
+
+<MudText Typo=Typo.h3>@Localizer["Enterprise Datasets"]</MudText>
+
+@if (_datasets is not null)
+{  
+    <MudGrid>
+        <div style="padding: 12px; width: 25%">
+            <MudSelect T="string" Value="@_selectedDataset" Label="Dataset" AnchorOrigin="Origin.BottomCenter" ValueChanged="GetDataSets">
+                @foreach (var dataset in _datasets)
+                {
+                    <MudSelectItem Value="@dataset.Label_English_TXT" />
+                }
+            </MudSelect>
+        </div>
+        @if (_searchResultsDictionary.Any())
+        {
+            <div style="padding: 12px; width: 100%">
+                <MudTable Items="@_searchResultsList" Hover="true" Striped="true" Filter="new Func<CatalogObjectResult, bool>(FilterFunc1)">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">@_selectedDataset Datasets</MudText>
+                        <MudSpacer />
+                        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Description</MudTh>
+                        <MudTh>Created Date</MudTh>
+                        <MudTh>Sensitivity</MudTh>
+                        <MudTh>Author</MudTh>
+                        <MudTh>Template</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Name_English</MudTd>
+                        <MudTd DataLabel="Description">@_searchResultsDictionary[context]["notes_translated_en"]</MudTd>  
+                        <MudTd DataLabel="Created Date"></MudTd>
+                        <MudTd DataLabel="Sensitivity">@context.ClassificationType</MudTd>
+                        <MudTd DataLabel="Author"></MudTd>
+                        <MudTd DataLabel="Template">
+                            <MudLink Href="@context.DatasetUri" Target="_blank">View Template</MudLink>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>             
+            </div>
+        }
+    </MudGrid>
+}
+
+@code {
+    private List<FieldChoice> _datasets;
+    private List<CatalogObjectResult> _searchResults = new();
+    private Dictionary<CatalogObjectResult, Dictionary<string,string>> _searchResultsDictionary = new();
+    private List<CatalogObjectResult> _searchResultsList = new();
+    private CatalogSearchRequest _catalogSearchRequest;
+    private bool _isFrench;
+    private HashSet<AreasOfBusiness> _AreasOfBusinessTypes = new();
+    private FieldValueContainer _fieldValues;
+    private List<OrganizationLevel> _allSectors = new();
+    private Dictionary<int, OrganizationLevel> _sectors = new();
+    private Dictionary<int, OrganizationLevel> _branches = new();
+    private string _selectedDataset;
+    private string _searchString = "";
+    protected override async Task OnInitializedAsync()
+    {
+        await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+        var fieldDefinition = await dbContext.FieldDefinitions.Where(f => f.Field_Name_TXT == "BusinessArea").SingleOrDefaultAsync();
+        _isFrench = CultureInfo.CurrentCulture.Name.StartsWith("fr", StringComparison.InvariantCulture);
+        _sectors = (await OrganizationLevelsService.GetSectors()).ToDictionary(s => s.Id);
+        _allSectors = await OrganizationLevelsService.GetSectors();
+        _branches = (await OrganizationLevelsService.GetBranches()).ToDictionary(b => b.Id);
+        _datasets = await dbContext.FieldChoices.Where(c => c.FieldDefinitionId == fieldDefinition.FieldDefinitionId).ToListAsync();
+
+    }
+
+    private bool FilterFunc1(CatalogObjectResult catalogObject) => FilterFunc(catalogObject, _searchString);
+
+    private bool FilterFunc(CatalogObjectResult catalogObject, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (catalogObject.Name_English.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private async Task GetDataSets(string dataset)
+    {
+        _searchResultsDictionary.Clear();
+        _searchResultsList.Clear();
+        _selectedDataset = dataset;
+        var areasOfBusiness = new List<AreasOfBusiness>();
+        if (_selectedDataset == "Assyst")
+            areasOfBusiness.Add(AreasOfBusiness.Assyst);
+        if (_selectedDataset == "Finance")
+            areasOfBusiness.Add(AreasOfBusiness.Finance);
+        if (_selectedDataset == "HR")
+            areasOfBusiness.Add(AreasOfBusiness.HR);
+
+        _catalogSearchRequest = new(0, 10, _isFrench, new List<string>(), 
+            new List<CatalogObjectLanguage>(), new List<ClassificationType>(), new List<MetadataObjectType>(), new List<int>(), new List<int>(), areasOfBusiness);
+
+        _searchResults = await MetadataBrokerService.SearchCatalog(_catalogSearchRequest, CheckValidResult);
+        _searchResults = _searchResults.Where(r => r.DataType == MetadataObjectType.PowerBIDataset).ToList();
+        var workspaces = await MetadataBrokerService.GetWorkspaces(_searchResults);
+        foreach(var result in _searchResults)
+        {
+            _fieldValues = result.Metadata;
+            var allfieldValues = IndexFieldValues(_fieldValues);
+            result.WorkspaceId = workspaces.GetValueOrDefault(result.MetadataObjectId_TXT);
+            _searchResultsDictionary.Add(result, allfieldValues);
+            _searchResultsList.Add(result);
+        }
+        await InvokeAsync(StateHasChanged);
+
+    }
+
+    private Dictionary<string, string> IndexFieldValues(FieldValueContainer fieldValues)
+    {
+        var names = fieldValues.GetAllFieldNames();
+        return names.ToDictionary(n => n, n => fieldValues.GetValue(n));
+    }
+
+    private bool CheckValidResult(CatalogObjectResult result)
+    {
+        // filter incomplete metadata
+        var fieldValues = result.Metadata;
+
+        // name
+        if (string.IsNullOrEmpty(result.Name_English))
+            return false;
+
+        // contact
+        if (string.IsNullOrEmpty(result.Contact))
+            return false;
+
+        // subject
+        if (string.IsNullOrEmpty(fieldValues.GetValue("subject")))
+            return false;
+
+        // title
+        if (string.IsNullOrEmpty(fieldValues.GetValue(_isFrench ? "title_translated_fr" : "title_translated_en")))
+            return false;
+        
+        // filter Power BI workspaces
+        //if (result.DataType == MetadataObjectType.PowerBIWorkspace && !_filteredDataTypes.Contains(MetadataObjectType.PowerBIWorkspace))
+        //    return false;
+
+        // filter Power BI datasets
+        //if (result.DataType == MetadataObjectType.PowerBIDataset && !_filteredDataTypes.Contains(MetadataObjectType.PowerBIDataset))
+        //    return false;
+
+        return true;
+    }
+
+   
+    private Datahub_Project GetProject(CatalogObjectResult result)
+    {
+        return null;
+    }
+    private string GetSector(CatalogObjectResult result, bool french) => GetLabel(_sectors.GetValueOrDefault(result.Sector), french);
+
+    private string GetBranch(CatalogObjectResult result, bool french) => GetLabel(_branches.GetValueOrDefault(result.Branch), french);
+
+    private string GetLabel(OrganizationLevel orgLevel, bool french) => (french ? orgLevel?.FrenchLabel : orgLevel?.EnglishLabel) ?? "-";
+    
+    private RenderFragment RenderTypeSpecificDownloadFragment(CatalogObjectResult result) => result.DataType switch
+    {
+        MetadataObjectType.PowerBIReport => RenderPowerBiReportFragment(result),
+        _ => RenderGenericDownloadButton(result)
+    };
+    
+	private RenderFragment RenderGenericDownloadButton(CatalogObjectResult result)
+	{
+		var action = GetButtonAction(result);
+		if (action == null)
+		{
+			return @<MudSpacer/>;
+		}
+		else
+		{
+			return @<AeButton class=@GetButtonClass(result) onclick=@GetButtonAction(result)>@GetButtonCaption(result)</AeButton>;
+		}
+	}
+
+    // renderer functions
+	private Action GetButtonAction(CatalogObjectResult result) => result.DataType switch
+	{
+		//MetadataObjectType.File => async () => await DownloadFile(result),
+		//MetadataObjectType.FileUrl => async () => await DownloadFileUrl(result),
+		//MetadataObjectType.PowerBIReport => async () => await ViewPowerBIReport(result),
+		//MetadataObjectType.DatasetUrl => async () => await DownloadDatasetUrl(result),
+		//MetadataObjectType.Database or
+		//MetadataObjectType.DataInitiative => () => NavigationManager.NavigateTo($"projects/{result.Location}"),
+		//MetadataObjectType.Databricks => async () => await RedirectAndDownload(result.Location),
+		_ => null
+	};
+
+	private string GetButtonCaption(CatalogObjectResult result) => result.ClassificationType switch
+	{
+		ClassificationType.ProtectedA => Localizer["Protected A - Request Access"],
+		ClassificationType.ProtectedB => Localizer["Protected B - Request Access"],
+		_ => GetButtonText(result)
+	};
+
+    private string GetButtonText(CatalogObjectResult result)
+    {
+        return result.DataType switch
+        {
+            MetadataObjectType.File or MetadataObjectType.FileUrl => Localizer["Download File"],
+            MetadataObjectType.PowerBIReport => Localizer["Open Report"],
+            MetadataObjectType.PowerBIWorkspace => Localizer["Open Workspace"],
+            MetadataObjectType.PowerBIDataset => Localizer["Open Dataset"],
+            MetadataObjectType.GeoObject => Localizer["Open Geo Object"],
+            MetadataObjectType.Database or
+        MetadataObjectType.DataInitiative => Localizer["Open Initiative"],
+            MetadataObjectType.Databricks => Localizer["Open Databricks"],
+            _ => Localizer["Download"]
+        };
+    }
+
+	private string GetButtonClass(CatalogObjectResult result) => result.ClassificationType == ClassificationType.Unclassified ? "blue" : "red";
+
+
+	private RenderFragment RenderPowerBiReportFragment(CatalogObjectResult result) =>
+		@<MudStack Row AlignItems=@AlignItems.Center>
+			<InternalPublishedPowerBIReportLinks ReportID=@result.MetadataObjectId_TXT />
+			@RenderGenericDownloadButton(result)
+		</MudStack>;
+
+
+    private void ApplyLocalization(List<CatalogObjectResult> results)
+    {
+        foreach (var r in results)
+        {
+            r.IsFrench = r.Language == CatalogObjectLanguage.Bilingual ? _isFrench : r.Language == CatalogObjectLanguage.French;
+        }
+    }
+}
+
+

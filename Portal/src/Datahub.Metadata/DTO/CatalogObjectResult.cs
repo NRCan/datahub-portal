@@ -16,6 +16,7 @@ public class CatalogObjectResult
     public int Branch { get; set; }
     public string Contact { get; set; }
     public ClassificationType ClassificationType {  get; set; }
+    public AreasOfBusiness BusinessArea { get; set; }
     public string Url_English { get; set; }
     public string Url_French { get; set; }
     public CatalogObjectLanguage Language { get; init; }
@@ -23,5 +24,10 @@ public class CatalogObjectResult
     public bool IsFrench { get; set; }
     public Guid? GroupId { get; set; }
     public int? ProjectId { get; set; }
+    
+    public string WorkspaceId { get; set; }
     public FieldValueContainer Metadata { get; set; }
+
+    public string DatasetUri => $"https://app.powerbi.com/groups/{WorkspaceId}/datasets/{MetadataObjectId_TXT}?experience=power-bi";
+    
 }

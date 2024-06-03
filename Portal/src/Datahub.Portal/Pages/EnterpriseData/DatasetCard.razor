@@ -1,0 +1,27 @@
+﻿@using Datahub.Metadata.Model;
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo=@Typo.h5>@FieldChoice.Label_English_TXT</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText>This is a description of my dataset</MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Color=@Color.Primary Variant=Variant.Filled OnClick="OnGetDataSets">Get Datasets</MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+@code {
+    [Parameter]
+    public FieldChoice FieldChoice { get; set; }
+    [Parameter]
+    public EventCallback<string> GetDataSets { get; set; }
+
+    private async Task OnGetDataSets()
+    {
+        await GetDataSets.InvokeAsync(FieldChoice.Value_TXT);
+    }
+
+}

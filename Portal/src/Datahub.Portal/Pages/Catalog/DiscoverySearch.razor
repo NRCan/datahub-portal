@@ -719,7 +719,7 @@
 			var branches = GetBranches().ToList();
 
 			_catalogSearchRequest = new(0, 10, _isFrench, keywords, 
-				_filteredLanguageTypes.ToList(), _filteredClassificationTypes.ToList(), _filteredDataTypes.ToList(), sectors, branches);
+				_filteredLanguageTypes.ToList(), _filteredClassificationTypes.ToList(), _filteredDataTypes.ToList(), sectors, branches, new List<AreasOfBusiness>());
 
 			var results = await MetadataBrokerService.SearchCatalog(_catalogSearchRequest, CheckValidResult);
 			_lastQueryCount = results.Count;
